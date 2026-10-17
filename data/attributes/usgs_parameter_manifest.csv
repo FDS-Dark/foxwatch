@@ -1,0 +1,13 @@
+parameter_code,attribute,description,unit,role,priority,notes
+32319,phycocyanin_fluorescence,"Phycocyanin fluorescence, reference-material estimated concentration",ug/L as phycocyanin,bloom_indicator,high,In situ fluorescence proxy for cyanobacteria; not a toxin test
+32316,chlorophyll_fluorescence,"Chlorophyll fluorescence, reference-material estimated concentration",ug/L as chlorophyll,bloom_indicator,high,In situ fluorescence proxy for algae; not specific to cyanobacteria
+00300,dissolved_oxygen,Dissolved oxygen,mg/L,supporting_indicator,medium,Photosynthesis and respiration affect oxygen; not a definitive bloom label
+00400,ph,"pH, water, field",standard units,supporting_indicator,medium,Photosynthesis can change pH
+00010,water_temperature,Water temperature,deg C,condition_predictor,high,Growth and seasonal context
+00665,total_phosphorus,"Phosphorus, water, unfiltered",mg/L as P,condition_predictor,high,Nutrient availability; commonly discrete samples
+00671,orthophosphate_dissolved,"Orthophosphate, water, filtered",mg/L as P,condition_predictor,high,Potentially bioavailable phosphorus; commonly discrete samples
+00631,nitrate_nitrite_dissolved,"Nitrate plus nitrite, water, filtered",mg/L as N,condition_predictor,high,Inorganic nitrogen; commonly discrete samples
+00608,ammonia_dissolved,"Ammonia, water, filtered",mg/L as N,condition_predictor,high,Inorganic nitrogen; commonly discrete samples
+00060,discharge,Discharge,ft3/s,condition_predictor,high,Flow/runoff and flushing context
+63680,turbidity,Turbidity,FNU,condition_predictor,high,Water clarity and suspended material
+00095,specific_conductance,Specific conductance at 25 C,uS/cm at 25 C,condition_predictor,medium,Dissolved ions and water-mass changes
