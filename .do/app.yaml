@@ -73,16 +73,19 @@ ingress:
           prefix: /api
       component:
         name: api
+        preserve_path_prefix: true
     - match:
         path:
           prefix: /ingestion
       component:
         name: api
+        preserve_path_prefix: true
     - match:
         path:
           prefix: /usgs
       component:
         name: api
+        preserve_path_prefix: true
     - match:
         path:
           prefix: /
