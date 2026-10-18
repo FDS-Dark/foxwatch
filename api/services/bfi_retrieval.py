@@ -384,6 +384,76 @@ def hybrid_retrieve(
             break
         add(item)
 
+    return _diversify_ranked(selected, ranked, top_k)
+
+
+def _document_diversity_key(chunk: EmbeddedChunk) -> str:
+    meta = chunk.metadata
+    title = str(meta.get("document_title") or chunk.chunk_id)
+    chapter = str(meta.get("chapter") or "")
+    section = str(meta.get("section") or "")
+    if chapter:
+        return f"{title}|{chapter}"
+    if section:
+        return f"{title}|{section[:48]}"
+    return title
+
+
+def _diversify_ranked(
+    primary: Sequence[RankedChunk],
+    ranked: Sequence[RankedChunk],
+    top_k: int,
+) -> list[RankedChunk]:
+    """
+    Prefer distinct documents and source types (EPA, WHO, research) instead of five
+    chunks from the same guidance PDF.
+    """
+    seen_ids: set[str] = set()
+    pool: list[RankedChunk] = []
+    for item in primary:
+        if item.chunk.chunk_id not in seen_ids:
+            pool.append(item)
+            seen_ids.add(item.chunk.chunk_id)
+    for item in ranked:
+        if item.chunk.chunk_id not in seen_ids:
+            pool.append(item)
+            seen_ids.add(item.chunk.chunk_id)
+
+    selected: list[RankedChunk] = []
+    used_ids: set[str] = set()
+    used_docs: set[str] = set()
+
+    def pick(item: RankedChunk) -> None:
+        if item.chunk.chunk_id in used_ids:
+            return
+        selected.append(item)
+        used_ids.add(item.chunk.chunk_id)
+        used_docs.add(_document_diversity_key(item.chunk))
+
+    for want in ("epa_guidance", "who_guidance", "peer_reviewed_paper", "research_paper"):
+        for item in pool:
+            if str(item.chunk.metadata.get("source_type", "")).lower() == want:
+                pick(item)
+                break
+        if len(selected) >= top_k:
+            return selected[:top_k]
+
+    for item in pool:
+        if len(selected) >= top_k:
+            break
+        if item.chunk.chunk_id in used_ids:
+            continue
+        doc_key = _document_diversity_key(item.chunk)
+        if doc_key in used_docs:
+            continue
+        pick(item)
+
+    for item in pool:
+        if len(selected) >= top_k:
+            break
+        if item.chunk.chunk_id not in used_ids:
+            pick(item)
+
     return selected[:top_k]
 
 

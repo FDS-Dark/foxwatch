@@ -13,7 +13,7 @@
     ]
   },
   "insights": {
-    "executive_summary": "The current assessment is VERY HIGH FAVORABILITY (12/12). Primary contributing conditions include water_temperature, phosphorus, nitrogen, discharge, precipitation, solar_radiation. Retrieved 5 evidence sections focused on water_temperature, phosphorus, nitrogen, discharge, precipitation, solar_radiation for VERY HIGH FAVORABILITY. Tags prioritized: temperature, cyanobacteria, stratification, mixing, phosphorus, orthophosphate, nutrients, eutrophication, runoff, nitrate, water_quality, discharge, streamflow, hydrology, residence_time, precipitation, sunlight, solar_radiation.",
+    "executive_summary": "Bloom favorability is VERY HIGH FAVORABILITY (12 of 12 points). The score mainly reflects Elevated water temperature, Elevated phosphorus, Elevated nitrogen, Reduced discharge / low streamflow, Recent precipitation and runoff loading.",
     "bloom_assessment": "Bloom favorability is classified as VERY HIGH FAVORABILITY based on the BFI score of 12 out of 12.",
     "key_contributing_factors": [
       "Elevated water temperature",
@@ -23,7 +23,7 @@
       "Recent precipitation and runoff loading",
       "Elevated solar radiation / sunlight"
     ],
-    "scientific_interpretation": "This section explains cyanobacteria ecology. Runoff-driven loading is often episodic, so bloom risk may rise even when long-term average phosphorus concentrations appear moderate. This section explains cyanobacteria ecology. Low streamflow and reduced discharge into receiving waters decrease flushing rates and lengthen residence time. This section explains cyanobacteria ecology. Wind-driven mixing and fall turnover redistribute nutrients, sometimes fueling late-season cyanobacteria peaks if phosphorus remains available in the water column or is released from sediments under anoxic conditions.",
+    "scientific_interpretation": "Recorded water_temperature, phosphorus, nitrogen, discharge align with commonly cited nutrient, hydrology, and temperature drivers for cyanobacteria in large freshwater systems. See Sources for agency guidance and research that supports this reading.",
     "confidence": {
       "level": "High",
       "percent": 87,
@@ -31,42 +31,88 @@
     },
     "sources": [
       {
-        "title": "Sample Phosphorus Hydrology",
-        "chapter": "Harmful Algal Bloom Ecology and Water Quality",
-        "section": "Harmful Algal Bloom Ecology and Water Quality",
-        "authors": "",
-        "year": ""
+        "name": "USGS Water Data for the Nation",
+        "organization": "U.S. Geological Survey",
+        "summary": "National portal for streamflow, nutrients, and continuous water-quality monitoring.",
+        "url": "https://waterdata.usgs.gov/",
+        "source_origin": "catalog",
+        "evidence_indices": [
+          1,
+          2
+        ],
+        "consistency": "aligned",
+        "backing_publications": [
+          {
+            "title": "Sample Phosphorus Hydrology",
+            "authors": "",
+            "year": "",
+            "section": "Harmful Algal Bloom Ecology and Water Quality"
+          }
+        ]
       },
       {
-        "title": "Sample Phosphorus Hydrology",
-        "chapter": "Rainfall, Runoff, and Precipitation Effects",
-        "section": "Rainfall, Runoff, and Precipitation Effects",
-        "authors": "",
-        "year": ""
+        "name": "EPA Harmful Algal Blooms",
+        "organization": "U.S. Environmental Protection Agency",
+        "summary": "Federal overview of nutrient pollution and harmful algal bloom causes and response.",
+        "url": "https://www.epa.gov/nutrientpollution/harmful-algal-blooms",
+        "source_origin": "catalog",
+        "evidence_indices": [
+          1,
+          2
+        ],
+        "consistency": "aligned",
+        "backing_publications": [
+          {
+            "title": "Sample Phosphorus Hydrology",
+            "authors": "",
+            "year": "",
+            "section": "Harmful Algal Bloom Ecology and Water Quality"
+          }
+        ]
       },
       {
-        "title": "Sample Phosphorus Hydrology",
-        "chapter": "Temperature, Sunlight, and Cyanobacteria Growth",
-        "section": "Temperature, Sunlight, and Cyanobacteria Growth",
-        "authors": "",
-        "year": ""
+        "name": "WHO Recreational Water Quality — Cyanobacteria",
+        "organization": "World Health Organization",
+        "summary": "International guidance on cyanobacteria risks in recreational waters.",
+        "url": "https://www.who.int/teams/environment-climate-change-and-health/water-sanitation-and-health/water-quality-and-health/recreational-waters",
+        "source_origin": "catalog",
+        "evidence_indices": [
+          1,
+          2
+        ],
+        "consistency": "aligned",
+        "backing_publications": [
+          {
+            "title": "Sample Phosphorus Hydrology",
+            "authors": "",
+            "year": "",
+            "section": "Harmful Algal Bloom Ecology and Water Quality"
+          }
+        ]
       },
       {
-        "title": "Sample Phosphorus Hydrology",
-        "chapter": "Phosphorus Controls on Bloom Formation",
-        "section": "Phosphorus Controls on Bloom Formation",
-        "authors": "",
-        "year": ""
-      },
-      {
-        "title": "Sample Phosphorus Hydrology",
-        "chapter": "Hydrology, Streamflow, and Residence Time",
-        "section": "Hydrology, Streamflow, and Residence Time",
-        "authors": "",
-        "year": ""
+        "name": "Wisconsin DNR Blue-Green Algae",
+        "organization": "Wisconsin Department of Natural Resources",
+        "summary": "State guidance on blue-green algae recognition and public health in Wisconsin waters.",
+        "url": "https://dnr.wisconsin.gov/topic/lakes/bluegreenalgae",
+        "source_origin": "catalog",
+        "evidence_indices": [
+          1,
+          2
+        ],
+        "consistency": "aligned",
+        "backing_publications": [
+          {
+            "title": "Sample Phosphorus Hydrology",
+            "authors": "",
+            "year": "",
+            "section": "Harmful Algal Bloom Ecology and Water Quality"
+          }
+        ]
       }
     ],
-    "generation_mode": "evidence_synthesis"
+    "rag_grounded": true,
+    "generation_mode": "fallback_missing_google_generativeai"
   },
   "evidence": {
     "context_summary": "Retrieved 5 evidence sections focused on water_temperature, phosphorus, nitrogen, discharge, precipitation, solar_radiation for VERY HIGH FAVORABILITY. Tags prioritized: temperature, cyanobacteria, stratification, mixing, phosphorus, orthophosphate, nutrients, eutrophication, runoff, nitrate, water_quality, discharge, streamflow, hydrology, residence_time, precipitation, sunlight, solar_radiation.",

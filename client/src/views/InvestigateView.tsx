@@ -30,7 +30,7 @@ export function InvestigateView() {
       const result = await askXray(query, segmentId, request.signal)
       if (!request.signal.aborted) setAnswer(result)
     } catch {
-      if (!request.signal.aborted) setError('The research evidence could not be loaded. Check the API and try again.')
+      if (!request.signal.aborted) setError('Could not load study materials. Try again in a moment.')
     } finally {
       if (!request.signal.aborted) setLoading(false)
     }
@@ -42,26 +42,26 @@ export function InvestigateView() {
   }
 
   const questions = [
-    `Explain the satellite comparison for segment ${segmentId}.`,
-    'Does the improvement generalize? Where does the model fail?',
-    'What was measured, when, and what does RFU mean?',
+    'How did satellite imagery compare to location-only on this transect?',
+    'Where does the method work poorly?',
+    'What does fluorescence (RFU) mean in this study?',
   ]
 
   return <div className="xray-investigate">
     <section className="card">
-      <div className="xray-row"><div><p className="eyebrow">X-Ray the Bay · traceable research</p><h2>Ask what the evidence supports</h2></div>
-        <span className="chip">Stored research evidence</span></div>
-      <p>Answers are assembled from the recorded FLAMe observations, held-out model errors, and research reports. They include limitations and links to the underlying records.</p>
-      <p className="muted">This is a bounded research explainer, not a live AI chat or a current-bloom assessment. Answers may disclose the reveal results.</p>
-      <div className="xray-row" style={{ marginTop: '1rem' }}><label>Case <select value={segmentId} onChange={e => {
+      <div className="xray-row"><div><p className="eyebrow">2025 survey · cited answers</p><h2>Ask about the study</h2></div>
+        <span className="chip">Archived evidence</span></div>
+      <p>Answers draw on boat measurements, satellite comparisons, and published methods—with links and caveats.</p>
+      <p className="muted">June–July 2025 research only. Not live conditions or a bloom advisory.</p>
+      <div className="xray-row" style={{ marginTop: '1rem' }}><label>Transect <select value={segmentId} onChange={e => {
         controller.current?.abort(); setLoading(false); setSegmentId(Number(e.target.value)); setAnswer(null); setQuestion(''); setError(null)
-      }}><option value={32}>Segment 32 · plume recovery</option><option value={31}>Segment 31 · failure case</option><option value={17}>Segment 17 · typical case</option></select></label>
-        <a className="btn" href={`#/replay?segment=${segmentId}`}>Open this experiment →</a></div>
+      }}><option value={32}>After plume (32)</option><option value={31}>Poor fit (31)</option><option value={17}>Typical (17)</option></select></label>
+        <a className="btn" href={`#/replay?segment=${segmentId}`}>Open gap test →</a></div>
     </section>
-    <section className="card"><h3>Explore the research</h3><div className="xray-sources">{questions.map(q => <button className="btn" key={q} onClick={() => { setDraft(q); void ask(q) }}>{q}</button>)}</div></section>
+    <section className="card"><h3>Suggested questions</h3><div className="xray-sources">{questions.map(q => <button className="btn" key={q} onClick={() => { setDraft(q); void ask(q) }}>{q}</button>)}</div></section>
     <section className="card">
       <form className="composer" onSubmit={submit}><label className="sr-only" htmlFor="xray-question">Question about the research</label>
-        <input id="xray-question" maxLength={1000} value={draft} onChange={e => setDraft(e.target.value)} placeholder="Why did the satellite model improve segment 32?" />
+        <input id="xray-question" maxLength={1000} value={draft} onChange={e => setDraft(e.target.value)} placeholder="Why did imagery help on this transect?" />
         <button className="btn btn--primary" disabled={!draft.trim() || loading}>{loading ? 'Reading…' : 'Ask'}</button></form>
     </section>
     {error && <p className="card" role="alert">{error}</p>}

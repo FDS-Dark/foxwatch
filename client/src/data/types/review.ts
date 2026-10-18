@@ -1,47 +1,3 @@
-export type LabelTaxonomy =
-  | 'proxy_elevated_plausible'
-  | 'proxy_elevated_rejected'
-  | 'uncertain_quality'
-  | 'context_only'
-
-export type LabelConfidence = 'low' | 'medium' | 'high'
-export type LabelStatus = 'draft' | 'published' | 'superseded'
-
-export interface HumanLabel {
-  label_id: string
-  event_id: string
-  scene_id: string
-  source_run_id: string
-  taxonomy: LabelTaxonomy
-  confidence: LabelConfidence
-  notes: string | null
-  status: LabelStatus
-  created_at_utc: string
-  created_by: string
-  supersedes_label_id: string | null
-  disclaimer: string
-}
-
-export interface HumanLabelCreate {
-  event_id: string
-  source_run_id: string
-  taxonomy: LabelTaxonomy
-  confidence?: LabelConfidence
-  notes?: string
-  status?: LabelStatus
-  created_by?: string
-}
-
-export interface AnalysisRun {
-  run_id: string
-  event_id: string
-  method: string
-  parameters_json: Record<string, unknown>
-  created_at_utc: string
-  manifest_sha256: string | null
-  parent_run_id: string | null
-}
-
 export type PredictionClass = 'proxy_elevated' | 'proxy_normal'
 export type ReviewDecision = 'approved' | 'denied'
 export type PredictionReviewStatus = 'pending_review' | 'approved' | 'denied'
@@ -88,11 +44,3 @@ export interface RetrainJob {
   message: string | null
 }
 
-export interface RerunJobResponse {
-  job_id: string
-  status: string
-  event_id: string
-  parent_run_id: string
-  run_id: string | null
-  message: string | null
-}

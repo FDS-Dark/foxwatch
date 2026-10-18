@@ -3,33 +3,42 @@ import { EvidenceProvider } from './components/EvidenceContext'
 import { ReplayDataProvider } from './features/replay/ReplayDataContext'
 import { Sidebar, type ViewId } from './components/Sidebar'
 import { StatusPill } from './components/StatusPill'
-import { InvestigateView } from './views/InvestigateView'
 import { ReplayView } from './views/ReplayView'
 import { ReviewView } from './views/ReviewView'
 import { BfiInsightsView } from './views/BfiInsightsView'
 import { CurrentView } from './views/CurrentView'
 import './App.css'
 
-const VIEWS: ViewId[] = ['current', 'replay', 'investigate', 'bfi', 'review']
+const VIEWS: ViewId[] = ['current', 'bfi', 'replay', 'review']
 
 function viewFromHash(): ViewId {
-  const id = window.location.hash.replace('#/', '').split('?')[0] as ViewId
+  const raw = window.location.hash.replace('#/', '').split('?')[0]
+  if (raw === 'investigate') return 'bfi'
+  const id = raw as ViewId
   return VIEWS.includes(id) ? id : 'current'
 }
 
 const TITLES: Record<ViewId, string> = {
   current: 'Current conditions',
-  replay: 'X-Ray the Bay',
-  investigate: 'Investigate the research',
-  bfi: 'Bloom favorability insights',
-  review: 'Review & retrain',
+  bfi: 'Bloom favorability',
+  replay: 'Bay survey replay',
+  review: 'Analyst review',
 }
 
 function App() {
   const [view, setView] = useState<ViewId>(viewFromHash)
 
   useEffect(() => {
-    const onHash = () => setView(viewFromHash())
+    const onHash = () => {
+      const raw = window.location.hash.replace('#/', '').split('?')[0]
+      if (raw === 'investigate') {
+        const rest = window.location.hash.includes('?') ? window.location.hash.split('?').slice(1).join('?') : ''
+        window.location.replace(`#/bfi${rest ? `?${rest}` : ''}`)
+        return
+      }
+      setView(viewFromHash())
+    }
+    onHash()
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
@@ -55,18 +64,21 @@ function App() {
               <h1 className="topbar__title">{TITLES[view]}</h1>
             </div>
             {view === 'current' ? (
-              <p className="status-pill">USGS via Tiger Data</p>
-            ) : view === 'replay' || view === 'investigate' ? (
-              <p className="status-pill">USGS FLAMe · June 30–July 1, 2025</p>
+              <p className="status-pill status-pill--live" role="status">
+                <span className="status-pill__dot" aria-hidden="true" />
+                Live station data
+              </p>
+            ) : view === 'replay' ? (
+              <p className="status-pill">June 2025 study · archived</p>
             ) : view === 'review' ? (
               <p className="status-pill status-pill--live" role="status">
                 <span className="status-pill__dot" aria-hidden="true" />
-                Logistic v2 · Tiger · live refit
+                Live scoring &amp; review
               </p>
             ) : view === 'bfi' ? (
               <p className="status-pill status-pill--live" role="status">
                 <span className="status-pill__dot" aria-hidden="true" />
-                RAG + Tiger · API
+                Live drivers &amp; summary
               </p>
             ) : (
               <StatusPill />
@@ -75,22 +87,19 @@ function App() {
           <main id="main" tabIndex={-1} className="shell__main">
             {view === 'current' && <CurrentView />}
             {view === 'replay' && <ReplayView />}
-            {view === 'investigate' && <InvestigateView />}
             {view === 'bfi' && <BfiInsightsView />}
             {view === 'review' && <ReviewView />}
           </main>
           <footer className="shell__footer">
             {view === 'current'
-              ? 'Current station measurements from USGS, served from Tiger Data.'
+              ? 'Provisional USGS measurements. Fluorescence shows algae pigments—not a confirmed harmful bloom.'
               : view === 'review'
-                ? 'Bloom classifier queue and refit use live Tiger readings and labeled_openai.csv; analyst denials append correction rows.'
+                ? 'Analyst feedback can update the bloom score model. Not a regulatory decision.'
                 : view === 'bfi'
-                  ? 'BFI scores live USGS inputs; narrative uses RAG evidence and optional Gemini.'
-                  : view === 'replay' || view === 'investigate'
-                    ? 'Historical research: fluorescence in RFU, not confirmed harmful blooms. Satellite reconstructions are experimental.'
-                    : <>Historical replay for education. Satellite values are
-            dimensionless proxies, not confirmed harmful algal blooms. Scenarios
-            are assumptions, not forecasts.</>}
+                  ? 'Favorability from recent conditions and published references. Not a bloom forecast.'
+                  : view === 'replay'
+                    ? 'Archived 2025 survey data for learning—not today’s conditions.'
+                    : 'Indicators are not confirmed harmful algal blooms or official advisories.'}
           </footer>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { api } from '@/services/api'
-import type { BfiHealth, BfiInsightResponse } from '@/models/bfi'
+import type { BfiAskResponse, BfiHealth, BfiInsightResponse } from '@/models/bfi'
 
 export type BfiInsightRequest = {
   water_temperature_c?: number
@@ -20,5 +20,18 @@ export async function fetchBfiHealth(): Promise<BfiHealth> {
 
 export async function fetchBfiInsights(body: BfiInsightRequest): Promise<BfiInsightResponse> {
   const { data } = await api.post<BfiInsightResponse>('/api/v1/bfi/insights', body)
+  return data
+}
+
+export async function askBfiQuestion(
+  question: string,
+  options?: { use_live_data?: boolean; use_gemini?: boolean; signal?: AbortSignal },
+): Promise<BfiAskResponse> {
+  const { signal, ...body } = options ?? {}
+  const { data } = await api.post<BfiAskResponse>(
+    '/api/v1/bfi/ask',
+    { question, use_live_data: body.use_live_data ?? true, use_gemini: body.use_gemini ?? true },
+    { signal },
+  )
   return data
 }
