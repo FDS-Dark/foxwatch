@@ -84,3 +84,41 @@
 @media (max-width:700px) { .live-intro { flex-direction:column; align-items:stretch; } .live-connection { flex-direction:row; justify-content:space-between; align-items:center; } .live-map-toolbar { gap:.5rem; padding:.5rem; flex-wrap:wrap; } .live-map-toolbar button { padding:.5rem .65rem; font-size:.65rem; } .live-map-actions { margin-left:auto; } .live-bay-map { height:620px; } .live-map-title { top:1rem; left:1rem; right:1rem; padding:.7rem 1rem; max-width:none; } .live-map-title h3 { font-size:1.2rem; } .live-map-stamp { top:6.9rem; bottom:auto; left:1rem; right:auto; padding:.6rem 1rem; } .live-map-stamp small { display:none; } .live-map-legend { left:1rem; bottom:1.5rem; width:220px; } .live-map-bottom > div { flex-wrap:wrap; gap:.4rem; } .live-river { grid-template-columns:1fr; } .live-river-heading { display:block; } .live-river-reading { border-left:0; border-top:1px solid var(--border); padding:1rem 1.3rem; } .live-river-reading > strong { font-size:2rem; } .live-method { grid-template-columns:1fr; gap:1rem; } .live-details summary span { float:none; display:block; margin-top:.5rem; } .live-map-shell.is-expanded { inset:0; border-radius:0; } }
 
 .shell__main:has(.live-xray):focus-visible { outline:none; box-shadow:none; }
+
+.live-explain-trigger { margin: .4rem 0 .8rem; width:100%; }
+.live-explanation { position:absolute; z-index:3; right:0; top:0; bottom:0; width:min(460px,100%); display:flex; flex-direction:column; color:#dfebe7; background:#102c34; border-left:1px solid #476169; box-shadow:-15px 0 40px #001a2455; }
+.live-explanation header { display:flex; justify-content:space-between; align-items:center; padding:1.2rem; border-bottom:1px solid #37515a; gap:1rem; }
+.live-explanation .eyebrow { color:#c7dd9b; font-size:.6rem; }
+.live-explanation h3 { color:#f1f6f1; font-size:1.2rem; margin:.3rem 0 0; }
+.live-explanation header > button { background:transparent; border:1px solid #476169; border-radius:8px; color:#dce9e5; font-size:1.5rem; cursor:pointer; width:34px; height:34px; }
+.live-explanation-content { padding:1.2rem; overflow:auto; overscroll-behavior:contain; font-size:.77rem; line-height:1.65; }
+.explanation-location { padding-bottom:1rem; border-bottom:1px solid #37515a; }
+.explanation-location strong { font:500 2.5rem var(--display); color:#d1e9a1; }
+.explanation-location small { font:.7rem var(--mono); }
+.explanation-location > span { display:block; font:.65rem var(--mono); color:#b7cbce; }
+.explanation-location p { margin:.65rem 0; }
+.explanation-location b { font-size:.65rem; font-weight:500; color:#e1cf9f; }
+.explanation-questions { display:flex; gap:.4rem; flex-wrap:wrap; margin:1rem 0; }
+.explanation-questions button, .explanation-paragraph button, .explanation-limits button { cursor:pointer; background:#203f48; border:1px solid #41616b; color:#cde2c5; border-radius:6px; font-size:.65rem; padding:.3rem .5rem; text-align:left; }
+.live-explanation button:disabled { opacity:.5; cursor:wait; }
+.explanation-question { font-weight:600; color:#f0f5e7; margin:1rem 0; }
+.explanation-mode { color:#bcd495; text-transform:uppercase; font:.55rem var(--mono); letter-spacing:.06em; margin:1rem 0; }
+.explanation-paragraph { margin:1rem 0; }
+.explanation-paragraph > div { display:flex; gap:.3rem; flex-wrap:wrap; margin-top:.5rem; }
+.explanation-paragraph button[aria-pressed=true] { border-color:#c7dd9b; }
+.explanation-notice { font-size:.7rem; color:#d7d1b4; border-left:2px solid #a6a273; padding:.5rem .75rem; margin:1rem 0; }
+.explanation-source { border:1px solid #49656d; border-radius:9px; padding:.8rem; background:#0b222b; margin:1rem 0; overflow-wrap:anywhere; }
+.explanation-source h4 { font-size:.8rem; color:#dce9db; }
+.explanation-source pre { white-space:pre-wrap; font:.68rem/1.6 var(--sans); max-height:230px; overflow:auto; margin:.7rem 0; }
+.explanation-source a { color:#d1e9a1; }
+.explanation-source small { display:block; font:.55rem/1.5 var(--mono); color:#adc3c7; margin-top:.5rem; }
+.explanation-limits { border-top:1px solid #37515a; padding:.8rem 0; font-size:.7rem; }
+.explanation-limits summary { cursor:pointer; color:#d2dfce; }
+.explanation-limits ul { padding-left:1rem; }
+.explanation-limits li { margin:.5rem 0; }
+.explanation-limits button { display:block; margin:.5rem 0; }
+.live-explanation form { display:grid; gap:.6rem; border-top:1px solid #37515a; padding-top:1rem; margin-top:.4rem; }
+.live-explanation textarea { resize:vertical; width:100%; box-sizing:border-box; border:1px solid #49656d; border-radius:8px; padding:.6rem; background:#09252d; color:#e5eee9; font:inherit; }
+.live-explanation textarea::placeholder { color:#9bb4ba; }
+.live-explanation .btn { background:#d1e9a1; color:#19362d; border:0; }
+.explanation-footnote { font:.55rem/1.6 var(--mono); overflow-wrap:anywhere; color:#a8c0c4; margin-top:1rem; }

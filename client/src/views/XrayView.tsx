@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { XrayLiveMap } from '@/components/XrayLiveMap'
-import type { LiveXray } from '@/models/xrayLive'
+import { XrayExplanation } from '@/components/XrayExplanation'
+import type { ExplanationSelection, LiveXray } from '@/models/xrayLive'
 import type { LatestObservations } from '@/models/observations'
 import { fetchLiveXray } from '@/services/xrayService'
 import { fetchLatestObservations } from '@/services/observationsService'
@@ -30,6 +31,7 @@ export function XrayView() {
   const [focus, setFocus] = useState(0)
   const [expanded, setExpanded] = useState(false)
   const [now, setNow] = useState(Date.now)
+  const [explanation, setExplanation] = useState<ExplanationSelection>()
 
   useEffect(() => {
     let stopped = false
@@ -87,7 +89,7 @@ export function XrayView() {
           <button aria-label={expanded ? 'Exit full screen' : 'Expand map'} onClick={() => setExpanded(v => !v)}>{expanded ? '↙ Close' : '⛶ Expand'}</button></div>
       </div>
       <div className="live-map-canvas">
-        {snapshot ? <XrayLiveMap snapshot={snapshot} selected={selected} showSupport={showSupport} opacity={opacity} focus={focus} /> :
+        {snapshot ? <XrayLiveMap snapshot={snapshot} selected={selected} showSupport={showSupport} opacity={opacity} focus={focus} onExplain={setExplanation} /> :
           <div className="live-map-loading" role="status"><div className="live-orbit" /><h3>{error ? 'Waiting for the API' : data?.refresh.phase === 'error' ? 'Satellite update interrupted' : 'Building the latest view'}</h3><p>{data?.refresh.message ?? 'Connecting satellite predictions and river observations…'}</p><span>The first satellite download can take several minutes.</span></div>}
         <div className="live-map-title"><span>FOXWATCH / XRAY</span><h3>{selected === 'prediction' ? 'The shape of the signal.' : selected === 'satellite' ? 'A view from orbit.' : 'Every pixel has a date.'}</h3>
           <p>{selected === 'prediction' ? 'Predicted chlorophyll fluorescence' : selected === 'satellite' ? 'Sentinel-2 green-band reflectance · water only' : 'Acquisition age at map generation'}</p></div>
@@ -97,6 +99,7 @@ export function XrayView() {
           <div className="xray-colorbar" /><div className="xray-scale-ticks">{[0, .25, .5, .75, 1].map(f => <span key={f}>{(min + f * (max - min)).toFixed(selected === 'satellite' ? 3 : selected === 'age' ? 1 : 0)}</span>)}</div>
           <p>{selected === 'prediction' ? 'Full prediction range. Click the water to inspect a value.' : selected === 'satellite' ? 'Glint-corrected reflectance · full value range. Land and clouds are transparent.' : 'Purple is newer. Yellow is older.'}</p>
         </div>}
+        {snapshot && explanation && <XrayExplanation key={`${explanation.runId}:${explanation.lat}:${explanation.lon}`} selection={explanation} currentRunId={snapshot.run_id} onClose={() => setExplanation(undefined)} />}
       </div>
       <div className="live-map-bottom"><div><span className="live-experimental">{selected === 'satellite' ? 'SATELLITE INPUT' : 'EXPERIMENTAL'}</span><span>{selected === 'satellite' ? 'Green-band reflectance · colorized satellite input, not predicted fluorescence' : '2025-trained model · recent imagery · unvalidated seasonal transfer'}</span></div>
         {selected === 'prediction' && <div className="live-display-options"><label><input type="checkbox" checked={showSupport} onChange={e => setShowSupport(e.target.checked)} />Training limits</label><label>Opacity<input aria-label="Prediction opacity" type="range" min="0.2" max="1" step="0.05" value={opacity} onChange={e => setOpacity(Number(e.target.value))} /></label></div>}

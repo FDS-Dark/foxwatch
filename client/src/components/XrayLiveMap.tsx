@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ImageOverlay, MapContainer, Popup, TileLayer, useMap, useMapEvents, ZoomControl } from 'react-leaflet'
-import type { LiveSample, LiveSnapshot } from '@/models/xrayLive'
+import type { ExplanationSelection, LiveSample, LiveSnapshot } from '@/models/xrayLive'
 import { fetchLiveSample, xrayResourceUrl } from '@/services/xrayService'
 
 const date = (value: string) => new Date(value).toLocaleString(undefined, { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' })
@@ -20,7 +20,8 @@ function MapBehavior({ snapshot, focus }: { snapshot: LiveSnapshot; focus: numbe
   return null
 }
 
-function Inspect({ snapshot }: { snapshot: LiveSnapshot }) {
+function Inspect({ snapshot, onExplain }: { snapshot: LiveSnapshot; onExplain: (selection: ExplanationSelection) => void }) {
+  const map = useMap()
   const [point, setPoint] = useState<{ lat: number; lon: number; sample?: LiveSample; error?: boolean }>()
   const controller = useRef<AbortController | null>(null)
   useEffect(() => () => controller.current?.abort(), [])
@@ -42,13 +43,15 @@ function Inspect({ snapshot }: { snapshot: LiveSnapshot }) {
       <p>Image acquired {date(point.sample.acquired_at!)}</p>
       <p>{point.sample.outside_support ? 'Outside spatial or spectral training support.' : 'Within spatial and spectral training ranges.'} Experimental seasonal transfer.</p>
       <p>Nearest prediction cell · ~{snapshot.resolution_m} m</p>
+      <button className="btn live-explain-trigger" onClick={() => { map.closePopup(); onExplain({ runId: snapshot.run_id, lat: point.lat, lon: point.lon, sample: point.sample! }) }}>Explain this location ↗</button>
     </> : <p>{point.error ? 'Could not inspect this location. Try again.' : point.sample ? 'No prediction here: outside Green Bay, land, clouds, or quality masks exclude this location.' : 'Reading prediction…'}</p>}
     <span>{point.lat.toFixed(4)}° N · {Math.abs(point.lon).toFixed(4)}° W</span>
   </div></Popup>
 }
 
-export function XrayLiveMap({ snapshot, selected, showSupport, opacity, focus }: {
+export function XrayLiveMap({ snapshot, selected, showSupport, opacity, focus, onExplain }: {
   snapshot: LiveSnapshot; selected: string; showSupport: boolean; opacity: number; focus: number
+  onExplain: (selection: ExplanationSelection) => void
 }) {
   const [failed, setFailed] = useState<string>()
   const layer = snapshot.layers.find(item => item.id === selected)!
@@ -58,7 +61,7 @@ export function XrayLiveMap({ snapshot, selected, showSupport, opacity, focus }:
     <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors · Copernicus Sentinel-2 / Element 84" />
     <ZoomControl position="bottomright" />
     <MapBehavior snapshot={snapshot} focus={focus} />
-    {selected === 'prediction' && <Inspect key={snapshot.run_id} snapshot={snapshot} />}
+    {selected === 'prediction' && <Inspect key={snapshot.run_id} snapshot={snapshot} onExplain={onExplain} />}
     <ImageOverlay url={xrayResourceUrl(layer.url)} bounds={layer.bounds} opacity={opacity}
       eventHandlers={{ error: () => setFailed(layer.url), load: () => setFailed(undefined) }} />
     {showSupport && selected === 'prediction' && <ImageOverlay url={xrayResourceUrl(support.url)} bounds={support.bounds} opacity={0.7} />}
