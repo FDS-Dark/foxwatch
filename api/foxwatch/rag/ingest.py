@@ -18,16 +18,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
-from foxwatch.config import RAG_INDEX_PATH, RAG_REPORTS_DIR, RAG_SOURCES_DIR, REPO_ROOT
-from foxwatch.rag.document_processor import extract_pdf_text, infer_source_type
-from foxwatch.rag.embeddings import (
+from ..config import RAG_INDEX_PATH, RAG_REPORTS_DIR, RAG_SOURCES_DIR, REPO_ROOT
+from .document_processor import extract_pdf_text, infer_source_type
+from .embeddings import (
     EmbeddedChunk,
     create_production_embedder,
     cosine_similarity,
     ingest_document,
     save_embedded_chunks,
 )
-from foxwatch.rag.metadata_tagger import assign_tags
+from .metadata_tagger import assign_tags
 
 SOURCES_DIR = RAG_SOURCES_DIR
 INDEX_PATH = RAG_INDEX_PATH

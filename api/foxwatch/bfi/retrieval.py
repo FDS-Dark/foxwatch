@@ -11,8 +11,8 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Mapping, Optional, Sequence
 
-from foxwatch.rag.embeddings import EmbeddedChunk, Embedder, cosine_similarity
-from foxwatch.rag.metadata_tagger import DEPRIORITIZE_TERMS
+from ..rag.embeddings import EmbeddedChunk, Embedder, cosine_similarity
+from ..rag.metadata_tagger import DEPRIORITIZE_TERMS
 
 # FoxWatch canonical BFI driver keys (aligned with parameter manifest attributes).
 CANONICAL_DRIVERS = frozenset(

@@ -1,7 +1,10 @@
 # FoxWatch API
 
-Collects USGS continuous measurements for Fox River at Green Bay, station
-`USGS-040851385`, into a Tiger Data (TimescaleDB/PostgreSQL) hypertable.
+One FastAPI application serves USGS observations and evidence-backed bloom
+favorability insights. It collects continuous measurements for Fox River at Green
+Bay, station `USGS-040851385`, into a Tiger Data (TimescaleDB/PostgreSQL)
+hypertable. `main.py` owns the application and collector lifecycle;
+`foxwatch/routes.py` supplies the bloom-insights routes.
 
 ## Run
 
@@ -10,10 +13,21 @@ From the repository root:
 ```powershell
 cd api
 uv sync
-Copy-Item .env.example .env
-# Edit .env: set TIGER_DATABASE_URL to your Tiger Cloud service connection URL.
+# Create api/.env with TIGER_DATABASE_URL set to your Tiger Cloud connection URL.
 uv run python main.py
 ```
+
+For reload mode, run `uv run uvicorn main:app --reload` from `api/`.
+The older `uvicorn foxwatch.main:app --reload --app-dir api` entry point also
+serves the same combined application. Only one API process is needed on port 8000.
+
+Put `GEMINI_API_KEY` and optional `GEMINI_MODEL` in the repo-root `.env` (see
+`../.env.example`). Existing environment variables take precedence, followed by
+`api/.env`, then repo-root `.env`. `uv sync` installs the observation API and core
+BFI dependencies. To enable sentence-transformer embeddings, PDF ingestion, and
+Gemini generation, also run `uv pip install -r requirements.txt` from `api/`.
+Without those optional packages, the BFI endpoint retains its hash-embedding and
+evidence-synthesis fallbacks; it still requires an existing RAG index.
 
 Copy the PostgreSQL connection URL from your Tiger Cloud service's connection
 details, including its port, database, password and `sslmode=require`. Keep it in
@@ -23,6 +37,9 @@ must have permission to create tables and hypertables. The collector creates
 
 Open http://localhost:8000/docs to try:
 
+- `GET /`: service links.
+- `GET /api/health`: RAG index presence and Gemini configuration.
+- `POST /api/v1/bfi/insights`: bloom favorability scores and supporting evidence.
 - `GET /usgs/latest`: live USGS preview; works without a database and lists missing parameters.
 - `GET /api/observations/latest`: frontend data endpoint, reading exclusively from Tiger Data.
 - `GET /ingestion/status`: configuration, active poll, last success/error type, processed row count and catch-up progress.

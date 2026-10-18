@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping, Optional
 
-from foxwatch.config import USGS_MANIFEST_PATH
+from ..config import USGS_MANIFEST_PATH
 
 DEFAULT_MANIFEST_PATH = USGS_MANIFEST_PATH
 

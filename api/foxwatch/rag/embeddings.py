@@ -13,9 +13,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional, Protocol, Sequence
 
-from foxwatch.rag.chunker import ChunkRecord, chunk_document
-from foxwatch.rag.document_processor import process_document
-from foxwatch.rag.metadata_tagger import TaggedChunk, tag_chunks
+from .chunker import ChunkRecord, chunk_document
+from .document_processor import process_document
+from .metadata_tagger import TaggedChunk, tag_chunks
 
 
 class Embedder(Protocol):
