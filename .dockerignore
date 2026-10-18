@@ -7,6 +7,13 @@
 **/*.pyc
 **/.pytest_cache
 research
+!research/xray_bay/scripts/xray_common.py
+!research/xray_bay/phase2_satellite/scripts/**
+!research/xray_bay/phase2_satellite/outputs/matched_bins.parquet
+data/xray/live
+data/xray/live/**
+.cache
+**/.cache/**
 api/model/artifacts/*.png
 api/model/artifacts/*.svg
 data/rag/index/vectors.faiss

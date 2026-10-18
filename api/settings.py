@@ -162,6 +162,8 @@ GEMINI_MODEL_FALLBACKS: tuple[str, ...] = (
 
 INGESTION_ADMIN_TOKEN = os.getenv("INGESTION_ADMIN_TOKEN", "").strip()
 
+XRAY_LIVE_PUBLIC_BASE_URL = os.getenv("XRAY_LIVE_PUBLIC_BASE_URL", "").strip().rstrip("/")
+
 
 def cors_allowed_origins() -> list[str]:
     raw = os.getenv("APP__cors_origins", "").strip()

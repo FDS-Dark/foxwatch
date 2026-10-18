@@ -39,6 +39,31 @@ jobs:
           docker push "${IMAGE_PREFIX}/foxwatch-web:${GITHUB_SHA}"
           docker push "${IMAGE_PREFIX}/foxwatch-web:latest"
 
+      - name: Build and push X-Ray worker image
+        run: |
+          docker build -f deploy/xray-worker/Dockerfile \
+            -t "${IMAGE_PREFIX}/foxwatch-xray-worker:${GITHUB_SHA}" \
+            -t "${IMAGE_PREFIX}/foxwatch-xray-worker:latest" \
+            .
+          docker push "${IMAGE_PREFIX}/foxwatch-xray-worker:${GITHUB_SHA}"
+          docker push "${IMAGE_PREFIX}/foxwatch-xray-worker:latest"
+
+      - name: Redeploy Vultr X-Ray worker
+        env:
+          VULTR_SSH_HOST: ${{ secrets.VULTR_SSH_HOST }}
+          VULTR_SSH_USER: ${{ secrets.VULTR_SSH_USER }}
+          VULTR_SSH_KEY: ${{ secrets.VULTR_SSH_KEY }}
+          VULTR_COMPOSE_DIR: ${{ secrets.VULTR_COMPOSE_DIR }}
+        if: env.VULTR_SSH_HOST != '' && env.VULTR_SSH_USER != '' && env.VULTR_SSH_KEY != ''
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$VULTR_SSH_KEY" > ~/.ssh/vultr_deploy_key
+          chmod 600 ~/.ssh/vultr_deploy_key
+          COMPOSE_DIR="${VULTR_COMPOSE_DIR:-~/foxwatch/deploy/xray-worker}"
+          ssh -i ~/.ssh/vultr_deploy_key -o StrictHostKeyChecking=accept-new \
+            "${VULTR_SSH_USER}@${VULTR_SSH_HOST}" \
+            "cd ${COMPOSE_DIR} && docker compose pull && docker compose up -d"
+
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:

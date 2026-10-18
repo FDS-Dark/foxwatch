@@ -272,7 +272,13 @@ random forest trained on June 30–July 1, 2025 FLAMe measurements. This is an
 experimental seasonal transfer, not a newly validated model or live bloom alert.
 The separate USGS station cards update every 15 seconds and are not model inputs.
 
-Run the satellite worker from the repository root in the research environment:
+**Production:** the satellite worker runs on **Vultr** (`foxwatch-xray-worker` Docker image).
+It publishes completed snapshots to **Vultr Object Storage** under `live/`. Set
+`XRAY_LIVE_PUBLIC_BASE_URL` on the API (DigitalOcean) so `/api/xray/live` reads
+remote manifests and sample grids; map PNG URLs in the manifest are absolute and
+load directly from the bucket. See [`docs/DEPLOYMENT.md`](../docs/DEPLOYMENT.md).
+
+**Local development:** run from the repository root in the research environment:
 
 ```bash
 research/xray_bay/.venv/bin/python scripts/refresh_xray_live.py --watch
@@ -282,12 +288,13 @@ The worker searches the last 14 days, downloads up to four recent acquisitions
 per required tile through the first largely clear scene, applies the original
 water/cloud/glint masks, and selects the newest usable pixel from those scenes.
 It checks hourly, reuses downloads in `.cache/xray-live`, and publishes completed
-snapshots atomically under `data/xray/live`. Initial downloads can take several
-minutes. Keep this worker running alongside the API; the API does not run GDAL.
+snapshots atomically (locally under `data/xray/live`, or to object storage when
+`VULTR_S3_*` and `XRAY_LIVE_PUBLIC_BASE_URL` are set). Initial downloads can take
+several minutes. Keep this worker running alongside the API; the API does not run GDAL.
 Stop it with Ctrl+C. Without `--watch`, the command refreshes once and exits.
 
 - `GET /api/xray/live`: snapshot metadata, imagery dates, worker status and freshness.
-- `GET /api/xray/live/{run_id}/{prediction|satellite|age|support}`: immutable map images.
+- `GET /api/xray/live/{run_id}/{prediction|satellite|age|support}`: local fallback PNG route when snapshots are on disk; production uses public object URLs from the manifest.
 - `GET /api/xray/live/{run_id}/sample?lat=45.1&lon=-87.6`: nearest displayed prediction cell and acquisition provenance.
 
 The browser polls metadata and station observations every 15 seconds. **Sync data**

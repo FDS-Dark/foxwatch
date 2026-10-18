@@ -1,0 +1,20 @@
+[project]
+name = "foxwatch-xray-worker"
+version = "0.1.0"
+description = "Sentinel-2 refresh worker for X-Ray the Bay live maps"
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.35.0",
+    "geopandas>=1.0.0",
+    "matplotlib>=3.9.0",
+    "numpy>=2.0.0",
+    "pandas>=2.2.0",
+    "pillow>=11.0.0",
+    "pyarrow>=18.0.0",
+    "pyproj>=3.7.0",
+    "rasterio>=1.4.0",
+    "requests>=2.32.0",
+    "scikit-learn>=1.5.0",
+    "scipy>=1.14.0",
+    "shapely>=2.0.0",
+]
