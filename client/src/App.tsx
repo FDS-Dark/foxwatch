@@ -14,7 +14,7 @@ const VIEWS: ViewId[] = ['current', 'replay', 'investigate', 'bfi', 'review']
 
 function viewFromHash(): ViewId {
   const id = window.location.hash.replace('#/', '').split('?')[0] as ViewId
-  return VIEWS.includes(id) ? id : 'current'
+  return VIEWS.includes(id) ? id : 'replay'
 }
 
 const TITLES: Record<ViewId, string> = {
@@ -56,7 +56,9 @@ function App() {
             </div>
             {view === 'current' ? (
               <p className="status-pill">USGS via Tiger Data</p>
-            ) : view === 'replay' || view === 'investigate' ? (
+            ) : view === 'replay' ? (
+              <p className="status-pill">Sentinel-2 + USGS</p>
+            ) : view === 'investigate' ? (
               <p className="status-pill">USGS FLAMe · June 30–July 1, 2025</p>
             ) : view === 'review' ? (
               <p className="status-pill status-pill--live" role="status">
@@ -82,13 +84,15 @@ function App() {
           <footer className="shell__footer">
             {view === 'current'
               ? 'Current station measurements from USGS, served from Tiger Data.'
-              : view === 'review'
-                ? 'Bloom classifier queue and refit use live Tiger readings and labeled_openai.csv; analyst denials append correction rows.'
-                : view === 'bfi'
-                  ? 'BFI scores live USGS inputs; narrative uses RAG evidence and optional Gemini.'
-                  : view === 'replay' || view === 'investigate'
-                    ? 'Historical research: fluorescence in RFU, not confirmed harmful blooms. Satellite reconstructions are experimental.'
-                    : <>Historical replay for education. Satellite values are
+              : view === 'replay'
+                ? 'Recent satellite predictions with acquisition dates. Experimental fluorescence estimates, not confirmed harmful blooms.'
+                : view === 'investigate'
+                  ? 'Historical research: fluorescence in RFU, not confirmed harmful blooms. Satellite reconstructions are experimental.'
+                  : view === 'review'
+                    ? 'Bloom classifier queue and refit use live Tiger readings and labeled_openai.csv; analyst denials append correction rows.'
+                    : view === 'bfi'
+                      ? 'BFI scores live USGS inputs; narrative uses RAG evidence and optional Gemini.'
+                      : <>Historical replay for education. Satellite values are
             dimensionless proxies, not confirmed harmful algal blooms. Scenarios
             are assumptions, not forecasts.</>}
           </footer>

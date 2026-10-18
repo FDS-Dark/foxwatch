@@ -17,8 +17,8 @@ from scipy.spatial import cKDTree
 import export_xray_holdout_maps as hold
 
 
-def mosaic_features():
-    source = hold.RESEARCH / "bay_overview"
+def mosaic_features(source=None, newest_first=False):
+    source = source or hold.RESEARCH / "bay_overview"
     manifest = json.loads((source / "manifest.json").read_text())
     west, south, east, north = manifest["aoi"]
     project = Transformer.from_crs(4326, 32616, always_xy=True)
@@ -34,7 +34,9 @@ def mosaic_features():
     scene_index = np.zeros(len(grid), dtype="uint8")
     scenes = []
     # Prefer July 1, then June 30; July 3 fills remaining quality/coverage gaps.
-    ids = sorted(manifest["items"], key=lambda iid: ("20250701" not in iid, iid))
+    ids = (sorted(manifest["items"], key=lambda iid: json.loads(
+        (source / "stac_items" / f"{iid}.json").read_text())["properties"]["datetime"], reverse=True)
+        if newest_first else sorted(manifest["items"], key=lambda iid: ("20250701" not in iid, iid)))
     for index, iid in enumerate(ids, 1):
         print("Sampling", iid, flush=True)
         with rasterio.open(source / "data" / f"{iid}_20m.tif") as src:

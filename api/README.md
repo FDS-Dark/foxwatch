@@ -263,3 +263,46 @@ bay-wide measurement. Cloud, land, and failed-quality pixels remain masked.
 Portable images and acquisition metadata are in `data/xray/bay`; original
 research caches are not required by the running API. Per-cell scene provenance,
 training distance, features and predictions are retained in `overview_inputs.npz`.
+
+### Latest-data X-Ray map
+
+`#/replay` (also the default landing view) now displays one interactive prediction
+map. It uses recent Sentinel-2 reflectance with the existing location + satellite
+random forest trained on June 30–July 1, 2025 FLAMe measurements. This is an
+experimental seasonal transfer, not a newly validated model or live bloom alert.
+The separate USGS station cards update every 15 seconds and are not model inputs.
+
+Run the satellite worker from the repository root in the research environment:
+
+```bash
+research/xray_bay/.venv/bin/python scripts/refresh_xray_live.py --watch
+```
+
+The worker searches the last 14 days, downloads up to four recent acquisitions
+per required tile through the first largely clear scene, applies the original
+water/cloud/glint masks, and selects the newest usable pixel from those scenes.
+It checks hourly, reuses downloads in `.cache/xray-live`, and publishes completed
+snapshots atomically under `data/xray/live`. Initial downloads can take several
+minutes. Keep this worker running alongside the API; the API does not run GDAL.
+Stop it with Ctrl+C. Without `--watch`, the command refreshes once and exits.
+
+- `GET /api/xray/live`: snapshot metadata, imagery dates, worker status and freshness.
+- `GET /api/xray/live/{run_id}/{prediction|satellite|age|support}`: immutable map images.
+- `GET /api/xray/live/{run_id}/sample?lat=45.1&lon=-87.6`: nearest displayed prediction cell and acquisition provenance.
+
+The browser polls metadata and station observations every 15 seconds. **Sync data**
+reloads completed outputs; it does not initiate a satellite download. Predictions
+remain dated if refresh fails, imagery older than three days is marked delayed,
+and a worker silent for two hours is marked overdue. Historical exports remain
+separate and are never silently substituted for unavailable recent imagery.
+
+The image-age layer shows age at map generation. Prediction and satellite color
+scales cover all finite values in the snapshot, with rounded legend limits;
+clicking Predictions returns the numerical value from the nearest ~200 m cell.
+The Satellite tab shows water-only, glint-corrected B03 reflectance using the
+same palette as predictions, with the full reflectance range preserved.
+It is a satellite input layer, not a true-color photograph or predicted RFU.
+Training-limits hatching marks spatial extrapolation beyond 3 km or any satellite
+feature outside its training range. It is not an uncertainty interval. Uncolored
+areas have no usable satellite prediction. Snapshot source IDs and timestamps,
+model inputs, and original observations remain inspectable.
