@@ -57,6 +57,7 @@ CLASSIFICATION_HIGH_MAX_SCORE = 10
 
 MAX_POINTS_PER_FACTOR = 2
 FACTOR_COUNT = 6
+FULL_BFI_MAX_SCORE = FACTOR_COUNT * MAX_POINTS_PER_FACTOR
 
 SOLAR_RADIATION_LEVELS = frozenset({"low", "moderate", "high"})
 
@@ -88,6 +89,8 @@ class BloomFavorabilityResult:
     score: int
     max_possible_score: int
     favorability_percent: float
+    favorability_percent_full: float
+    drivers_reporting: int
     classification: str
     factors: list[dict[str, Any]] = field(default_factory=list)
     reasons: list[str] = field(default_factory=list)
@@ -97,7 +100,11 @@ class BloomFavorabilityResult:
         return {
             "score": self.score,
             "max_possible_score": self.max_possible_score,
+            "full_max_score": FULL_BFI_MAX_SCORE,
             "favorability_percent": self.favorability_percent,
+            "favorability_percent_full": self.favorability_percent_full,
+            "drivers_reporting": self.drivers_reporting,
+            "drivers_total": FACTOR_COUNT,
             "classification": self.classification,
             "factors": self.factors,
             "reasons": self.reasons,
@@ -345,12 +352,15 @@ class RuleBasedScoringEngine:
         favorability_percent = (
             round((total / max_possible) * 100.0, 2) if max_possible else 0.0
         )
+        favorability_percent_full = round((total / FULL_BFI_MAX_SCORE) * 100.0, 2)
         classification = classify_favorability(total, max_possible)
 
         return BloomFavorabilityResult(
             score=total,
             max_possible_score=max_possible,
             favorability_percent=favorability_percent,
+            favorability_percent_full=favorability_percent_full,
+            drivers_reporting=len(registered),
             classification=classification.value,
             factors=factor_rows,
             reasons=reasons,

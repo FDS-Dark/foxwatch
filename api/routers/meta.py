@@ -21,6 +21,8 @@ def root() -> dict[str, Any]:
         "health": "/api/health",
         "observations_latest": "GET /api/observations/latest",
         "bfi_insights": "POST /api/v1/bfi/insights",
+        "incident_recovery": "POST /api/v1/incident-recovery/suggest",
+        "ui_recovery": "http://127.0.0.1:6173/#/recovery",
         "ui_current": "http://127.0.0.1:6173/#/current",
         "ui_bfi": "http://127.0.0.1:6173/#/bfi",
     }

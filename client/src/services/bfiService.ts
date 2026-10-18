@@ -18,8 +18,11 @@ export async function fetchBfiHealth(): Promise<BfiHealth> {
   return data
 }
 
-export async function fetchBfiInsights(body: BfiInsightRequest): Promise<BfiInsightResponse> {
-  const { data } = await api.post<BfiInsightResponse>('/api/v1/bfi/insights', body)
+export async function fetchBfiInsights(
+  body: BfiInsightRequest,
+  signal?: AbortSignal,
+): Promise<BfiInsightResponse> {
+  const { data } = await api.post<BfiInsightResponse>('/api/v1/bfi/insights', body, { signal })
   return data
 }
 

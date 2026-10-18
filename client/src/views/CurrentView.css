@@ -1,7 +1,53 @@
 .current { display: grid; gap: 1.25rem; }
-.current__intro { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; padding: 1.5rem; }
-.current__intro h2 { margin: 0.3rem 0; }
-.current__refresh { display: grid; align-content: center; justify-items: start; gap: 0.5rem; }
+.current__intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.75rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.55);
+}
+.current__intro-line {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.current__intro-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fox);
+  margin-right: 0.45rem;
+}
+.current__intro-station {
+  font-weight: 600;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+.current__intro-muted {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.current__intro-aside {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+}
+.current__intro-fetched {
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.chip--compact {
+  padding: 0.15rem 0.5rem;
+  font-size: 0.72rem;
+}
 .current__note { color: var(--muted); font-size: 0.82rem; }
 .current__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1rem; }
 .current__reading { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.35rem; }

@@ -21,7 +21,11 @@ export interface BfiInsightResponse {
     classification: string
     score: number
     max_possible_score: number
+    full_max_score?: number
     favorability_percent?: number
+    favorability_percent_full?: number
+    drivers_reporting?: number
+    drivers_total?: number
     drivers: string[]
     factors?: Array<Record<string, unknown>>
     reasons?: string[]

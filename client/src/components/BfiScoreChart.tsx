@@ -1,4 +1,14 @@
 const MAX_POINTS = 2
+const FULL_SCORE = 12
+
+const ALL_DRIVERS = [
+  'Temperature',
+  'Phosphorus',
+  'Nitrogen',
+  'Streamflow',
+  'Rainfall',
+  'Sunlight',
+] as const
 
 const STATUS_FILL: Record<string, string> = {
   favorable: 'var(--algae-bright, #3d9b6a)',
@@ -21,27 +31,37 @@ function shortFactorLabel(factor: string): string {
 
 export function BfiScoreChart({
   score,
-  maxScore,
-  favorabilityPercent,
+  favorabilityPercentFull,
+  driversReporting,
   factors,
+  compact = false,
 }: {
   score: number
-  maxScore: number
-  favorabilityPercent?: number
+  favorabilityPercentFull?: number
+  driversReporting?: number
   factors?: Array<Record<string, unknown>>
+  compact?: boolean
 }) {
   const pct =
-    favorabilityPercent ??
-    (maxScore > 0 ? Math.round((score / maxScore) * 100) : 0)
+    favorabilityPercentFull ??
+    Math.round((score / FULL_SCORE) * 100)
   const clamped = Math.min(100, Math.max(0, pct))
 
-  const rows =
-    factors?.map((row) => {
-      const points = Number(row.points ?? 0)
-      const status = String(row.status ?? 'neutral')
-      const label = shortFactorLabel(String(row.factor ?? 'Factor'))
-      return { label, points, status, width: (points / MAX_POINTS) * 100 }
-    }) ?? []
+  const byLabel = new Map<string, { points: number; status: string }>()
+  for (const row of factors ?? []) {
+    const label = shortFactorLabel(String(row.factor ?? 'Factor'))
+    byLabel.set(label, {
+      points: Number(row.points ?? 0),
+      status: String(row.status ?? 'neutral'),
+    })
+  }
+  const rows = ALL_DRIVERS.map((label) => {
+    const hit = byLabel.get(label)
+    if (hit) {
+      return { label, points: hit.points, status: hit.status, width: (hit.points / MAX_POINTS) * 100 }
+    }
+    return { label, points: 0, status: 'missing', width: 0 }
+  })
 
   const radius = 52
   const stroke = 10
@@ -49,8 +69,12 @@ export function BfiScoreChart({
   const dash = (clamped / 100) * circumference
 
   return (
-    <div className="bfi-chart">
-      <h3 className="card__title">Score breakdown</h3>
+    <div className={`bfi-chart${compact ? ' bfi-chart--compact' : ''}`}>
+      {compact ? (
+        <p className="sr-only">Score breakdown</p>
+      ) : (
+        <h3 className="card__title">Score breakdown</h3>
+      )}
       <div className="bfi-chart__body">
         <div className="bfi-chart__gauge" aria-hidden="true">
           <svg viewBox="0 0 120 120" className="bfi-chart__svg">
@@ -83,32 +107,35 @@ export function BfiScoreChart({
               {Math.round(clamped)}%
             </text>
             <text x="60" y="72" textAnchor="middle" className="bfi-chart__gauge-sub">
-              {score}/{maxScore} pts
+              {score}/{FULL_SCORE} pts
             </text>
           </svg>
         </div>
-        <div className="bfi-chart__bars" role="img" aria-label={`Favorability ${clamped} percent`}>
-          {rows.length === 0 ? (
-            <p className="muted bfi-chart__empty">Factor details unavailable.</p>
-          ) : (
-            <ul className="bfi-chart__bar-list">
-              {rows.map((row) => (
-                <li key={row.label} className="bfi-chart__bar-row">
-                  <span className="bfi-chart__bar-label">{row.label}</span>
-                  <span className="bfi-chart__bar-track">
-                    <span
-                      className="bfi-chart__bar-fill"
-                      style={{
-                        width: `${row.width}%`,
-                        background: STATUS_FILL[row.status] ?? STATUS_FILL.neutral,
-                      }}
-                    />
-                  </span>
-                  <span className="bfi-chart__bar-pts">{row.points}/{MAX_POINTS}</span>
-                </li>
-              ))}
-            </ul>
-          )}
+        <div className="bfi-chart__bars" role="img" aria-label={`${score} of ${FULL_SCORE} points, ${clamped} percent of full score`}>
+          <ul className="bfi-chart__bar-list">
+            {rows.map((row) => (
+              <li key={row.label} className="bfi-chart__bar-row">
+                <span className="bfi-chart__bar-label">{row.label}</span>
+                <span className="bfi-chart__bar-track">
+                  <span
+                    className="bfi-chart__bar-fill"
+                    style={{
+                      width: `${row.width}%`,
+                      background: STATUS_FILL[row.status] ?? STATUS_FILL.neutral,
+                    }}
+                  />
+                </span>
+                <span className="bfi-chart__bar-pts">
+                  {row.status === 'missing' ? '—' : `${row.points}/${MAX_POINTS}`}
+                </span>
+              </li>
+            ))}
+          </ul>
+          {driversReporting != null && driversReporting < ALL_DRIVERS.length ? (
+            <p className="muted bfi-chart__coverage">
+              {driversReporting} of {ALL_DRIVERS.length} drivers in today&apos;s feed. Missing drivers count as 0 toward the 12-point total.
+            </p>
+          ) : null}
         </div>
       </div>
     </div>
