@@ -15,9 +15,9 @@ import { listEventLabels } from '../data/demo/reviewStore'
 import { DEMO_EVENT_ID, DEMO_SCENE_ID } from '../config/demo'
 
 const STEPS = [
-  { title: 'Predict', body: 'Logistic v2 scores live Tiger conditions' },
-  { title: 'Human review', body: 'Analyst approves or denies' },
-  { title: 'Retrain', body: 'Denials refit the classifier on labeled CSV + corrections' },
+  { title: 'Predict', body: 'Score current station readings' },
+  { title: 'Human review', body: 'Approve or correct predictions' },
+  { title: 'Retrain', body: 'Update the model with corrections' },
 ]
 
 export function ReviewView() {
@@ -92,7 +92,7 @@ export function ReviewView() {
 
       {loadError ? (
         <p className="bfi-insights__error" role="alert">
-          {loadError}. Start the API with Tiger + trained v2 model.
+          Could not load the review queue. Try again.
         </p>
       ) : null}
 
@@ -111,7 +111,7 @@ export function ReviewView() {
               </h2>
               <p className="card__sub">
                 Station <code>{DEMO_SCENE_ID}</code> · {pending.length} awaiting review ·{' '}
-                <span className="chip chip--ok">Logistic v2 + Tiger</span>
+                <span className="chip chip--ok">Station model</span>
               </p>
             </div>
             <button
@@ -133,7 +133,7 @@ export function ReviewView() {
 
           {pending.length === 0 ? (
             <p className="muted queue-empty">
-              Nothing to review. Run the model to queue a live snapshot for analyst review.
+              No predictions awaiting review.
             </p>
           ) : (
             <ul className="queue">
@@ -185,7 +185,7 @@ export function ReviewView() {
                 Model lineage
               </h2>
               <p className="card__sub">
-                Refit keeps the original labeled CSV and appends denied snapshots as new rows.
+                Denied predictions become corrections for the next model version.
               </p>
             </div>
           </header>
@@ -259,10 +259,9 @@ export function ReviewView() {
         </section>
       </div>
 
-      <h2 className="section-title">Scene labels &amp; overlay re-runs (satellite demo)</h2>
+      <details><summary>Satellite annotation prototype</summary>
       <p className="muted">
-        NDCI overlay labels below remain a separate satellite workflow; bloom classifier refit uses
-        the queue above.
+        Demo annotations; separate from station-model retraining.
       </p>
       <div className="review__grid">
         <AnalystReviewPanel
@@ -276,6 +275,7 @@ export function ReviewView() {
           <AnalysisRunsPanel labels={labels} />
         </div>
       </div>
+      </details>
     </div>
   )
 }

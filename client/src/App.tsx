@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { EvidenceProvider } from './components/EvidenceContext'
 import { ReplayDataProvider } from './features/replay/ReplayDataContext'
 import { Sidebar, type ViewId } from './components/Sidebar'
-import { StatusPill } from './components/StatusPill'
 import { InvestigateView } from './views/InvestigateView'
 import { ReplayView } from './views/ReplayView'
 import { ReviewView } from './views/ReviewView'
@@ -20,8 +19,8 @@ function viewFromHash(): ViewId {
 const TITLES: Record<ViewId, string> = {
   current: 'Current conditions',
   replay: 'X-Ray the Bay',
-  investigate: 'Investigate the research',
-  bfi: 'Bloom favorability insights',
+  investigate: 'Model validation',
+  bfi: 'Bloom conditions',
   review: 'Review & retrain',
 }
 
@@ -54,25 +53,13 @@ function App() {
               <p className="topbar__eyebrow">Lower Fox River · Green Bay</p>
               <h1 className="topbar__title">{TITLES[view]}</h1>
             </div>
-            {view === 'current' ? (
-              <p className="status-pill">USGS via Tiger Data</p>
-            ) : view === 'replay' ? (
-              <p className="status-pill">Sentinel-2 + USGS</p>
-            ) : view === 'investigate' ? (
-              <p className="status-pill">USGS FLAMe · June 30–July 1, 2025</p>
-            ) : view === 'review' ? (
-              <p className="status-pill status-pill--live" role="status">
-                <span className="status-pill__dot" aria-hidden="true" />
-                Logistic v2 · Tiger · live refit
-              </p>
-            ) : view === 'bfi' ? (
-              <p className="status-pill status-pill--live" role="status">
-                <span className="status-pill__dot" aria-hidden="true" />
-                RAG + Tiger · API
-              </p>
-            ) : (
-              <StatusPill />
-            )}
+            <p className="status-pill">{{
+              current: 'USGS observations',
+              replay: 'Sentinel-2 + USGS',
+              investigate: 'FLAMe · June 30–July 1, 2025',
+              bfi: 'USGS + scientific literature',
+              review: 'Station model',
+            }[view]}</p>
           </header>
           <main id="main" tabIndex={-1} className="shell__main">
             {view === 'current' && <CurrentView />}
@@ -81,21 +68,7 @@ function App() {
             {view === 'bfi' && <BfiInsightsView />}
             {view === 'review' && <ReviewView />}
           </main>
-          <footer className="shell__footer">
-            {view === 'current'
-              ? 'Current station measurements from USGS, served from Tiger Data.'
-              : view === 'replay'
-                ? 'Recent satellite predictions with acquisition dates. Experimental fluorescence estimates, not confirmed harmful blooms.'
-                : view === 'investigate'
-                  ? 'Historical research: fluorescence in RFU, not confirmed harmful blooms. Satellite reconstructions are experimental.'
-                  : view === 'review'
-                    ? 'Bloom classifier queue and refit use live Tiger readings and labeled_openai.csv; analyst denials append correction rows.'
-                    : view === 'bfi'
-                      ? 'BFI scores live USGS inputs; narrative uses RAG evidence and optional Gemini.'
-                      : <>Historical replay for education. Satellite values are
-            dimensionless proxies, not confirmed harmful algal blooms. Scenarios
-            are assumptions, not forecasts.</>}
-          </footer>
+          <footer className="shell__footer">Experimental estimates · not a bloom advisory.</footer>
         </div>
       </div>
       </EvidenceProvider>

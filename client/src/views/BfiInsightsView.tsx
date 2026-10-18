@@ -1,12 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { BfiInsightResponse } from '@/models/bfi'
-import { fetchBfiHealth, fetchBfiInsights } from '@/services/bfiService'
-
-function formatTags(tags: string[] | string | undefined): string {
-  if (!tags) return '—'
-  if (Array.isArray(tags)) return tags.join(', ')
-  return String(tags).trim()
-}
+import { fetchBfiInsights } from '@/services/bfiService'
+import './BfiInsightsView.css'
 
 function formatSourceLine(s: BfiInsightResponse['insights']['sources'][number]): string {
   if (s.citation) return s.citation
@@ -34,7 +29,6 @@ export function BfiInsightsView() {
   const [data, setData] = useState<BfiInsightResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const [apiOk, setApiOk] = useState<boolean | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -52,12 +46,6 @@ export function BfiInsightsView() {
   }, [])
 
   useEffect(() => {
-    fetchBfiHealth()
-      .then((h) => setApiOk(h.gemini_configured === true))
-      .catch(() => setApiOk(false))
-  }, [])
-
-  useEffect(() => {
     void load()
   }, [load])
 
@@ -67,27 +55,16 @@ export function BfiInsightsView() {
         <header className="card__header">
           <div>
             <h2 id="bfi-title" className="card__title">
-              Bloom favorability insights
+              Conditions for bloom growth
             </h2>
             <p className="card__sub">
-              BFI scored from live Tiger Data at Green Bay, hybrid RAG evidence, and Gemini
-              narrative (when <code>GEMINI_API_KEY</code> is set in repo-root <code>.env</code>).
+              Temperature, nutrients and river flow, interpreted with scientific sources.
             </p>
           </div>
-          <span className={`chip ${apiOk ? 'chip--ok' : 'chip--warn'}`}>
-            {apiOk === null
-              ? 'Checking API…'
-              : apiOk
-                ? 'Gemini ready'
-                : 'Gemini off · evidence mode'}
-          </span>
+
         </header>
 
-        <p className="muted">
-          Drivers are read from the same USGS parameters ingested into Tiger (temperature,
-          nutrients, discharge). Seasonal median flow comes from historical 00060 in Tiger; solar
-          uses a month-based proxy until irradiance is ingested.
-        </p>
+        <p className="muted">Favorability index, not a bloom probability. Separate from the satellite model.</p>
 
         <button type="button" className="btn btn--primary" onClick={load} disabled={loading}>
           {loading ? 'Generating…' : 'Refresh insights'}
@@ -95,37 +72,12 @@ export function BfiInsightsView() {
 
         {error ? (
           <p className="bfi-insights__error" role="alert">
-            {error}. Ensure the API is running with Tiger configured:{' '}
-            <code>cd api && uv run python main.py</code>
+            Could not load bloom conditions. Try refreshing.
           </p>
         ) : null}
       </section>
 
-      {data?.inputs_provenance?.station_readings?.length ? (
-        <section className="card">
-          <h3 className="card__title">Live inputs (Tiger Data)</h3>
-          <ul className="bfi-insights__list">
-            {data.inputs_provenance.station_readings.map((row) => (
-              <li key={row.parameter_code}>
-                <strong>{row.parameter_code}</strong> → {row.bfi_field}:{' '}
-                {row.value != null ? String(row.value) : '—'}
-                {row.unit ? ` ${row.unit}` : ''}
-                {row.observed_at ? ` · ${formatObservedAt(String(row.observed_at))}` : ''}
-                {row.used_fallback ? ' · last known value' : ''}
-              </li>
-            ))}
-          </ul>
-          {data.inputs_provenance.seasonal_median_streamflow_cfs != null ? (
-            <p className="muted">
-              Seasonal median discharge (this month, Tiger history):{' '}
-              {Number(data.inputs_provenance.seasonal_median_streamflow_cfs).toFixed(0)} ft³/s
-            </p>
-          ) : null}
-          {data.inputs_provenance.solar_radiation_note ? (
-            <p className="muted">{data.inputs_provenance.solar_radiation_note}</p>
-          ) : null}
-        </section>
-      ) : null}
+
 
       {data ? (
         <>
@@ -133,46 +85,58 @@ export function BfiInsightsView() {
             <h3 className="card__title">{data.bfi.classification}</h3>
             <p className="bfi-insights__score">
               Score {data.bfi.score}/{data.bfi.max_possible_score}
-              {data.bfi.favorability_percent != null
-                ? ` · ${data.bfi.favorability_percent}% favorability`
-                : null}
             </p>
-            <p>{data.insights.executive_summary}</p>
+            {data.insights.generation_mode?.startsWith('gemini') && <p>{data.insights.executive_summary}</p>}
             {data.insights.bloom_assessment ? (
-              <p className="muted">{data.insights.bloom_assessment}</p>
+              <details><summary>Assessment</summary><p className="muted">{data.insights.bloom_assessment}</p></details>
             ) : null}
-            {data.bfi.reasons?.length ? (
-              <ul className="bfi-insights__list bfi-insights__drivers">
-                {data.bfi.reasons.map((r) => (
-                  <li key={r}>{r}</li>
-                ))}
-              </ul>
-            ) : null}
-            <p className="muted">
-              Confidence: {data.insights.confidence.level} ({data.insights.confidence.percent}
+            <details><summary>Evidence quality</summary><p className="muted">
+              Evidence quality: {data.insights.confidence.level} ({data.insights.confidence.percent}
               %) — {data.insights.confidence.reason}
             </p>
-            {data.insights.generation_mode ? (
-              <p className="muted">Narrative mode: {data.insights.generation_mode}</p>
-            ) : null}
-            {data.gemini_status ? (
-              <p className="muted">Gemini: {data.gemini_status}</p>
-            ) : null}
+            </details>
+            <p className="muted">{data.insights.generation_mode?.startsWith('gemini') ? 'Gemini · cited sources' : 'Evidence summary'}</p>
           </section>
 
           <section className="card">
-            <h3 className="card__title">Key contributing factors</h3>
+            <h3 className="card__title">Main drivers</h3>
             <ul className="bfi-insights__list">
-              {data.insights.key_contributing_factors.map((f) => (
+              {(data.bfi.reasons?.length ? data.bfi.reasons : data.insights.key_contributing_factors).map((f) => (
                 <li key={f}>{f}</li>
               ))}
             </ul>
-            <h4>Scientific interpretation</h4>
-            <p>{data.insights.scientific_interpretation}</p>
+            <details><summary>Scientific interpretation</summary><p>{data.insights.scientific_interpretation}</p></details>
           </section>
 
+          {data?.inputs_provenance?.station_readings?.length ? (
+            <section className="card">
+              <details><summary>Station inputs &amp; assumptions</summary>
+              <ul className="bfi-insights__list">
+                {data.inputs_provenance.station_readings.map((row) => (
+                  <li key={row.parameter_code}>
+                    <strong>{row.bfi_field.replaceAll('_', ' ')}</strong>:{' '}
+                    {row.value != null ? String(row.value) : '—'}
+                    {row.unit ? ` ${row.unit}` : ''}
+                    {row.observed_at ? ` · ${formatObservedAt(String(row.observed_at))}` : ''}
+                    {row.used_fallback ? ' · last known value' : ''}
+                  </li>
+                ))}
+              </ul>
+              {data.inputs_provenance.seasonal_median_streamflow_cfs != null ? (
+                <p className="muted">
+                  Seasonal median discharge:{' '}
+                  {Number(data.inputs_provenance.seasonal_median_streamflow_cfs).toFixed(0)} ft³/s
+                </p>
+              ) : null}
+              {data.inputs_provenance.solar_radiation_note ? (
+                <p className="muted">{data.inputs_provenance.solar_radiation_note}</p>
+              ) : null}
+              </details>
+            </section>
+          ) : null}
+
           <section className="card">
-            <h3 className="card__title">Sources consulted</h3>
+            <details><summary>Sources</summary>
             <ul className="bfi-insights__sources">
               {data.insights.sources.map((s, i) => {
                 const line = formatSourceLine(s)
@@ -182,23 +146,16 @@ export function BfiInsightsView() {
                 )
               })}
             </ul>
+            </details>
           </section>
 
           <section className="card">
-            <header className="card__header">
-              <h3 className="card__title">Retrieved evidence</h3>
-              <p className="card__sub">{data.evidence.context_summary}</p>
-            </header>
+            <details><summary>Source passages</summary>
             <ol className="evidence-cards">
               {data.evidence.supporting_chunks.map((chunk, i) => (
                 <li key={chunk.chunk_id} className="evidence-card">
                   <div className="evidence-card__meta">
                     <span className="tag">Evidence {i + 1}</span>
-                    {chunk.hybrid_score != null ? (
-                      <span className="muted" title="Hybrid retrieval rank (not cosine similarity; can exceed 1)">
-                        rank {Number(chunk.hybrid_score).toFixed(3)}
-                      </span>
-                    ) : null}
                   </div>
                   <p className="evidence-card__cite">
                     {chunk.metadata.document_title}
@@ -210,15 +167,11 @@ export function BfiInsightsView() {
                     <summary>Passage</summary>
                     <p className="evidence-card__text">{chunk.text}</p>
                   </details>
-                  <p className="evidence-card__tags">
-                    Tags: {formatTags(chunk.tags)}
-                    {chunk.matched_tags?.length
-                      ? ` · matched: ${chunk.matched_tags.join(', ')}`
-                      : ''}
-                  </p>
+
                 </li>
               ))}
             </ol>
+            </details>
           </section>
         </>
       ) : null}

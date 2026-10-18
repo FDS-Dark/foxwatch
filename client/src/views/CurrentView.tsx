@@ -57,7 +57,7 @@ export function CurrentView() {
           setData(observations.value)
           setError(null)
         } else {
-          setError('Unable to refresh stored observations. Check that the API and Tiger Data are available.')
+          setError('Unable to refresh readings.')
         }
         if (model.status === 'fulfilled') {
           setPrediction(model.value)
@@ -98,14 +98,14 @@ export function CurrentView() {
     <div className="current">
       <section className="card current__intro" aria-labelledby="current-title">
         <div>
-          <p className="eyebrow">USGS observations · Stored in Tiger Data</p>
+          <p className="eyebrow">USGS observations</p>
           <h2 id="current-title">Latest station conditions</h2>
           <p>{data?.station_id ?? 'Loading station'} · Latest reading for each parameter</p>
-          <p className="current__note">Updates automatically every 15 seconds. Readings over 30 minutes old are marked delayed.</p>
+          <p className="current__note">Readings over 30 minutes old are marked delayed.</p>
         </div>
         <div className="current__refresh">
           <p className={`chip ${error ? 'chip--warn' : data ? 'chip--ok' : ''}`} role="status">
-            {error ? 'Reconnecting automatically' : data ? 'Automatic updates on' : 'Connecting…'}
+            {error ? 'Reconnecting' : data ? 'Automatic updates on' : 'Connecting…'}
           </p>
           {data && <p className="current__note">Last fetched <time dateTime={data.fetched_at}>{timestamp(data.fetched_at)}</time></p>}
         </div>
@@ -114,8 +114,8 @@ export function CurrentView() {
       <BloomPredictionCard prediction={prediction} error={predictionError} updatedAt={now} />
 
       {error && <p className="current__notice" role="alert">{error}{data ? ' Showing previously fetched readings.' : ''}</p>}
-      {!data && !error && <p role="status">Loading observations from Tiger Data…</p>}
-      {data?.readings.length === 0 && <p className="current__notice" role="status">No observations have been stored for this station yet. Waiting for ingestion.</p>}
+      {!data && !error && <p role="status">Loading observations…</p>}
+      {data?.readings.length === 0 && <p className="current__notice" role="status">No readings available for this station.</p>}
 
       {data && <section className="current__grid" aria-label="Latest measurements">
         {data.requested_parameters.map((code) => {
@@ -134,7 +134,7 @@ export function CurrentView() {
               {reading ? <>
                 <p className="current__note">Observed <time dateTime={reading.observed_at}>{timestamp(reading.observed_at)}</time></p>
                 <p className="current__note">{reading.approval_status ?? 'Approval status unavailable'}{reading.qualifier ? ` · ${reading.qualifier}` : ''}</p>
-              </> : <p className="current__note">This parameter has not been received for this station.</p>}
+              </> : <p className="current__note">No reading available.</p>}
               <p className="current__code">USGS {code}</p>
             </article>
           )

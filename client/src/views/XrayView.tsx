@@ -72,14 +72,13 @@ export function XrayView() {
 
   return <div className="live-xray">
     <section className="live-intro">
-      <div><p className="eyebrow">Satellite intelligence / Green Bay</p><h2>See the bay differently.</h2>
-        <p>Recent satellite imagery. A continuous prediction. The river's pulse, live.</p></div>
-      <div className="live-connection"><span className={connected ? 'is-connected' : ''}><i />{error ? 'Reconnecting' : connected ? 'Automatic updates on' : data?.refresh.phase === 'error' ? 'Refresh interrupted' : data?.refresh.overdue ? 'Refresh overdue' : 'Connecting data'}</span>
-        <button className="btn" disabled={refreshing} onClick={() => { setRefreshing(true); setAttempt(v => v + 1) }}>{refreshing ? 'Syncing…' : '↻ Sync data'}</button></div>
+      <div><p>Select a location to see its prediction and sources.</p><a href="#/investigate">View model validation →</a></div>
+      <div className="live-connection"><span className={connected ? 'is-connected' : ''}><i />{error ? 'Reconnecting' : connected ? 'Auto-updating' : data?.refresh.phase === 'error' ? 'Refresh interrupted' : data?.refresh.overdue ? 'Refresh overdue' : 'Connecting data'}</span>
+        <button className="btn" disabled={refreshing} onClick={() => { setRefreshing(true); setAttempt(v => v + 1) }}>{refreshing ? 'Syncing…' : '↻ Refresh'}</button></div>
     </section>
-    {error && <p className="live-notice" role="alert">Connection interrupted.{snapshot ? ' Showing the last downloaded map with its original acquisition dates.' : ' Retrying automatically.'}</p>}
-    {data?.status === 'stale' && <p className="live-notice">The newest usable image is more than three days old. Cloud cover and acquisition timing limit freshness.</p>}
-    {snapshot && (data?.refresh.phase === 'error' || data?.refresh.overdue) && <p className="live-notice">Satellite refresh {data.refresh.overdue ? 'is overdue' : 'failed'}. The last completed map remains visible; its imagery dates have not changed.</p>}
+    {error && <p className="live-notice" role="alert">Connection interrupted.{snapshot ? ' Showing the last available map.' : ' Retrying…'}</p>}
+    {data?.status === 'stale' && <p className="live-notice">Latest imagery is over three days old.</p>}
+    {snapshot && (data?.refresh.phase === 'error' || data?.refresh.overdue) && <p className="live-notice">Satellite refresh {data.refresh.overdue ? 'is overdue' : 'failed'}. Showing the last available map.</p>}
     <section className={`live-map-shell ${expanded ? 'is-expanded' : ''}`} aria-label="Green Bay prediction map">
       <div className="live-map-toolbar">
         <div className="live-layer-switch" aria-label="Map layer">{[
@@ -90,24 +89,24 @@ export function XrayView() {
       </div>
       <div className="live-map-canvas">
         {snapshot ? <XrayLiveMap snapshot={snapshot} selected={selected} showSupport={showSupport} opacity={opacity} focus={focus} onExplain={setExplanation} /> :
-          <div className="live-map-loading" role="status"><div className="live-orbit" /><h3>{error ? 'Waiting for the API' : data?.refresh.phase === 'error' ? 'Satellite update interrupted' : 'Building the latest view'}</h3><p>{data?.refresh.message ?? 'Connecting satellite predictions and river observations…'}</p><span>The first satellite download can take several minutes.</span></div>}
-        <div className="live-map-title"><span>FOXWATCH / XRAY</span><h3>{selected === 'prediction' ? 'The shape of the signal.' : selected === 'satellite' ? 'A view from orbit.' : 'Every pixel has a date.'}</h3>
-          <p>{selected === 'prediction' ? 'Predicted chlorophyll fluorescence' : selected === 'satellite' ? 'Sentinel-2 green-band reflectance · water only' : 'Acquisition age at map generation'}</p></div>
-        {snapshot && <div className="live-map-stamp"><span>IMAGERY ACQUIRED</span><strong>{range}</strong><small>{snapshot.scenes.length} acquisitions · newest valid pixels first</small></div>}
+          <div className="live-map-loading" role="status"><div className="live-orbit" /><h3>{error ? 'Map unavailable' : data?.refresh.phase === 'error' ? 'Satellite update interrupted' : 'Loading satellite map'}</h3><p>Checking available imagery…</p></div>}
+        <div className="live-map-title"><h3>{selected === 'prediction' ? 'Predicted fluorescence' : selected === 'satellite' ? 'Satellite reflectance' : 'Image age'}</h3>
+          <p>{selected === 'prediction' ? 'Chlorophyll fluorescence · RFU' : selected === 'satellite' ? 'Sentinel-2 · green band' : 'Days at map generation'}</p></div>
+        {snapshot && <div className="live-map-stamp"><span>IMAGERY ACQUIRED</span><strong>{range}</strong><small>{snapshot.scenes.length} acquisitions</small></div>}
         {snapshot && <div className="live-map-legend">
           <div className="live-legend-heading"><strong>{selected === 'age' ? 'Image age' : selected === 'satellite' ? 'Satellite reflectance' : 'Predicted fluorescence'}</strong><span>{selected === 'age' ? 'DAYS' : selected === 'satellite' ? 'B03' : 'RFU'}</span></div>
           <div className="xray-colorbar" /><div className="xray-scale-ticks">{[0, .25, .5, .75, 1].map(f => <span key={f}>{(min + f * (max - min)).toFixed(selected === 'satellite' ? 3 : selected === 'age' ? 1 : 0)}</span>)}</div>
-          <p>{selected === 'prediction' ? 'Full prediction range. Click the water to inspect a value.' : selected === 'satellite' ? 'Glint-corrected reflectance · full value range. Land and clouds are transparent.' : 'Purple is newer. Yellow is older.'}</p>
+          <p>{selected === 'prediction' ? 'Click water to inspect.' : selected === 'satellite' ? 'Land and cloud gaps are uncolored.' : 'Purple is newer. Yellow is older.'}</p>
         </div>}
         {snapshot && explanation && <XrayExplanation key={`${explanation.runId}:${explanation.lat}:${explanation.lon}`} selection={explanation} currentRunId={snapshot.run_id} onClose={() => setExplanation(undefined)} />}
       </div>
-      <div className="live-map-bottom"><div><span className="live-experimental">{selected === 'satellite' ? 'SATELLITE INPUT' : 'EXPERIMENTAL'}</span><span>{selected === 'satellite' ? 'Green-band reflectance · colorized satellite input, not predicted fluorescence' : '2025-trained model · recent imagery · unvalidated seasonal transfer'}</span></div>
+      <div className="live-map-bottom"><div><span className="live-experimental">{selected === 'satellite' ? 'SATELLITE INPUT' : 'EXPERIMENTAL'}</span><span>{selected === 'satellite' ? 'Colorized reflectance' : '2025-trained model · current-season accuracy unverified'}</span></div>
         {selected === 'prediction' && <div className="live-display-options"><label><input type="checkbox" checked={showSupport} onChange={e => setShowSupport(e.target.checked)} />Training limits</label><label>Opacity<input aria-label="Prediction opacity" type="range" min="0.2" max="1" step="0.05" value={opacity} onChange={e => setOpacity(Number(e.target.value))} /></label></div>}
       </div>
     </section>
     <section className="live-river" aria-label="Live river measurements">
-      <div className="live-river-heading"><p className="eyebrow">At the mouth of the Fox</p><h3>The river, right now.</h3>
-        <p>USGS {observations?.station_id.replace(/^USGS-/, '') ?? 'station'} · {stationError ? 'connection interrupted' : 'refreshes every 15 seconds'}</p><span>Station context · separate from map inputs</span></div>
+      <div className="live-river-heading"><h3>Fox River observations</h3>
+        <p>USGS {observations?.station_id.replace(/^USGS-/, '') ?? 'station'} · {stationError ? 'connection interrupted' : 'latest readings'}</p><a href="#/current">All station readings →</a></div>
       {PARAMETERS.map(parameter => {
         const reading = readings.get(parameter.code)
         const delayed = reading && now - Date.parse(reading.observed_at) > (observations?.stale_after_seconds ?? 1800) * 1000
@@ -116,15 +115,15 @@ export function XrayView() {
           <p>{reading ? date(reading.observed_at, true) : stationError ? 'Station unavailable' : 'Waiting for readings'}{delayed && <b>Delayed</b>}{stationError && reading && <b>Cached</b>}</p></article>
       })}
     </section>
-    {snapshot && <section className="live-details"><details><summary>Inside this prediction <span>{snapshot.modeled_area_km2.toLocaleString()} km² of modeled water · {snapshot.resolution_m} m grid</span></summary>
-      <div className="live-method"><div><h3>From reflectance to fluorescence</h3><p>{snapshot.note}</p>
+    {snapshot && <section className="live-details"><details><summary>Data &amp; methods <span>{snapshot.modeled_area_km2.toLocaleString()} km² of modeled water · {snapshot.resolution_m} m grid</span></summary>
+      <div className="live-method"><div><h3>Model</h3><p>Location + satellite random forest. RFU estimates fluorescence, not bloom probability. River measurements are separate context.</p>
         <p>{snapshot.training_bins.toLocaleString()} FLAMe training bins · {snapshot.training_period}. {snapshot.extrapolated_cells.toLocaleString()} cells are beyond 3 km of training locations; {snapshot.outside_feature_range_cells.toLocaleString()} have at least one satellite feature outside the training range.</p>
-        <p>Transparent areas have no usable prediction. Each color scale covers the full value range of this snapshot; its limits can change with new data. Click Predictions to inspect a numerical value. A smooth display does not add observations.</p>
-        <p>Sharp bands and rectangular patches can occur when the model extrapolates far beyond its training locations. Turn on Training limits to identify unsupported areas; these boundaries are not measured plume edges.</p>
-        {snapshot.region && <p>Layers and inspection values are clipped to Green Bay using <a href={snapshot.region.source_url} target="_blank" rel="noreferrer">NWS marine-zone boundaries</a>. This geographic limit does not add training evidence inside the bay.</p>}
-        <a href="#/investigate">Explore the original research →</a></div>
-        <div><h3>Acquisitions behind the map</h3>{snapshot.scenes.map(scene => <a key={scene.id} href={scene.url} target="_blank" rel="noreferrer"><strong>{date(scene.acquired_at, true)} ↗</strong><span>{scene.id} · {scene.modeled_cells.toLocaleString()} cells</span></a>)}
-          <p>Map generated {date(snapshot.generated_at, true)}.<br />Catalog checked {date(data?.refresh.catalog_checked_at ?? snapshot.catalog_checked_at, true)}. Satellite worker checks hourly.</p></div></div>
+        <p>Uncolored areas have no usable prediction. Scales adjust to each snapshot; smoothing adds no measurements.</p>
+        <p>Sharp edges may be model artifacts. Training limits marks areas beyond spatial or spectral training ranges.</p>
+        {snapshot.region && <p>Coverage follows <a href={snapshot.region.source_url} target="_blank" rel="noreferrer">NWS marine-zone boundaries</a>; this boundary does not establish model accuracy.</p>}
+        <a href="#/investigate">Model validation →</a></div>
+        <div><h3>Satellite acquisitions</h3>{snapshot.scenes.map(scene => <a key={scene.id} href={scene.url} target="_blank" rel="noreferrer"><strong>{date(scene.acquired_at, true)} ↗</strong><span>{scene.id} · {scene.modeled_cells.toLocaleString()} cells</span></a>)}
+          <p>Map generated {date(snapshot.generated_at, true)}.<br />Catalog checked {date(data?.refresh.catalog_checked_at ?? snapshot.catalog_checked_at, true)}.</p></div></div>
     </details></section>}
   </div>
 }

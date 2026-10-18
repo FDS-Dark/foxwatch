@@ -2,33 +2,33 @@ export type ViewId = 'current' | 'replay' | 'investigate' | 'bfi' | 'review'
 
 const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
   {
-    id: 'current',
-    label: 'Current conditions',
-    hint: 'Latest station readings',
-    icon: 'M3 12h3l3-8 4 16 3-8h5',
-  },
-  {
     id: 'replay',
     label: 'X-Ray the Bay',
     hint: 'Latest satellite predictions',
     icon: 'M3 12h3l3-8 4 16 3-8h5',
   },
   {
-    id: 'investigate',
-    label: 'Investigate',
-    hint: 'Ask with cited evidence',
-    icon: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm9 16-4.3-4.3',
+    id: 'current',
+    label: 'Current conditions',
+    hint: 'Latest station readings',
+    icon: 'M3 12h3l3-8 4 16 3-8h5',
   },
   {
     id: 'bfi',
-    label: 'BFI insights',
-    hint: 'Drivers + RAG + Gemini',
+    label: 'Bloom conditions',
+    hint: 'Environmental drivers',
     icon: 'M4 6h16v4H4V6Zm0 6h10v4H4v-4Z',
+  },
+  {
+    id: 'investigate',
+    label: 'Model validation',
+    hint: '2025 field study',
+    icon: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm9 16-4.3-4.3',
   },
   {
     id: 'review',
     label: 'Review & retrain',
-    hint: 'Human-in-the-loop',
+    hint: 'Analyst feedback',
     icon: 'M4 12l5 5L20 6',
   },
 ]
@@ -52,7 +52,7 @@ export function Sidebar({ current }: { current: ViewId }) {
           height={86}
         />
         <span className="sidebar__tagline">
-          Watershed intelligence &amp; incident response
+          Green Bay water monitoring
         </span>
       </a>
 
@@ -86,7 +86,7 @@ export function Sidebar({ current }: { current: ViewId }) {
       </nav>
 
       {current === 'investigate' && <div className="sidebar__event">
-        <p className="sidebar__event-label">Active event</p>
+        <p className="sidebar__event-label">Field study</p>
         <p className="sidebar__event-title">June 30–July 1, 2025</p>
         <span className="chip chip--candidate">FLAMe · historical research</span>
       </div>}

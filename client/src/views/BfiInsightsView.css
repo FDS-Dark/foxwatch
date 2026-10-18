@@ -1,0 +1,8 @@
+.bfi-insights { display:grid; gap:1rem; }
+.bfi-insights summary { cursor:pointer; font-size:.8rem; font-weight:600; color:var(--deep); }
+.bfi-insights details { margin-top:.65rem; }
+.bfi-insights .card > details:first-child { margin-top:0; }
+.bfi-insights details[open] > summary { margin-bottom:.75rem; }
+.bfi-insights__score { font:500 2rem var(--display); color:var(--deep); margin:.5rem 0 1rem; }
+.bfi-insights__list { padding-left:1.2rem; line-height:1.8; }
+.bfi-insights .btn { margin-top:.75rem; }

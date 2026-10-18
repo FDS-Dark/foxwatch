@@ -2,6 +2,8 @@
 .live-intro { display:flex; align-items:center; justify-content:space-between; gap:2rem; padding:.5rem 0; }
 .live-intro h2 { font-size:clamp(2rem,3.2vw,3.2rem); line-height:1.15; margin:.4rem 0 .65rem; letter-spacing:-.05em; }
 .live-intro > div > p:last-child { font-size:.9rem; color:var(--muted); }
+.live-intro > div > p { font-size:.9rem; color:var(--muted); }
+.live-intro > div > a { display:inline-block; margin-top:.5rem; font-size:.75rem; }
 .live-connection { display:flex; flex-direction:column; align-items:flex-end; gap:.7rem; flex-shrink:0; }
 .live-connection > span { display:flex; align-items:center; gap:.5rem; font-size:.72rem; }
 .live-connection i { width:7px; height:7px; border-radius:50%; background:#c28543; }
@@ -49,6 +51,7 @@
 .live-river-heading h3 { font-size:1.3rem; margin:.3rem 0 .5rem; letter-spacing:-.03em; }
 .live-river-heading > p:not(.eyebrow) { font-size:.66rem; }
 .live-river-heading > span { display:block; font-size:.6rem; color:var(--muted); margin-top:.4rem; }
+.live-river-heading > a { display:inline-block; font-size:.7rem; margin-top:.6rem; }
 .live-river-reading { border-left:1px solid var(--border); display:flex; flex-direction:column; justify-content:space-between; gap:.7rem; }
 .live-river-reading > div { display:flex; align-items:center; justify-content:space-between; gap:.5rem; font-size:.67rem; }
 .live-river-reading i { font:500 1.2rem var(--display); color:var(--water); }
