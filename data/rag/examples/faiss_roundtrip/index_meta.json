@@ -1,0 +1,13 @@
+{
+  "vector_store": "faiss",
+  "format": "faiss_flat_ip",
+  "dimension": 64,
+  "count": 5,
+  "chunk_ids": [
+    "nutrient-loading-and-cyanobacterial-bloo__phosphorus-controls-on-bloom-f__0001__36972a4530",
+    "nutrient-loading-and-cyanobacterial-bloo__hydrology-streamflow-and-resid__0002__2c301d30dc",
+    "nutrient-loading-and-cyanobacterial-bloo__rainfall-runoff-and-precipitat__0003__2586591387",
+    "nutrient-loading-and-cyanobacterial-bloo__temperature-sunlight-and-cyano__0004__c54a309103",
+    "nutrient-loading-and-cyanobacterial-bloo__harmful-algal-bloom-ecology-an__0005__c887bdf3fb"
+  ]
+}

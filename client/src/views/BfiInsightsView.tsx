@@ -2,16 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import type { BfiInsightResponse } from '@/models/bfi'
 import { fetchBfiHealth, fetchBfiInsights } from '@/services/bfiService'
 
-const DEMO_INPUT = {
-  water_temperature_c: 27,
-  phosphorus_ug_l: 75,
-  nitrogen_mg_l: 1.2,
-  streamflow_cfs: 80,
-  seasonal_median_streamflow_cfs: 150,
-  rainfall_7day_in: 2.5,
-  solar_radiation_level: 'high',
-}
-
 function formatTags(tags: string[] | string | undefined): string {
   if (!tags) return '—'
   if (Array.isArray(tags)) return tags.join(', ')
@@ -30,6 +20,16 @@ function formatSourceLine(s: BfiInsightResponse['insights']['sources'][number]):
   return s.year ? `${head} (${s.year})` : head
 }
 
+function formatObservedAt(iso: string | undefined): string {
+  if (!iso) return ''
+  return new Date(iso).toLocaleString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  })
+}
+
 export function BfiInsightsView() {
   const [data, setData] = useState<BfiInsightResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -40,7 +40,9 @@ export function BfiInsightsView() {
     setLoading(true)
     setError(null)
     try {
-      setData(await fetchBfiInsights({ ...DEMO_INPUT, use_gemini: true }))
+      setData(
+        await fetchBfiInsights({ use_live_data: true, use_gemini: true }),
+      )
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Request failed')
       setData(null)
@@ -55,6 +57,10 @@ export function BfiInsightsView() {
       .catch(() => setApiOk(false))
   }, [])
 
+  useEffect(() => {
+    void load()
+  }, [load])
+
   return (
     <div className="bfi-insights">
       <section className="card" aria-labelledby="bfi-title">
@@ -64,8 +70,8 @@ export function BfiInsightsView() {
               Bloom favorability insights
             </h2>
             <p className="card__sub">
-              BFI drivers, hybrid RAG evidence, and Gemini narrative (when{' '}
-              <code>GEMINI_API_KEY</code> is set in repo-root <code>.env</code>).
+              BFI scored from live Tiger Data at Green Bay, hybrid RAG evidence, and Gemini
+              narrative (when <code>GEMINI_API_KEY</code> is set in repo-root <code>.env</code>).
             </p>
           </div>
           <span className={`chip ${apiOk ? 'chip--ok' : 'chip--warn'}`}>
@@ -78,21 +84,48 @@ export function BfiInsightsView() {
         </header>
 
         <p className="muted">
-          Demo inputs: warm water, elevated P/N, low discharge vs seasonal median,
-          recent rain, high solar.
+          Drivers are read from the same USGS parameters ingested into Tiger (temperature,
+          nutrients, discharge). Seasonal median flow comes from historical 00060 in Tiger; solar
+          uses a month-based proxy until irradiance is ingested.
         </p>
 
         <button type="button" className="btn btn--primary" onClick={load} disabled={loading}>
-          {loading ? 'Generating…' : 'Generate insights'}
+          {loading ? 'Generating…' : 'Refresh insights'}
         </button>
 
         {error ? (
           <p className="bfi-insights__error" role="alert">
-            {error}. Start the API:{' '}
-            <code>uvicorn main:app --reload --app-dir api</code>
+            {error}. Ensure the API is running with Tiger configured:{' '}
+            <code>cd api && uv run python main.py</code>
           </p>
         ) : null}
       </section>
+
+      {data?.inputs_provenance?.station_readings?.length ? (
+        <section className="card">
+          <h3 className="card__title">Live inputs (Tiger Data)</h3>
+          <ul className="bfi-insights__list">
+            {data.inputs_provenance.station_readings.map((row) => (
+              <li key={row.parameter_code}>
+                <strong>{row.parameter_code}</strong> → {row.bfi_field}:{' '}
+                {row.value != null ? String(row.value) : '—'}
+                {row.unit ? ` ${row.unit}` : ''}
+                {row.observed_at ? ` · ${formatObservedAt(String(row.observed_at))}` : ''}
+                {row.used_fallback ? ' · last known value' : ''}
+              </li>
+            ))}
+          </ul>
+          {data.inputs_provenance.seasonal_median_streamflow_cfs != null ? (
+            <p className="muted">
+              Seasonal median discharge (this month, Tiger history):{' '}
+              {Number(data.inputs_provenance.seasonal_median_streamflow_cfs).toFixed(0)} ft³/s
+            </p>
+          ) : null}
+          {data.inputs_provenance.solar_radiation_note ? (
+            <p className="muted">{data.inputs_provenance.solar_radiation_note}</p>
+          ) : null}
+        </section>
+      ) : null}
 
       {data ? (
         <>
@@ -121,6 +154,9 @@ export function BfiInsightsView() {
             </p>
             {data.insights.generation_mode ? (
               <p className="muted">Narrative mode: {data.insights.generation_mode}</p>
+            ) : null}
+            {data.gemini_status ? (
+              <p className="muted">Gemini: {data.gemini_status}</p>
             ) : null}
           </section>
 

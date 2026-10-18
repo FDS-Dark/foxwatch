@@ -8,7 +8,7 @@ const date = (value: string) => new Date(value).toLocaleString(undefined, { mont
 function MapBehavior({ snapshot, focus }: { snapshot: LiveSnapshot; focus: number }) {
   const map = useMap()
   useEffect(() => {
-    map.fitBounds(snapshot.layers[0].bounds, { padding: [18, 18] })
+    map.fitBounds(snapshot.region?.bounds ?? snapshot.layers[0].bounds, { padding: [18, 18] })
     // Updating a snapshot preserves the user's current view.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, focus])
@@ -42,7 +42,7 @@ function Inspect({ snapshot }: { snapshot: LiveSnapshot }) {
       <p>Image acquired {date(point.sample.acquired_at!)}</p>
       <p>{point.sample.outside_support ? 'Outside spatial or spectral training support.' : 'Within spatial and spectral training ranges.'} Experimental seasonal transfer.</p>
       <p>Nearest prediction cell · ~{snapshot.resolution_m} m</p>
-    </> : <p>{point.error ? 'Could not inspect this location. Try again.' : point.sample ? 'No usable satellite prediction here. Land, clouds, or quality masks may exclude this location.' : 'Reading prediction…'}</p>}
+    </> : <p>{point.error ? 'Could not inspect this location. Try again.' : point.sample ? 'No prediction here: outside Green Bay, land, clouds, or quality masks exclude this location.' : 'Reading prediction…'}</p>}
     <span>{point.lat.toFixed(4)}° N · {Math.abs(point.lon).toFixed(4)}° W</span>
   </div></Popup>
 }

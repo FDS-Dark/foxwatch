@@ -86,7 +86,7 @@ class ModelTests(unittest.TestCase):
              patch("settings.IngestionSettings.from_env", return_value=Settings(database_url="postgresql://127.0.0.1:5432/foxwatch", enabled=False)), \
              patch("services.observations.ObservationsService.prediction_readings", read), \
              patch("services.usgs_ingestion.fetch_features") as usgs, \
-             patch("services.predictions.predict_readings", side_effect=lambda rows: predict_readings(rows, self.path)), \
+             patch("services.predictions.predict_readings", side_effect=lambda rows, **kw: predict_readings(rows, self.path)), \
              TestClient(app) as client:
             response = client.get("/api/predictions/latest")
         self.assertEqual(response.status_code, 200)

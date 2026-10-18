@@ -1,22 +1,23 @@
 import { useCallback, useEffect, useState } from 'react'
-import {
-  createPrediction,
-  listEventLabels,
-  listModels,
-  listScenePredictions,
-  retrainModel,
-  reviewPrediction,
-} from '../data/demo/reviewStore'
 import type { HumanLabel, ModelList, Prediction, ReviewDecision } from '../data/types/review'
+import {
+  fetchMlModels,
+  fetchMlPredictions,
+  retrainMlFromDenials,
+  resetLatestMlRetrain,
+  runMlPredictionForReview,
+  submitMlReview,
+} from '../services/reviewService'
 import { AnalysisRunsPanel } from '../components/review/AnalysisRunsPanel'
 import { AnalystReviewPanel } from '../components/review/AnalystReviewPanel'
 import { LabelsList } from '../components/review/LabelsList'
+import { listEventLabels } from '../data/demo/reviewStore'
 import { DEMO_EVENT_ID, DEMO_SCENE_ID } from '../config/demo'
 
 const STEPS = [
-  { title: 'Predict', body: 'Active model scores the scene' },
+  { title: 'Predict', body: 'Logistic v2 scores live Tiger conditions' },
   { title: 'Human review', body: 'Analyst approves or denies' },
-  { title: 'Retrain', body: 'Denials become training data' },
+  { title: 'Retrain', body: 'Denials refit the classifier on labeled CSV + corrections' },
 ]
 
 export function ReviewView() {
@@ -26,23 +27,33 @@ export function ReviewView() {
   const [labelsKey, setLabelsKey] = useState(0)
   const [busy, setBusy] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
+  const [loadError, setLoadError] = useState<string | null>(null)
 
-  const load = useCallback(() => {
-    setModels(listModels())
-    setPredictions(listScenePredictions(DEMO_SCENE_ID))
-    setLabels(listEventLabels(DEMO_EVENT_ID))
+  const load = useCallback(async () => {
+    setLoadError(null)
+    try {
+      const [modelList, preds] = await Promise.all([
+        fetchMlModels(),
+        fetchMlPredictions(DEMO_SCENE_ID),
+      ])
+      setModels(modelList)
+      setPredictions(preds)
+      setLabels(listEventLabels(DEMO_EVENT_ID))
+    } catch (e) {
+      setLoadError(e instanceof Error ? e.message : 'Failed to load review queue')
+    }
   }, [])
 
   useEffect(() => {
-    load()
+    void load()
   }, [load])
 
-  function run<T>(key: string, fn: () => T, done: (r: T) => string) {
+  async function run<T>(key: string, fn: () => Promise<T>, done: (r: T) => string) {
     setBusy(key)
     setToast(null)
     try {
-      const result = fn()
-      load()
+      const result = await fn()
+      await load()
       setToast(done(result))
     } catch (e) {
       setToast(e instanceof Error ? e.message : 'Action failed')
@@ -59,6 +70,7 @@ export function ReviewView() {
   const activeStep = pending.length ? 1 : unusedDenials ? 2 : 0
 
   const ordered = [...(models?.models ?? [])].reverse()
+  const hasRetrainModels = (models?.models ?? []).some((m) => m.parent_model_version_id)
 
   return (
     <div className="review">
@@ -78,6 +90,12 @@ export function ReviewView() {
         ))}
       </ol>
 
+      {loadError ? (
+        <p className="bfi-insights__error" role="alert">
+          {loadError}. Start the API with Tiger + trained v2 model.
+        </p>
+      ) : null}
+
       {toast ? (
         <p className="toast" role="status">
           {toast}
@@ -92,8 +110,8 @@ export function ReviewView() {
                 Prediction queue
               </h2>
               <p className="card__sub">
-                Scene <code>{DEMO_SCENE_ID}</code> · {pending.length} awaiting
-                review · <span className="chip chip--fixture">UI demo</span>
+                Station <code>{DEMO_SCENE_ID}</code> · {pending.length} awaiting review ·{' '}
+                <span className="chip chip--ok">Logistic v2 + Tiger</span>
               </p>
             </div>
             <button
@@ -101,18 +119,21 @@ export function ReviewView() {
               className="btn btn--primary"
               disabled={busy !== null}
               onClick={() =>
-                run('predict', () => createPrediction(DEMO_SCENE_ID), (p) =>
-                  `New prediction from ${p.model_version_id}: ${p.predicted_class.replace('_', ' ')}`,
+                void run(
+                  'predict',
+                  () => runMlPredictionForReview(DEMO_SCENE_ID),
+                  (p) =>
+                    `New prediction (${p.model_version_id}): ${p.predicted_class.replace('proxy_', '')} · p=${p.score.toFixed(2)}`,
                 )
               }
             >
-              {busy === 'predict' ? 'Scoring…' : 'Run model on scene'}
+              {busy === 'predict' ? 'Scoring…' : 'Run model on live conditions'}
             </button>
           </header>
 
           {pending.length === 0 ? (
             <p className="muted queue-empty">
-              Nothing to review. Run the model to create a prediction.
+              Nothing to review. Run the model to queue a live snapshot for analyst review.
             </p>
           ) : (
             <ul className="queue">
@@ -122,13 +143,13 @@ export function ReviewView() {
                   prediction={p}
                   disabled={busy !== null}
                   onDecide={(decision, notes) =>
-                    run(
+                    void run(
                       p.prediction_id,
-                      () => reviewPrediction(p.prediction_id, decision, notes),
+                      () => submitMlReview(p.prediction_id, decision, notes),
                       () =>
                         decision === 'denied'
-                          ? 'Denied. This example is queued as training feedback.'
-                          : 'Approved. The prediction can now be cited.',
+                          ? 'Denied — queued as a refit correction (opposite label).'
+                          : 'Approved — recorded; not used for refit.',
                     )
                   }
                 />
@@ -148,7 +169,7 @@ export function ReviewView() {
                     <span className="mono">{p.model_version_id}</span>
                     <span>score {p.score.toFixed(2)}</span>
                     {p.used_in_training_job_id ? (
-                      <span className="chip chip--ok">used in training</span>
+                      <span className="chip chip--ok">used in refit</span>
                     ) : null}
                   </li>
                 ))}
@@ -164,7 +185,7 @@ export function ReviewView() {
                 Model lineage
               </h2>
               <p className="card__sub">
-                Each retrain creates a new version with provenance (in-browser demo).
+                Refit keeps the original labeled CSV and appends denied snapshots as new rows.
               </p>
             </div>
           </header>
@@ -173,30 +194,48 @@ export function ReviewView() {
             <div>
               <span className="retrain__count">{unusedDenials}</span>
               <span className="retrain__label">
-                denied example{unusedDenials === 1 ? '' : 's'} ready for
-                training
+                denied example{unusedDenials === 1 ? '' : 's'} ready for refit
               </span>
             </div>
-            <button
-              type="button"
-              className="btn btn--fox"
-              disabled={busy !== null || unusedDenials === 0}
-              onClick={() =>
-                run('retrain', () => retrainModel(1), (j) =>
-                  `Retrained on ${j.denial_sample_ids.length} denial(s). ${j.new_model_version_id} is now active.`,
-                )
-              }
-            >
-              {busy === 'retrain' ? 'Retraining…' : 'Retrain with denials'}
-            </button>
+            <div className="retrain__actions">
+              <button
+                type="button"
+                className="btn btn--fox"
+                disabled={busy !== null || unusedDenials === 0}
+                onClick={() =>
+                  void run('retrain', () => retrainMlFromDenials(5), (j) =>
+                    j.message
+                      ? j.message
+                      : `Refitted. ${j.new_model_version_id ?? ''} is now active.`,
+                  )
+                }
+              >
+                {busy === 'retrain' ? 'Refitting…' : 'Refit with denials'}
+              </button>
+              {hasRetrainModels ? (
+                <button
+                  type="button"
+                  className="btn btn--ghost"
+                  disabled={busy !== null}
+                  title="Removes the newest refit model, restores the previous version, and frees denials for review again"
+                  onClick={() =>
+                    void run('reset-retrain', () => resetLatestMlRetrain(), (r) => r.message)
+                  }
+                >
+                  {busy === 'reset-retrain' ? 'Resetting…' : 'Reset latest retrain'}
+                </button>
+              ) : null}
+            </div>
           </div>
 
           <ol className="lineage">
             {ordered.map((m) => {
               const active = m.model_version_id === models?.active_model_version_id
-              const params = m.parameters_json as Record<string, number | string>
-              const denials = (m.training_summary as { denial_count?: number })
-                .denial_count
+              const summary = m.training_summary as {
+                human_feedback_rows?: number
+                training_rows?: number
+                denial_count?: number
+              }
               return (
                 <li key={m.model_version_id} className={active ? 'is-active' : undefined}>
                   <span className="lineage__node" aria-hidden="true" />
@@ -206,9 +245,11 @@ export function ReviewView() {
                       {active ? <span className="chip chip--ok">Active</span> : null}
                     </p>
                     <p className="lineage__meta">
-                      threshold {Number(params.threshold).toFixed(3)} · bias{' '}
-                      {Number(params.elevated_bias).toFixed(3)}
-                      {denials ? ` · trained on ${denials} denial(s)` : ' · baseline'}
+                      {m.name}
+                      {summary.training_rows ? ` · ${summary.training_rows} training rows` : ''}
+                      {summary.human_feedback_rows
+                        ? ` · +${summary.human_feedback_rows} human correction(s)`
+                        : ' · baseline CSV'}
                     </p>
                   </div>
                 </li>
@@ -218,7 +259,11 @@ export function ReviewView() {
         </section>
       </div>
 
-      <h2 className="section-title">Scene labels &amp; overlay re-runs</h2>
+      <h2 className="section-title">Scene labels &amp; overlay re-runs (satellite demo)</h2>
+      <p className="muted">
+        NDCI overlay labels below remain a separate satellite workflow; bloom classifier refit uses
+        the queue above.
+      </p>
       <div className="review__grid">
         <AnalystReviewPanel
           onLabelsChange={(next) => {
@@ -262,7 +307,7 @@ function PredictionCard({
       <div className="pred__body">
         <p className="pred__class">
           <span className={`chip ${elevated ? 'chip--algae' : 'chip--water'}`}>
-            {elevated ? 'Proxy elevated' : 'Proxy normal'}
+            {elevated ? 'Bloom likely' : 'Bloom unlikely'}
           </span>
           <span className="mono muted">{prediction.model_version_id}</span>
         </p>
@@ -291,7 +336,7 @@ function PredictionCard({
             disabled={disabled}
             onClick={() => onDecide('denied', notes || undefined)}
           >
-            ✕ Deny
+            ✕ Deny (use for refit)
           </button>
         </div>
       </div>

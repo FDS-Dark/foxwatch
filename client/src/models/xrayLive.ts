@@ -7,6 +7,7 @@ export type LiveSnapshot = {
   extrapolated_cells: number; outside_feature_range_cells: number
   scenes: { id: string; acquired_at: string; modeled_cells: number; url: string }[]
   statistics: { p10: number; median: number; p90: number }
+  region?: { name: string; definition: string; source_url: string; bounds: XrayLayer['bounds'] }
 }
 export type LiveXray = {
   status: 'ready' | 'stale' | 'unavailable'; server_time: string

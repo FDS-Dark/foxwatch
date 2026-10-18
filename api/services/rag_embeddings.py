@@ -13,6 +13,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional, Protocol, Sequence
 
+from settings import rag_use_tiger_vectors
+from services import rag_tiger_store as tiger_store
 from services.rag_chunker import ChunkRecord, chunk_document
 from services.rag_document_processor import process_document
 from services.rag_metadata_tagger import TaggedChunk, tag_chunks
@@ -189,28 +191,94 @@ def ingest_document(
     return embed_tagged_chunks(tagged, embedder)
 
 
-def save_embedded_chunks(path: Path | str, chunks: Sequence[EmbeddedChunk]) -> None:
-    """Write embedded chunks as JSON Lines."""
+def _index_paths(path: Path | str) -> tuple[Path, Path, Path]:
+    """Resolve chunks JSONL, FAISS index, and meta paths from ingest path."""
     out = Path(path)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    with out.open("w", encoding="utf-8") as handle:
+    index_dir = out.parent
+    chunks_path = out if out.name == "chunks.jsonl" else index_dir / "chunks.jsonl"
+    return chunks_path, index_dir / "vectors.faiss", index_dir / "index_meta.json"
+
+
+def _chunk_metadata_row(chunk: EmbeddedChunk) -> dict[str, Any]:
+    return {
+        "chunk_id": chunk.chunk_id,
+        "text": chunk.text,
+        "metadata": chunk.metadata,
+        "retrieval_summary": chunk.retrieval_summary,
+        "tags": chunk.tags,
+        "retrieval_priority": chunk.retrieval_priority,
+    }
+
+
+def _write_index_meta(
+    meta_path: Path,
+    *,
+    vector_store: str,
+    dimension: int,
+    chunks: Sequence[EmbeddedChunk],
+) -> None:
+    meta_path.write_text(
+        json.dumps(
+            {
+                "vector_store": vector_store,
+                "format": "faiss_flat_ip" if vector_store == "faiss" else "pgvector",
+                "dimension": dimension,
+                "count": len(chunks),
+                "chunk_ids": [chunk.chunk_id for chunk in chunks],
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+
+def _save_vectors_faiss(faiss_path: Path, chunks: Sequence[EmbeddedChunk]) -> int:
+    import faiss
+    import numpy as np
+
+    vectors = np.asarray([chunk.embedding for chunk in chunks], dtype=np.float32)
+    faiss.normalize_L2(vectors)
+    dimension = int(vectors.shape[1])
+    index = faiss.IndexFlatIP(dimension)
+    index.add(vectors)
+    faiss.write_index(index, str(faiss_path))
+    return dimension
+
+
+def save_embedded_chunks(path: Path | str, chunks: Sequence[EmbeddedChunk]) -> None:
+    """
+    Persist chunk text/metadata as JSONL and vectors in Tiger (pgvector) or FAISS.
+
+    When ``api/.env`` defines a Tiger/Timescale URL and ``RAG_VECTOR_BACKEND`` is
+    ``auto`` or ``tiger``, embeddings go to PostgreSQL; otherwise FAISS on disk.
+    """
+    if not chunks:
+        raise ValueError("Cannot save an empty chunk index")
+
+    chunks_path, faiss_path, meta_path = _index_paths(path)
+    chunks_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with chunks_path.open("w", encoding="utf-8") as handle:
         for chunk in chunks:
-            row = {
-                "chunk_id": chunk.chunk_id,
-                "text": chunk.text,
-                "embedding": chunk.embedding,
-                "metadata": chunk.metadata,
-                "retrieval_summary": chunk.retrieval_summary,
-                "tags": chunk.tags,
-                "retrieval_priority": chunk.retrieval_priority,
-            }
-            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+            handle.write(json.dumps(_chunk_metadata_row(chunk), ensure_ascii=False) + "\n")
+
+    dimension = len(chunks[0].embedding)
+    use_tiger = rag_use_tiger_vectors()
+    if use_tiger:
+        tiger_store.save_embeddings_to_tiger(
+            [chunk.chunk_id for chunk in chunks],
+            [chunk.embedding for chunk in chunks],
+        )
+        _write_index_meta(meta_path, vector_store="tiger", dimension=dimension, chunks=chunks)
+        return
+
+    dimension = _save_vectors_faiss(faiss_path, chunks)
+    _write_index_meta(meta_path, vector_store="faiss", dimension=dimension, chunks=chunks)
 
 
-def load_embedded_chunks(path: Path | str) -> list[EmbeddedChunk]:
-    """Load embedded chunks from JSON Lines."""
+def _load_legacy_jsonl(path: Path) -> list[EmbeddedChunk]:
     items: list[EmbeddedChunk] = []
-    with Path(path).open(encoding="utf-8") as handle:
+    with path.open(encoding="utf-8") as handle:
         for line in handle:
             row = json.loads(line)
             items.append(
@@ -225,6 +293,106 @@ def load_embedded_chunks(path: Path | str) -> list[EmbeddedChunk]:
                 )
             )
     return items
+
+
+def _load_faiss_index(chunks_path: Path, faiss_path: Path) -> list[EmbeddedChunk]:
+    import faiss
+
+    index = faiss.read_index(str(faiss_path))
+    if index.ntotal == 0:
+        return []
+
+    rows: list[dict[str, Any]] = []
+    with chunks_path.open(encoding="utf-8") as handle:
+        for line in handle:
+            rows.append(json.loads(line))
+
+    if len(rows) != index.ntotal:
+        raise ValueError(
+            f"Chunk count ({len(rows)}) does not match FAISS vectors ({index.ntotal})"
+        )
+
+    items: list[EmbeddedChunk] = []
+    for i, row in enumerate(rows):
+        vector = index.reconstruct(int(i))
+        items.append(
+            EmbeddedChunk(
+                chunk_id=row["chunk_id"],
+                text=row["text"],
+                embedding=vector.tolist(),
+                metadata=row["metadata"],
+                retrieval_summary=row["retrieval_summary"],
+                tags=row["tags"],
+                retrieval_priority=row["retrieval_priority"],
+            )
+        )
+    return items
+
+
+def _read_index_meta(meta_path: Path) -> dict[str, Any]:
+    if not meta_path.is_file():
+        return {}
+    return json.loads(meta_path.read_text(encoding="utf-8"))
+
+
+def _load_chunks_jsonl_with_vectors(
+    chunks_path: Path,
+    vectors_by_id: dict[str, list[float]],
+) -> list[EmbeddedChunk]:
+    items: list[EmbeddedChunk] = []
+    with chunks_path.open(encoding="utf-8") as handle:
+        for line in handle:
+            row = json.loads(line)
+            chunk_id = row["chunk_id"]
+            embedding = vectors_by_id.get(chunk_id)
+            if embedding is None:
+                raise ValueError(f"Missing embedding for chunk_id={chunk_id!r}")
+            items.append(
+                EmbeddedChunk(
+                    chunk_id=chunk_id,
+                    text=row["text"],
+                    embedding=embedding,
+                    metadata=row["metadata"],
+                    retrieval_summary=row["retrieval_summary"],
+                    tags=row["tags"],
+                    retrieval_priority=row["retrieval_priority"],
+                )
+            )
+    return items
+
+
+def load_embedded_chunks(path: Path | str) -> list[EmbeddedChunk]:
+    """
+    Load embedded chunks from Tiger + ``chunks.jsonl``, FAISS + JSONL, or legacy JSONL.
+    """
+    requested = Path(path)
+    chunks_path, faiss_path, meta_path = _index_paths(requested)
+    meta = _read_index_meta(meta_path)
+    vector_store = meta.get("vector_store")
+
+    if chunks_path.is_file():
+        prefer_tiger = vector_store == "tiger" or (
+            vector_store is None and rag_use_tiger_vectors() and tiger_store.tiger_embeddings_ready()
+        )
+        if prefer_tiger:
+            vectors = tiger_store.load_embeddings_from_tiger()
+            return _load_chunks_jsonl_with_vectors(chunks_path, vectors)
+        if faiss_path.is_file():
+            return _load_faiss_index(chunks_path, faiss_path)
+
+    legacy = requested
+    if requested.name == "chunks.jsonl":
+        legacy = requested.parent / "embedded_chunks.jsonl"
+    if legacy.is_file() and legacy.name == "embedded_chunks.jsonl":
+        return _load_legacy_jsonl(legacy)
+
+    if requested.is_file():
+        return _load_legacy_jsonl(requested)
+
+    raise FileNotFoundError(
+        f"RAG index not found (expected {chunks_path} + {faiss_path}, "
+        f"or legacy embedded_chunks.jsonl)"
+    )
 
 
 def cosine_similarity(a: Sequence[float], b: Sequence[float]) -> float:

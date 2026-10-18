@@ -50,4 +50,20 @@ export interface BfiInsightResponse {
     }>
   }
   gemini_status?: string
+  inputs?: Record<string, unknown>
+  inputs_provenance?: {
+    source: string
+    as_of?: string
+    seasonal_median_streamflow_cfs?: number
+    solar_radiation_level?: string
+    solar_radiation_note?: string
+    station_readings?: Array<{
+      bfi_field: string
+      parameter_code: string
+      value: number | null
+      unit?: string | null
+      observed_at?: string
+      used_fallback?: boolean
+    }>
+  }
 }

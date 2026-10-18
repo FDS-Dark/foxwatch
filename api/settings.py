@@ -138,14 +138,46 @@ class IngestionSettings:
 
 DATA_DIR = REPO_ROOT / "data"
 RAG_SOURCES_DIR = DATA_DIR / "rag" / "sources"
-RAG_INDEX_PATH = DATA_DIR / "rag" / "index" / "embedded_chunks.jsonl"
+RAG_INDEX_DIR = DATA_DIR / "rag" / "index"
+RAG_CHUNKS_PATH = RAG_INDEX_DIR / "chunks.jsonl"
+RAG_FAISS_PATH = RAG_INDEX_DIR / "vectors.faiss"
+RAG_INDEX_META_PATH = RAG_INDEX_DIR / "index_meta.json"
+RAG_LEGACY_INDEX_PATH = RAG_INDEX_DIR / "embedded_chunks.jsonl"
+RAG_INDEX_PATH = RAG_CHUNKS_PATH
 RAG_REPORTS_DIR = DATA_DIR / "rag" / "reports"
 USGS_MANIFEST_PATH = DATA_DIR / "attributes" / "usgs_parameter_manifest.csv"
+ML_ARTIFACTS_DIR = API_ROOT / "model" / "artifacts"
+ML_LABELED_DATA_PATH = DATA_DIR / "labeled_openai.csv"
+ML_REVIEW_STATE_PATH = DATA_DIR / "ml" / "review_state.json"
+
+RAG_VECTOR_BACKEND = os.getenv("RAG_VECTOR_BACKEND", "auto").strip().lower()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip()
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip()
 GEMINI_MODEL_FALLBACKS: tuple[str, ...] = (
+    "gemini-3.5-flash-lite",
     "gemini-2.5-flash",
-    "gemini-3.8-flash",
-    "gemini-1.5-flash",
+    "gemini-2.5-pro",
 )
+
+
+def rag_use_tiger_vectors() -> bool:
+    backend = RAG_VECTOR_BACKEND
+    if backend == "faiss":
+        return False
+    if backend == "tiger":
+        return bool(resolved_database_url())
+    return bool(resolved_database_url())
+
+
+def rag_index_available() -> bool:
+    if RAG_LEGACY_INDEX_PATH.is_file():
+        return True
+    if not RAG_CHUNKS_PATH.is_file():
+        return False
+    if rag_use_tiger_vectors():
+        from services.rag_tiger_store import tiger_embeddings_ready
+
+        if tiger_embeddings_ready():
+            return True
+    return RAG_FAISS_PATH.is_file()

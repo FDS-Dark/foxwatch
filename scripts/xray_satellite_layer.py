@@ -12,6 +12,7 @@ import numpy as np
 from rasterio.transform import from_origin
 
 import export_xray_holdout_maps as hold
+from xray_bay_boundary import clip_export, grid_mask, rebuild_samples
 
 
 def render_prediction(values, shape, transform, dest):
@@ -51,6 +52,10 @@ def republish():
     numerical_id = metadata.get("numerical_run_id", previous_id)
     cache = np.load(hold.ROOT / ".cache/xray-live" / f"{numerical_id}.npz")
     grid = cache["xy"]
+    inside = grid_mask(grid)
+    predictions = np.where(inside, cache["prediction"], np.nan)
+    features = np.where(inside[:, None], cache["features"], np.nan)
+    valid = np.isfinite(predictions)
     cell = metadata["resolution_m"]
     shape = (len(np.unique(grid[:, 1])), len(np.unique(grid[:, 0])))
     transform = from_origin(grid[:, 0].min() - cell / 2, grid[:, 1].max() + cell / 2, cell, cell)
@@ -60,15 +65,28 @@ def republish():
     dest.mkdir()
     for name in ("age.png", "support.png", "samples.json.gz"):
         shutil.copy2(live / previous_id / name, dest / name)
-    prediction = render_prediction(cache["prediction"], shape, transform, dest)
-    signal = render_signal(cache["features"], shape, transform, dest)
+    prediction = render_prediction(predictions, shape, transform, dest)
+    signal = render_signal(features, shape, transform, dest)
+    rebuild_samples(dest, predictions, cache["scene_index"],
+                    (cache["training_distance_m"] > 3000) | cache["outside_feature_range"], shape, transform)
     metadata.update(run_id=run_id, numerical_run_id=numerical_id, visualization_updated_at=now.isoformat())
+    metadata["valid_cells"] = int(valid.sum())
+    metadata["modeled_area_km2"] = round(valid.sum() * cell * cell / 1e6, 1)
+    metadata["extrapolated_cells"] = int((valid & (cache["training_distance_m"] > 3000)).sum())
+    metadata["outside_feature_range_cells"] = int((valid & cache["outside_feature_range"]).sum())
+    metadata["statistics"] = dict(zip(("p10", "median", "p90"), np.percentile(predictions[valid], [10, 50, 90]).tolist()))
+    for scene in metadata["scenes"]:
+        scene["modeled_cells"] = int((valid & (cache["scene_index"] == scene["index"])).sum())
+    metadata["scenes"] = [scene for scene in metadata["scenes"] if scene["modeled_cells"]]
+    dates = sorted(scene["acquired_at"] for scene in metadata["scenes"])
+    metadata.update(acquisition_start=dates[0], acquisition_end=dates[-1])
     for layer in metadata["layers"]:
         if layer["id"] == "prediction":
             layer.update(prediction)
         if layer["id"] == "satellite":
             layer.update(signal)
         layer["url"] = f"/api/xray/live/{run_id}/{layer['id']}"
+    clip_export(dest, metadata)
     payload = json.dumps(metadata, indent=2, allow_nan=False) + "\n"
     (dest / "manifest.json").write_text(payload)
     # Do not overwrite a newer acquisition if the hourly worker published meanwhile.
@@ -80,6 +98,7 @@ def republish():
     print(f"Published expanded color scales: {run_id}")
     print(f"Prediction color scale: {prediction['display_min']:g} to {prediction['display_max']:g} RFU")
     print(f"Reflectance color scale: {signal['display_min']:.4f} to {signal['display_max']:.4f}")
+    print(f"Green Bay cells retained: {int(valid.sum()):,}; outside-bay cells removed: {int((~inside & np.isfinite(cache['prediction'])).sum()):,}")
 
 
 if __name__ == "__main__":

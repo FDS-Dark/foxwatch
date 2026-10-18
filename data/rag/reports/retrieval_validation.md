@@ -2,19 +2,19 @@
 
 ## Why does phosphorus increase bloom favorability?
 
-- **0.8041** — Sample Phosphorus Hydrology (References) tags matched: phosphorus
 - **0.7815** — Sample Phosphorus Hydrology (Harmful Algal Bloom Ecology and Water Quality) tags matched: phosphorus
 - **0.7775** — Sample Phosphorus Hydrology (Hydrology, Streamflow, and Residence Time) tags matched: phosphorus
 - **0.7701** — Sample Phosphorus Hydrology (Phosphorus Controls on Bloom Formation) tags matched: phosphorus
 - **0.764** — WHO Guidelines for Cyanobacteria in Recreational Water (Chapter 4) tags matched: none
+- **0.7574** — Understanding and predicting harmful algal blooms in a changing climate (Consequently, key traits are those that describe how abiotic) tags matched: none
 
 ## Why does low discharge increase bloom favorability?
 
 - **0.7669** — Sample Phosphorus Hydrology (Rainfall, Runoff, and Precipitation Effects) tags matched: discharge
 - **0.758** — Sample Phosphorus Hydrology (Harmful Algal Bloom Ecology and Water Quality) tags matched: none
-- **0.7435** — Sample Phosphorus Hydrology (References) tags matched: none
 - **0.7337** — Sample Phosphorus Hydrology (Temperature, Sunlight, and Cyanobacteria Growth) tags matched: none
 - **0.7327** — Understanding and predicting harmful algal blooms in a changing climate (Consequently, key traits are those that describe how abiotic) tags matched: none
+- **0.7307** — WHO Guidelines for Cyanobacteria in Recreational Water (Chapter 4) tags matched: none
 
 ## How does rainfall contribute to nutrient loading?
 

@@ -12,6 +12,7 @@ from services.bfi import BfiService
 from services.usgs_ingestion import UsgsIngestionService
 from services.observations import ObservationsService
 from services.predictions import PredictionsService
+from services.ml_review import MlReviewService
 from settings import IngestionSettings, config
 
 logger = logging.getLogger(__name__)
@@ -21,6 +22,7 @@ _postgres_databridge: PostgresDatabridge | None = None
 _observations_service: ObservationsService | None = None
 _predictions_service: PredictionsService | None = None
 _bfi_service: BfiService | None = None
+_ml_review_service: MlReviewService | None = None
 _auth_service: AuthService | None = None
 _collector: UsgsCollector | None = None
 
@@ -73,6 +75,13 @@ def get_predictions_service(request: Request) -> PredictionsService:
     if _predictions_service is None:
         _predictions_service = PredictionsService(get_observations_service(request))
     return _predictions_service
+
+
+def get_ml_review_service() -> MlReviewService:
+    global _ml_review_service
+    if _ml_review_service is None:
+        _ml_review_service = MlReviewService()
+    return _ml_review_service
 
 
 def get_bfi_service() -> BfiService:

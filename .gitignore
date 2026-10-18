@@ -221,3 +221,8 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+# Human-in-the-loop review queue (local)
+data/ml/review_state.json
+api/model/artifacts/logistic_regression_mv_refit_*.pkl
+api/model/artifacts/logistic_regression_mv_refit_*.json
+

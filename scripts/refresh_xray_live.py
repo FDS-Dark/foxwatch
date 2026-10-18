@@ -23,6 +23,7 @@ from scipy.spatial import cKDTree
 import export_xray_bay_map as overview
 import export_xray_holdout_maps as hold
 from xray_satellite_layer import render_prediction, render_signal
+from xray_bay_boundary import clip_export, grid_mask
 
 AOI = (-88.15, 44.45, -86.65, 45.95)
 CACHE = hold.ROOT / ".cache/xray-live"
@@ -118,6 +119,9 @@ def refresh(days=14):
             print("Ready:", iid, flush=True)
     status("predicting", "Masking clouds and applying the research model to recent reflectance")
     X, grid, features, transform, cell, scenes, rgb, scene_index = overview.mosaic_features(CACHE, newest_first=True)
+    inside = grid_mask(grid)
+    features[~inside] = np.nan
+    scene_index[~inside] = 0
     valid = np.isfinite(features).all(1)
     if not valid.any():
         raise RuntimeError("Recent scenes have no usable water pixels after quality masking")
@@ -163,6 +167,7 @@ def refresh(days=14):
     age_reference = utcnow()
     for index, scene in enumerate(scenes, 1):
         scene["index"] = index
+        scene["modeled_cells"] = int((scene_index == index).sum())
         acquired = datetime.fromisoformat(scene["acquired_at"].replace("Z", "+00:00"))
         ages[scene_index == index] = (age_reference - acquired).total_seconds() / 86400
     hold.render(ages, X.shape, transform, "age.png", display_max=days, target_crs="EPSG:3857")
@@ -207,6 +212,7 @@ def refresh(days=14):
     # Retain the numerical inputs/provenance locally; publish only after all images exist.
     np.savez_compressed(CACHE / f"{run_id}.npz", xy=grid, features=features, prediction=predictions,
                         scene_index=scene_index, training_distance_m=distance, outside_feature_range=outside_features)
+    clip_export(dest, manifest)
     atomic_json(dest / "manifest.json", manifest)
     atomic_json(OUTPUT / "manifest.json", manifest)
     status("ready", f"Published {int(valid.sum()):,} predicted water cells", run_id=run_id, catalog_checked_at=now.isoformat())

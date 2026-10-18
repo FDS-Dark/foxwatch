@@ -1,13 +1,22 @@
 """Unit tests for scientific RAG ingestion pipeline."""
 
 import json
+import os
 import unittest
 from pathlib import Path
 
-from api.services.rag_chunker import chunk_document, word_count
-from api.services.rag_document_processor import process_document
-from api.services.rag_embeddings import HashEmbedder, ingest_document, save_embedded_chunks, search_chunks
-from api.services.rag_metadata_tagger import assign_tags, tag_chunks
+os.environ.setdefault("RAG_VECTOR_BACKEND", "faiss")
+
+from services.rag_chunker import chunk_document, word_count
+from services.rag_document_processor import process_document
+from services.rag_embeddings import (
+    HashEmbedder,
+    ingest_document,
+    load_embedded_chunks,
+    save_embedded_chunks,
+    search_chunks,
+)
+from services.rag_metadata_tagger import assign_tags, tag_chunks
 
 REPO = Path(__file__).resolve().parents[1]
 SAMPLE = REPO / "data" / "rag" / "sources" / "sample_phosphorus_hydrology.txt"
@@ -147,7 +156,12 @@ class TestEmbeddingPipeline(unittest.TestCase):
                 }
             )
         EXAMPLES.write_text(json.dumps(preview, indent=2), encoding="utf-8")
-        save_embedded_chunks(EXAMPLES.with_name("embedded_chunks.jsonl"), embedded)
+        index_dir = EXAMPLES.parent / "faiss_roundtrip"
+        save_embedded_chunks(index_dir / "chunks.jsonl", embedded)
+        reloaded = load_embedded_chunks(index_dir / "chunks.jsonl")
+        self.assertEqual(len(reloaded), len(embedded))
+        self.assertEqual(reloaded[0].chunk_id, embedded[0].chunk_id)
+        self.assertEqual(len(reloaded[0].embedding), len(embedded[0].embedding))
         self.assertTrue(EXAMPLES.is_file())
 
 

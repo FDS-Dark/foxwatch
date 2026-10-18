@@ -1,6 +1,6 @@
 {
   "model_version": "logistic_regression_v2",
-  "trained_at": "2026-10-18T03:17:54.142294+00:00",
+  "trained_at": "2026-10-18T05:47:14.127052+00:00",
   "training_file": "labeled_openai.csv",
   "training_sha256": "4be35d7c5eb77e8089faa6920362564a7b4255170f32432730f255dde4ba93eb",
   "sklearn_version": "1.9.1",

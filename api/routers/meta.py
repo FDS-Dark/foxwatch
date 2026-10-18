@@ -7,7 +7,8 @@ from fastapi import APIRouter, Depends, Request
 from dependencies import get_ingestion_service
 from services.gemini_client import gemini_configured, model_candidates
 from services.usgs_ingestion import UsgsIngestionService
-from settings import RAG_INDEX_PATH
+from settings import RAG_INDEX_PATH, rag_index_available, rag_use_tiger_vectors, resolved_database_url
+from services.rag_tiger_store import tiger_embedding_count
 
 router = APIRouter()
 
@@ -35,7 +36,9 @@ def health(
     return {
         "status": "ok",
         "rag_index": str(RAG_INDEX_PATH),
-        "rag_index_present": RAG_INDEX_PATH.is_file(),
+        "rag_index_present": rag_index_available(),
+        "rag_vector_backend": "tiger" if rag_use_tiger_vectors() else "faiss",
+        "rag_tiger_vectors": tiger_embedding_count() if resolved_database_url() else None,
         "gemini_configured": gemini_configured(),
         "gemini_models": model_candidates(),
         "tiger_data_configured": tiger_ok,
