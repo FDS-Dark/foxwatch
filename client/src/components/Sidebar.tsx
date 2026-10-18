@@ -1,6 +1,12 @@
-export type ViewId = 'replay' | 'investigate' | 'review'
+export type ViewId = 'current' | 'replay' | 'investigate' | 'review'
 
 const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
+  {
+    id: 'current',
+    label: 'Current conditions',
+    hint: 'Latest station readings',
+    icon: 'M3 12h3l3-8 4 16 3-8h5',
+  },
   {
     id: 'replay',
     label: 'Replay',
@@ -24,7 +30,7 @@ const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
 export function Sidebar({ current }: { current: ViewId }) {
   return (
     <aside className="sidebar">
-      <a href="#/replay" className="sidebar__brand" aria-label="FoxWatch home">
+      <a href="#/current" className="sidebar__brand" aria-label="FoxWatch home">
         <img
           className="sidebar__emblem"
           src="/foxwatch-emblem.png"
@@ -73,11 +79,11 @@ export function Sidebar({ current }: { current: ViewId }) {
         </ul>
       </nav>
 
-      <div className="sidebar__event">
+      {current !== 'current' && <div className="sidebar__event">
         <p className="sidebar__event-label">Active event</p>
         <p className="sidebar__event-title">June 1–14, 2020</p>
         <span className="chip chip--candidate">Candidate · not confirmed</span>
-      </div>
+      </div>}
 
       <svg
         className="sidebar__waves"
