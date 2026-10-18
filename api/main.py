@@ -8,8 +8,10 @@ from psycopg.errors import UndefinedTable
 
 if __package__:
     from .ingestion import Collector, Settings
+    from .model.logistic_regression_v2 import FEATURE_PARAMETERS, predict_readings
 else:
     from ingestion import Collector, Settings
+    from model.logistic_regression_v2 import FEATURE_PARAMETERS, predict_readings
 
 
 async def collect_forever(collector, stop):
@@ -81,6 +83,24 @@ def latest_stored_observations(request: Request):
         raise HTTPException(503, "Observations are not ready; waiting for the first ingestion") from None
     except Exception:
         raise HTTPException(502, "Unable to read stored observations") from None
+
+@app.get("/api/predictions/latest")
+def latest_bloom_prediction(request: Request):
+    """Predict using Tiger Data only, carrying forward the last measured values."""
+    collector = request.app.state.collector
+    if not collector.settings.database_url:
+        raise HTTPException(503, "The observation database is not configured")
+    try:
+        readings = collector.prediction_readings(FEATURE_PARAMETERS.values())
+        result = predict_readings(readings)
+        return {"source": "tiger_data", "station_id": collector.settings.station, **result}
+    except FileNotFoundError:
+        raise HTTPException(503, "Train v2 first: uv run python model/logistic_regression_v2.py") from None
+    except UndefinedTable:
+        raise HTTPException(503, "Observations are not ready; waiting for the first ingestion") from None
+    except Exception:
+        raise HTTPException(502, "Unable to generate the latest prediction") from None
+
 
 if __name__ == "__main__":
     import uvicorn

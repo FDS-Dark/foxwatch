@@ -78,9 +78,10 @@ The live station check on 2026-10-17 returned eight requested parameters;
 These nutrient parameters may require discrete water-quality samples from a
 separate source. This collector does not substitute other stations or parameters.
 
-USGS observations are instantaneous readings, whereas the logistic regression
-currently expects daily min/mean/max attributes. Aggregate into those daily
-features before feeding the model; do not pass raw readings directly.
+USGS observations are instantaneous readings, whereas the model training CSVs
+contain daily summaries. The v2 prediction endpoint explicitly supports latest
+instantaneous inputs, with this difference documented in its response. Its
+validation results on daily means do not measure instantaneous prediction quality.
 
 Query recent stored data in Tiger Data:
 
@@ -93,6 +94,54 @@ LIMIT 100;
 ```
 
 ## Tests and references
+
+### Mean-only logistic regression v2
+
+Train and save the model from `data/labeled_openai.csv` (run from `api`):
+
+```powershell
+uv run python model/logistic_regression_v2.py
+```
+
+This writes `model/artifacts/logistic_regression_v2.pkl` and an accompanying JSON
+validation report. These generated files are ignored by Git; train on deployment
+or copy your trusted generated artifact there. The API caches the fitted model
+and reloads it when the artifact changes. Training is never performed per request.
+
+Only seven `_mean` columns are used: chlorophyll fluorescence, discharge,
+dissolved oxygen, phycocyanin fluorescence, specific conductance, turbidity and
+water temperature. pH is excluded because this CSV has `ph_median`, not `ph_mean`.
+Training uses standard scaling and class-balanced logistic regression. Validation
+is stratified five-fold cross-validation with preprocessing fitted within each fold;
+the saved model is then fitted on all rows. The CSV currently has 358 negative and
+8 positive labels. All positives are near the end, so a chronological 80/20 split
+would leave training without any positive class. Random stratified validation does
+not establish future forecasting performance.
+
+`GET /api/predictions/latest` reads the same station and parameter measurements
+from Tiger Data as the frontend. If the latest row is NULL, a single database
+query retrieves that parameter's most recent non-NULL value at or before the latest
+observation time, within the same station. It searches all stored history, including
+across restarts; zero is a valid value. No external USGS calls or training-data
+imputation are used for live inference. If a feature has never been measured,
+the endpoint returns `status: "unavailable"` with `missing_features` and no prediction.
+
+Available responses include `algal_bloom` (0/1), `probability`, the 0.5 threshold,
+model version, and `inputs`. Each input records its feature, parameter code, value,
+unit, observation time, quality metadata and `used_fallback`. An older non-NULL
+reading may be used indefinitely, so consumers should inspect timestamps. This
+does not change the raw values displayed in Current conditions.
+
+The Current conditions page requests a prediction alongside its readings every
+15 seconds. Its prediction card displays `probability` as a decimal and buckets
+the unrounded score as low (`<0.5`), medium (`>=0.5` and `<0.8`), or high (`>=0.8`).
+The card shows missing-input and request-error states instead of a stale score,
+and identifies predictions using carried-forward or delayed measurements.
+
+Live inputs intentionally use instantaneous values, as requested, whereas training
+uses daily means. This difference is included in the prediction response's
+`limitations`; daily-mean validation does not validate instantaneous predictions.
+Class-weighted probability scores are not calibrated bloom risks.
 
 ```powershell
 uv run python -m unittest discover -s tests -v
