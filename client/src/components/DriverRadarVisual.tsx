@@ -64,7 +64,7 @@ export function DriverRadarVisual({
         viewBox="0 0 440 440"
         className="driver-radar__svg"
         role="img"
-        aria-label="Bloom driver radar by live conditions"
+        aria-label="Water condition severity by live readings"
       >
         <defs>
           <radialGradient id="driverRadarBg" cx="50%" cy="45%" r="65%">

@@ -116,7 +116,7 @@ export function ReviewView() {
                   'predict',
                   () => runMlPredictionForReview(DEMO_SCENE_ID),
                   (p) =>
-                    `Queued: ${p.predicted_class === 'proxy_elevated' ? 'more likely bloom' : 'unlikely bloom'} (${Math.round(p.score * 100)}%).`,
+                    `Score queued as ${p.predicted_class === 'proxy_elevated' ? 'more likely bloom' : 'unlikely bloom'} (${Math.round(p.score * 100)}%).`,
                 )
               }
             >
@@ -141,8 +141,8 @@ export function ReviewView() {
                       () => submitMlReview(p.prediction_id, decision, notes),
                       () =>
                         decision === 'denied'
-                          ? 'Marked disagree — can be used to update the model.'
-                          : 'Marked agree — saved to the review log.',
+                          ? 'Marked disagree. Can be used to update the model.'
+                          : 'Marked agree. Saved to the review log.',
                     )
                   }
                 />

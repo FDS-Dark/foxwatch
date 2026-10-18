@@ -126,7 +126,7 @@ export function BfiScoreChart({
                   />
                 </span>
                 <span className="bfi-chart__bar-pts">
-                  {row.status === 'missing' ? '—' : `${row.points}/${MAX_POINTS}`}
+                  {row.status === 'missing' ? 'n/a' : `${row.points}/${MAX_POINTS}`}
                 </span>
               </li>
             ))}

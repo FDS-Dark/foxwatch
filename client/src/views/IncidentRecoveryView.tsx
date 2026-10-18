@@ -142,10 +142,10 @@ export function IncidentRecoveryView() {
     <div className="bfi-page">
       <header className="bfi-page__toolbar">
         <p className="muted bfi-page__lede">
-          Uses today&apos;s bloom favorability score and live Fox River conditions to suggest how to
-          clean up or reduce algae and limit harm to people and the ecosystem. Gemini drafts actions
-          from semantically matched research; each item links to passages explaining why it applies.
-          Not an official emergency order.
+          Uses today&apos;s bloom favorability score and live Fox River conditions to suggest ways to
+          clean up algae and limit harm to people and the ecosystem. Gemini drafts actions from matched
+          research and each item links to passages that explain why it applies. This is not an official
+          emergency order.
         </p>
         <button type="button" className="btn btn--compact" disabled={loading} onClick={() => void load()}>
           {loading ? 'Refreshing…' : 'Refresh'}
@@ -189,7 +189,7 @@ export function IncidentRecoveryView() {
                 ))}
             </dl>
             {geminiOn === false ? (
-              <p className="muted recovery-bfi-note">Gemini not configured; retrieval-only suggestions.</p>
+              <p className="muted recovery-bfi-note">Gemini not configured. Showing retrieval-only suggestions.</p>
             ) : null}
           </div>
         </section>
@@ -206,8 +206,8 @@ export function IncidentRecoveryView() {
             <p>{recovery.situation_summary}</p>
             {recovery.confidence?.reason ? (
               <p className="muted bfi-narrative__note">
-                Confidence: {recovery.confidence.level ?? '—'} ({recovery.confidence.percent ?? '—'}%).{' '}
-                {recovery.confidence.reason}
+                Confidence is {recovery.confidence.level ?? 'unknown'} at{' '}
+                {recovery.confidence.percent ?? 'unknown'} percent. {recovery.confidence.reason}
               </p>
             ) : null}
           </section>
