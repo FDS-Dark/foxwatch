@@ -96,20 +96,23 @@ export function CurrentView() {
 
   return (
     <div className="current">
-      <section className="card current__intro" aria-labelledby="current-title">
-        <div>
-          <p className="eyebrow">USGS observations</p>
-          <h2 id="current-title">Latest station conditions</h2>
-          <p>{data?.station_id ?? 'Loading station'} · Latest reading for each parameter</p>
-          <p className="current__note">Readings over 30 minutes old are marked delayed.</p>
-        </div>
-        <div className="current__refresh">
-          <p className={`chip ${error ? 'chip--warn' : data ? 'chip--ok' : ''}`} role="status">
-            {error ? 'Reconnecting' : data ? 'Automatic updates on' : 'Connecting…'}
+      <header className="current__intro" aria-labelledby="current-title">
+        <p id="current-title" className="current__intro-line">
+          <span className="current__intro-label">USGS</span>
+          <span className="current__intro-station">{data?.station_id ?? 'Loading…'}</span>
+          <span className="current__intro-muted">· latest per parameter · &gt;30m marked delayed</span>
+        </p>
+        <div className="current__intro-aside">
+          <p className={`chip chip--compact ${error ? 'chip--warn' : data ? 'chip--ok' : ''}`} role="status">
+            {error ? 'Reconnecting' : data ? 'Live' : 'Connecting…'}
           </p>
-          {data && <p className="current__note">Last fetched <time dateTime={data.fetched_at}>{timestamp(data.fetched_at)}</time></p>}
+          {data && (
+            <time className="current__intro-fetched" dateTime={data.fetched_at}>
+              {timestamp(data.fetched_at)}
+            </time>
+          )}
         </div>
-      </section>
+      </header>
 
       <BloomPredictionCard prediction={prediction} error={predictionError} updatedAt={now} />
 

@@ -105,13 +105,21 @@ export function BfiInsightsView() {
 
   const chunks = data?.evidence.supporting_chunks ?? []
   const authoritySources = data?.insights.sources ?? []
-  const pct = data?.bfi.favorability_percent
+  const fullMax = data?.bfi.full_max_score ?? 12
+  const pctFull =
+    data?.bfi.favorability_percent_full ??
+    (data ? Math.round((data.bfi.score / fullMax) * 100) : undefined)
+  const driversReporting = data?.bfi.drivers_reporting
+  const driversTotal = data?.bfi.drivers_total ?? 6
 
   return (
     <div className="bfi-page">
       <header className="bfi-page__toolbar">
         <p className="muted bfi-page__lede">
-          Live water readings scored against agency guidance and research, with an analyst-friendly summary.
+          A rule-based check. Given today&apos;s Fox River and weather inputs, how many known
+          &ldquo;bloom-friendly&rdquo; conditions are met? This is not a bloom forecast. It does not
+          say a bloom will happen, only whether the environment looks favorable compared to research
+          thresholds.
         </p>
         <div className="bfi-page__toolbar-actions">
           <span className={`chip ${geminiOn ? 'chip--ok' : 'chip--warn'}`}>
@@ -122,6 +130,76 @@ export function BfiInsightsView() {
           </button>
         </div>
       </header>
+
+      <details className="card bfi-how">
+        <summary>How bloom favorability is scored</summary>
+        <p className="bfi-how__lede">
+          Six drivers can each add 0, 1, or 2 points (2 is most favorable for blooms). The meter and
+          percentage always use the full 12-point scale. Drivers without readings today count as 0 points.
+        </p>
+        <p className="bfi-how__subhead">Overall tiers when all six drivers are present (12 points max)</p>
+        <ul className="bfi-how__tiers">
+          <li>0 to 3 points · Low favorability</li>
+          <li>4 to 7 points · Moderate favorability</li>
+          <li>8 to 10 points · High favorability</li>
+          <li>11 to 12 points · Very high favorability</li>
+        </ul>
+        <p className="bfi-how__subhead">Points per driver</p>
+        <ul className="bfi-how__drivers">
+          <li>
+            <strong>Water temperature</strong>
+            <ul>
+              <li>Below 20&nbsp;°C · 0 pts · typical / cooler</li>
+              <li>20 to 25&nbsp;°C · 1 pt · warming</li>
+              <li>Above 25&nbsp;°C · 2 pts · bloom-favoring</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Phosphorus (dissolved)</strong>
+            <ul>
+              <li>Below 20&nbsp;µg/L · 0 pts</li>
+              <li>20 to 50&nbsp;µg/L · 1 pt</li>
+              <li>Above 50&nbsp;µg/L · 2 pts</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Nitrogen (nitrate + nitrite)</strong>
+            <ul>
+              <li>Below 0.5&nbsp;mg/L · 0 pts</li>
+              <li>0.5 to 1.0&nbsp;mg/L · 1 pt</li>
+              <li>Above 1.0&nbsp;mg/L · 2 pts</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Streamflow vs seasonal median</strong>
+            <ul>
+              <li>Above median · 0 pts</li>
+              <li>Within ±10% of median · 1 pt</li>
+              <li>Below 90% of median · 2 pts · slower flush</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Rainfall, past 7 days</strong>
+            <ul>
+              <li>Under 0.5&nbsp;in · 0 pts</li>
+              <li>0.5 to 2&nbsp;in · 1 pt</li>
+              <li>Over 2&nbsp;in · 2 pts · runoff loading</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Sunlight</strong>
+            <ul>
+              <li>Low · 0 pts</li>
+              <li>Moderate · 1 pt</li>
+              <li>High · 2 pts</li>
+            </ul>
+          </li>
+        </ul>
+        <p className="muted bfi-how__note">
+          Points reflect published drivers of cyanobacteria growth, not a direct measurement of algae in
+          the bay. Pair with satellite views and official advisories when making decisions.
+        </p>
+      </details>
 
       {error ? (
         <p className="bfi-page__error" role="alert">
@@ -137,15 +215,24 @@ export function BfiInsightsView() {
             <h2 id="bfi-hero-title" className="bfi-hero__title">
               {data.bfi.classification}
             </h2>
-            {pct != null ? (
-              <p className="bfi-hero__meter" aria-label={`${pct} percent favorability`}>
-                <span className="bfi-hero__meter-fill" style={{ width: `${Math.min(100, pct)}%` }} />
-                <span className="bfi-hero__meter-label">{pct}% favorability</span>
-              </p>
+            {pctFull != null ? (
+              <>
+                <p className="bfi-hero__meter" aria-label={`${pctFull} percent of full twelve point score`}>
+                  <span className="bfi-hero__meter-fill" style={{ width: `${Math.min(100, pctFull)}%` }} />
+                  <span className="bfi-hero__meter-label">
+                    {pctFull}% of full score · {data.bfi.score}/{fullMax} pts
+                  </span>
+                </p>
+                {driversReporting != null && driversReporting < driversTotal ? (
+                  <p className="muted bfi-hero__coverage">
+                    Scored from {driversReporting} of {driversTotal} drivers with readings today. Unreported drivers stay at 0 points on the 12-point scale.
+                  </p>
+                ) : null}
+              </>
             ) : null}
             <p className="bfi-hero__summary">{data.insights.executive_summary}</p>
             <p className="muted bfi-hero__confidence">
-              Confidence: {data.insights.confidence.level} ({data.insights.confidence.percent}%)
+              Confidence {data.insights.confidence.level} ({data.insights.confidence.percent}%)
             </p>
           </section>
 
@@ -164,8 +251,8 @@ export function BfiInsightsView() {
             <section className="card bfi-chart-card">
               <BfiScoreChart
                 score={data.bfi.score}
-                maxScore={data.bfi.max_possible_score}
-                favorabilityPercent={pct ?? undefined}
+                favorabilityPercentFull={pctFull}
+                driversReporting={driversReporting}
                 factors={data.bfi.factors}
               />
             </section>
@@ -177,7 +264,7 @@ export function BfiInsightsView() {
             </h3>
             <p>{data.insights.scientific_interpretation}</p>
             <p className="muted bfi-narrative__note">
-              Citations and supporting publications appear under Sources—not in this summary.
+              Citations and supporting publications appear under Sources, not in this summary.
             </p>
           </section>
 
@@ -250,8 +337,9 @@ export function BfiInsightsView() {
           <section className="card bfi-evidence">
             <h3 className="card__title">Sources</h3>
             <p className="muted bfi-evidence__intro">
-              Official programs found on the web (or curated .gov links if search is off). Internal research passages
-              below each source show whether the indexed literature is consistent—not the primary citation.
+              Trusted agencies and programs that publish nutrient, flow, and health guidance for Wisconsin
+              and Great Lakes waters. Each entry links to the live program page. When our indexed research
+              library aligns with a program, you can open matching passages below that link.
             </p>
             {authoritySources.length === 0 ? (
               <p className="muted">No sources retrieved yet.</p>
@@ -273,14 +361,12 @@ export function BfiInsightsView() {
                       </p>
                     ) : null}
                     <p className="bfi-authority__summary">{source.summary}</p>
-                    {source.consistency ? (
+                    {source.consistency === 'aligned' || source.consistency === 'partial' ? (
                       <p className="muted bfi-authority__consistency">
-                        Internal research check:{' '}
+                        Indexed research{' '}
                         {source.consistency === 'aligned'
-                          ? 'consistent with retrieved passages'
-                          : source.consistency === 'partial'
-                            ? 'partially consistent'
-                            : 'not yet matched to passages'}
+                          ? 'aligns with passages cited below'
+                          : 'partially aligns with passages cited below'}
                       </p>
                     ) : null}
                     {source.backing_publications && source.backing_publications.length > 0 ? (
@@ -293,7 +379,8 @@ export function BfiInsightsView() {
                               {pub.authors || pub.year ? (
                                 <span className="muted">
                                   {' '}
-                                  — {[pub.authors, pub.year].filter(Boolean).join(', ')}
+                                  {' '}
+                                  · {[pub.authors, pub.year].filter(Boolean).join(', ')}
                                 </span>
                               ) : null}
                               {pub.section ? <span className="muted"> · {pub.section}</span> : null}

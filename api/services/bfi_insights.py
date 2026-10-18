@@ -223,35 +223,55 @@ EXTERNAL_SOURCE_CATALOG: tuple[dict[str, Any], ...] = (
         "name": "EPA Harmful Algal Blooms",
         "organization": "U.S. Environmental Protection Agency",
         "url": "https://www.epa.gov/nutrientpollution/harmful-algal-blooms",
-        "summary": "Federal overview of nutrient pollution and harmful algal bloom causes and response.",
+        "summary": (
+            "Federal overview of how excess nitrogen and phosphorus fuel harmful algal blooms "
+            "and what communities can do about nutrient pollution. The site explains bloom "
+            "formation, health and ecosystem impacts, and links to EPA nutrient management programs."
+        ),
         "tags": {"phosphorus", "nitrogen", "nutrients", "cyanobacteria"},
     },
     {
         "name": "USGS Water Data for the Nation",
         "organization": "U.S. Geological Survey",
         "url": "https://waterdata.usgs.gov/",
-        "summary": "National portal for streamflow, nutrients, and continuous water-quality monitoring.",
+        "summary": (
+            "National portal for near-real-time and historical streamflow, water temperature, "
+            "and water-quality measurements from USGS gages. FoxWatch uses this network for Fox River "
+            "discharge and nutrient readings that feed bloom favorability scoring."
+        ),
         "tags": {"discharge", "streamflow", "phosphorus", "nitrogen", "water_quality"},
     },
     {
-        "name": "WHO Recreational Water Quality — Cyanobacteria",
+        "name": "WHO Recreational Water Quality for Cyanobacteria",
         "organization": "World Health Organization",
         "url": "https://www.who.int/teams/environment-climate-change-and-health/water-sanitation-and-health/water-quality-and-health/recreational-waters",
-        "summary": "International guidance on cyanobacteria risks in recreational waters.",
+        "summary": (
+            "International guidance on cyanobacteria and microcystins in lakes and rivers used "
+            "for swimming and recreation. It describes how to interpret cell counts and toxin levels "
+            "when advising the public, separate from any single local forecast."
+        ),
         "tags": {"cyanobacteria", "water_quality", "temperature"},
     },
     {
         "name": "NOAA Harmful Algal Bloom resources",
         "organization": "NOAA National Ocean Service",
         "url": "https://oceanservice.noaa.gov/hazards/hab/",
-        "summary": "Coastal and Great Lakes harmful algal bloom background and monitoring context.",
+        "summary": (
+            "Background on harmful algal blooms in U.S. coastal waters and the Great Lakes, "
+            "including monitoring partnerships and regional bulletins. Useful context for how "
+            "satellite and field programs track bloom events at bay and lake scales."
+        ),
         "tags": {"cyanobacteria", "water_quality"},
     },
     {
         "name": "Wisconsin DNR Blue-Green Algae",
         "organization": "Wisconsin Department of Natural Resources",
         "url": "https://dnr.wisconsin.gov/topic/lakes/bluegreenalgae",
-        "summary": "State guidance on blue-green algae recognition and public health in Wisconsin waters.",
+        "summary": (
+            "Wisconsin-specific advice on recognizing blue-green algae, common health symptoms, "
+            "and when to avoid contact with surface water. Includes state reporting contacts "
+            "and links to local beach and lake monitoring where available."
+        ),
         "tags": {"cyanobacteria", "water_quality", "phosphorus"},
     },
 )
@@ -359,6 +379,30 @@ def _catalog_tags_for_evidence(evidence: EvidencePackage) -> set[str]:
     tags: set[str] = set(evidence.retrieval_tags or [])
     tags.update(evidence.drivers or [])
     return tags
+
+
+def _catalog_summary_for_url(url: str) -> str:
+    needle = (url or "").strip().rstrip("/")
+    for row in EXTERNAL_SOURCE_CATALOG:
+        catalog_url = str(row.get("url", "")).strip().rstrip("/")
+        if needle and catalog_url and needle == catalog_url:
+            return str(row.get("summary", "")).strip()
+    return ""
+
+
+def _enrich_external_summaries(sources: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    """Prefer full catalog blurbs when search returns a thin one-liner for the same program."""
+    out: list[dict[str, Any]] = []
+    for src in sources:
+        row = dict(src)
+        summary = str(row.get("summary") or "").strip()
+        catalog_blurb = _catalog_summary_for_url(str(row.get("url") or ""))
+        if catalog_blurb and len(summary) < 140:
+            row["summary"] = catalog_blurb
+        elif catalog_blurb and catalog_blurb not in summary:
+            row["summary"] = f"{summary} {catalog_blurb}".strip()
+        out.append(row)
+    return out
 
 
 def build_fallback_external_sources(evidence: EvidencePackage) -> list[dict[str, Any]]:
@@ -470,7 +514,8 @@ def build_insight_sources(
 ) -> list[dict[str, Any]]:
     """User-facing sources from the web/catalog, cross-checked against RAG."""
     if external_sources:
-        return attach_rag_consistency(external_sources, evidence, embedder, index)
+        enriched = _enrich_external_summaries(external_sources)
+        return attach_rag_consistency(enriched, evidence, embedder, index)
     return attach_rag_consistency(
         build_fallback_external_sources(evidence), evidence, embedder, index
     )
@@ -512,7 +557,10 @@ def synthesize_insights_from_evidence(
     """
     classification = bfi_result.get("classification", "")
     score = bfi_result.get("score", "")
-    max_score = bfi_result.get("max_possible_score", 12)
+    full_max = int(bfi_result.get("full_max_score") or 12)
+    max_score = bfi_result.get("max_possible_score", full_max)
+    drivers_reporting = bfi_result.get("drivers_reporting")
+    drivers_total = bfi_result.get("drivers_total", 6)
     extraction = extract_dominant_drivers(bfi_result)
 
     key_factors = [
@@ -543,16 +591,22 @@ def synthesize_insights_from_evidence(
         if key_factors
         else "limited favorable driver signals in the current readings"
     )
+    coverage = ""
+    if isinstance(drivers_reporting, int) and drivers_reporting < drivers_total:
+        coverage = (
+            f" Readings covered {drivers_reporting} of {drivers_total} drivers; "
+            f"missing drivers count as 0 on the {full_max}-point scale."
+        )
     executive = (
-        f"Bloom favorability is {classification} ({score} of {max_score} points). "
-        f"The score mainly reflects {driver_phrase}."
+        f"Bloom favorability is {classification} ({score} of {full_max} points on the full scale). "
+        f"The score mainly reflects {driver_phrase}.{coverage}"
     )
 
     return {
         "executive_summary": executive,
         "bloom_assessment": (
-            f"Bloom favorability is classified as {classification} based on the BFI score "
-            f"of {score} out of {max_score}."
+            f"Bloom favorability is classified as {classification} based on a BFI score "
+            f"of {score} out of {full_max}."
         ),
         "key_contributing_factors": key_factors,
         "scientific_interpretation": _sanitize_analyst_summary(interpretation),

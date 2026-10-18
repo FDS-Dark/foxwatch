@@ -15,8 +15,88 @@
 
 .bfi-page__lede {
   margin: 0;
-  max-width: 42rem;
+  max-width: 44rem;
   font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.bfi-how {
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+}
+
+.bfi-how summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--deep);
+  list-style: none;
+}
+
+.bfi-how summary::-webkit-details-marker {
+  display: none;
+}
+
+.bfi-how summary::after {
+  content: ' ▾';
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.bfi-how[open] summary::after {
+  content: ' ▴';
+}
+
+.bfi-how__lede {
+  margin: 0.65rem 0 0.85rem;
+  line-height: 1.45;
+}
+
+.bfi-how__subhead {
+  margin: 0.75rem 0 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.bfi-how__tiers,
+.bfi-how__drivers {
+  margin: 0;
+  padding-left: 1.15rem;
+  line-height: 1.5;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+
+.bfi-how__tiers {
+  list-style: disc;
+}
+
+.bfi-how__drivers {
+  list-style: disc;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.bfi-how__drivers > li > strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--ink);
+}
+
+.bfi-how__drivers ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  list-style: circle;
+}
+
+.bfi-how__drivers ul li {
+  margin-top: 0.15rem;
+}
+
+.bfi-how__note {
+  margin: 0.85rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
 }
 
 .bfi-page__toolbar-actions {
@@ -77,6 +157,18 @@
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--deep);
+}
+
+.bfi-hero__coverage {
+  margin: -0.35rem 0 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.bfi-chart__coverage {
+  margin: 0.65rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.4;
 }
 
 .bfi-hero__summary {
@@ -180,6 +272,10 @@
 .bfi-chart__empty {
   margin: 0;
   font-size: 0.85rem;
+}
+
+.bfi-chart--compact .bfi-chart__body {
+  margin-top: 0;
 }
 
 .bfi-drivers__list,

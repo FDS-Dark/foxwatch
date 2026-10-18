@@ -9,6 +9,7 @@ from dependencies import init_collector
 from settings import IngestionSettings, config, cors_allowed_origins
 
 from routers.bfi import router as bfi_router
+from routers.incident_recovery import router as incident_recovery_router
 from routers.ingestion import router as ingestion_router
 from routers.meta import router as meta_router
 from routers.observations import router as observations_router
@@ -67,6 +68,7 @@ app.include_router(ingestion_router)
 app.include_router(predictions_router)
 app.include_router(ml_review_router)
 app.include_router(bfi_router)
+app.include_router(incident_recovery_router)
 app.include_router(xray_router)
 
 

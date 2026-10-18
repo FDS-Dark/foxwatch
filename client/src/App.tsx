@@ -6,13 +6,15 @@ import { StatusPill } from './components/StatusPill'
 import { ReplayView } from './views/ReplayView'
 import { ReviewView } from './views/ReviewView'
 import { BfiInsightsView } from './views/BfiInsightsView'
+import { IncidentRecoveryView } from './views/IncidentRecoveryView'
 import { CurrentView } from './views/CurrentView'
+import { DriversMapView } from './views/DriversMapView'
 import { InvestigateView } from './views/InvestigateView'
 import './App.css'
 
 type RouteId = ViewId | 'investigate'
 
-const VIEWS: ViewId[] = ['current', 'bfi', 'replay', 'review']
+const VIEWS: ViewId[] = ['current', 'scan', 'bfi', 'recovery', 'replay', 'review']
 
 function viewFromHash(): RouteId {
   const raw = window.location.hash.replace('#/', '').split('?')[0]
@@ -23,7 +25,9 @@ function viewFromHash(): RouteId {
 
 const TITLES: Record<RouteId, string> = {
   current: 'Current conditions',
+  scan: 'Bloom driver scan',
   bfi: 'Bloom favorability',
+  recovery: 'Incident recovery',
   replay: 'X-Ray the Bay',
   review: 'Analyst review',
   investigate: 'Model validation',
@@ -54,7 +58,7 @@ function App() {
       <div className="shell">
         <Sidebar current={view === 'investigate' ? 'replay' : view} />
         <div className="shell__body">
-          <header className="topbar">
+          <header className={`topbar${view === 'replay' ? ' topbar--tight' : ''}`}>
             <div>
               <p className="topbar__eyebrow">Lower Fox River · Green Bay</p>
               <h1 className="topbar__title">{TITLES[view]}</h1>
@@ -74,10 +78,20 @@ function App() {
                 <span className="status-pill__dot" aria-hidden="true" />
                 Live scoring &amp; review
               </p>
+            ) : view === 'scan' ? (
+              <p className="status-pill status-pill--live" role="status">
+                <span className="status-pill__dot" aria-hidden="true" />
+                Live driver radar
+              </p>
             ) : view === 'bfi' ? (
               <p className="status-pill status-pill--live" role="status">
                 <span className="status-pill__dot" aria-hidden="true" />
                 USGS + scientific literature
+              </p>
+            ) : view === 'recovery' ? (
+              <p className="status-pill status-pill--live" role="status">
+                <span className="status-pill__dot" aria-hidden="true" />
+                RAG + Gemini recovery draft
               </p>
             ) : view === 'investigate' ? (
               <p className="status-pill" role="status">
@@ -87,26 +101,36 @@ function App() {
               <StatusPill />
             )}
           </header>
-          <main id="main" tabIndex={-1} className="shell__main">
+          <main
+            id="main"
+            tabIndex={-1}
+            className={`shell__main${view === 'replay' ? ' shell__main--tight-top' : ''}`}
+          >
             {view === 'current' && <CurrentView />}
+            {view === 'scan' && <DriversMapView />}
             {view === 'replay' && <ReplayView />}
             {view === 'bfi' && <BfiInsightsView />}
+            {view === 'recovery' && <IncidentRecoveryView />}
             {view === 'review' && <ReviewView />}
             {view === 'investigate' && <InvestigateView />}
           </main>
-          <footer className="shell__footer">
-            {view === 'current'
-              ? 'Provisional USGS measurements. Fluorescence shows algae pigments—not a confirmed harmful bloom.'
-              : view === 'review'
-                ? 'Analyst feedback can update the bloom score model. Not a regulatory decision.'
-                : view === 'bfi'
-                  ? 'Favorability from recent conditions and published references. Not a bloom forecast.'
-                  : view === 'replay'
-                    ? 'Recent satellite predictions with acquisition dates. Experimental fluorescence estimates, not confirmed harmful blooms.'
-                    : view === 'investigate'
+          {view !== 'replay' ? (
+            <footer className="shell__footer">
+              {view === 'current'
+                ? 'Provisional USGS measurements. Fluorescence shows algae pigments, not a confirmed harmful bloom.'
+                : view === 'scan'
+                  ? 'Driver colors follow bloom favorability rules and pigment references. Not a bloom forecast.'
+                  : view === 'review'
+                  ? 'Analyst feedback can update the bloom score model. Not a regulatory decision.'
+                  : view === 'bfi'
+                    ? 'Favorability from recent conditions and published references. Not a bloom forecast.'
+                    : view === 'recovery'
+                      ? 'Algae cleanup and harm-reduction ideas from today’s score and literature. Not an official order.'
+                      : view === 'investigate'
                       ? 'Validation against withheld 2025 boat measurements. Not a live bloom assessment.'
                       : 'Experimental estimates · not a bloom advisory.'}
-          </footer>
+            </footer>
+          ) : null}
         </div>
       </div>
       </EvidenceProvider>

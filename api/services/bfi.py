@@ -8,6 +8,7 @@ from fastapi import HTTPException
 from models.bfi import BfiInsightRequest
 from services.bfi_insights import answer_bfi_question, generate_bfi_insights
 from services.bfi_scoring import calculate_bloom_favorability
+from services.bfi_supplemental_inputs import enrich_live_bfi_kwargs
 from services.bfi_tiger_inputs import bfi_kwargs_from_readings
 from services.rag_embeddings import HashEmbedder, create_production_embedder, load_embedded_chunks
 from services.usgs_ingestion import UsgsCollector
@@ -26,6 +27,9 @@ _BFI_CALC_KEYS = (
     "rainfall_7day_in",
     "solar_radiation_level",
 )
+
+# Keys forwarded to ``calculate_bloom_favorability`` (includes USGS manifest aliases).
+_BFI_SCORING_KEYS = _BFI_CALC_KEYS
 
 
 @lru_cache(maxsize=1)
@@ -77,8 +81,13 @@ class BfiService:
             for key, value in live.items():
                 if calc.get(key) is None and value is not None:
                     calc[key] = value
+            enrich_live_bfi_kwargs(
+                calc,
+                provenance,
+                station_id=collector.settings.station,
+            )
 
-        return {k: calc[k] for k in _BFI_CALC_KEYS if k in calc}, provenance
+        return {k: calc[k] for k in _BFI_SCORING_KEYS if k in calc}, provenance
 
     def generate_insights(
         self,

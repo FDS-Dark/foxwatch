@@ -32,6 +32,8 @@ _NARRATIVE_JSON_SUFFIX = (
 _EXTERNAL_SOURCES_JSON_SUFFIX = (
     "\n\nRespond with a single JSON object only (no markdown fences) using key: "
     "external_sources (array of 3–5 objects with name, organization, summary, url). "
+    "Each summary must be 2–3 complete sentences describing what the program publishes "
+    "and why it matters for bloom drivers (nutrients, flow, temperature, public health). "
     "Each url must be a full https link to an official program or guidance page you found via search. "
     "Prefer U.S. federal (.gov), Wisconsin state, WHO, NOAA, and USGS sources relevant to "
     "Green Bay / Lower Fox River harmful algal blooms and nutrient drivers. "
@@ -268,12 +270,16 @@ def generate_grounded_json(instructions: str, evidence: dict[str, Any]) -> tuple
     return None, last_error
 
 
-def generate_structured_insights(prompt: str) -> tuple[Optional[dict[str, Any]], str]:
+def generate_structured_json(
+    prompt: str,
+    *,
+    json_suffix: str,
+) -> tuple[Optional[dict[str, Any]], str]:
     """
-    Call Gemini with a grounded prompt and parse JSON-shaped insight output.
+    Call Gemini with a grounded prompt and parse a JSON object response.
 
     Returns:
-        (parsed_insights or None, mode) where mode is ``gemini`` or ``error:...``
+        (parsed dict or None, mode) where mode is ``gemini:...`` or ``error:...``
     """
     api_key = _api_key()
     if not api_key:
@@ -285,7 +291,7 @@ def generate_structured_insights(prompt: str) -> tuple[Optional[dict[str, Any]],
         return None, "missing_google_generativeai"
 
     genai.configure(api_key=api_key)
-    full_prompt = prompt + _NARRATIVE_JSON_SUFFIX
+    full_prompt = prompt + json_suffix
     last_error = "unknown"
 
     for model_name in _model_candidates():
@@ -303,6 +309,16 @@ def generate_structured_insights(prompt: str) -> tuple[Optional[dict[str, Any]],
             logger.warning("Gemini model %s failed: %s", model_name, exc)
 
     return None, f"error:{last_error}"
+
+
+def generate_structured_insights(prompt: str) -> tuple[Optional[dict[str, Any]], str]:
+    """
+    Call Gemini with a grounded prompt and parse JSON-shaped insight output.
+
+    Returns:
+        (parsed_insights or None, mode) where mode is ``gemini`` or ``error:...``
+    """
+    return generate_structured_json(prompt, json_suffix=_NARRATIVE_JSON_SUFFIX)
 
 
 def _extract_json_object(text: str) -> Optional[dict[str, Any]]:

@@ -1,28 +1,40 @@
-export type ViewId = 'current' | 'bfi' | 'replay' | 'review'
+export type ViewId = 'current' | 'scan' | 'bfi' | 'recovery' | 'replay' | 'review'
 
 const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
   {
     id: 'current',
     label: 'Current conditions',
-    hint: 'Latest station readings',
+    hint: 'Station readings',
     icon: 'M3 12h3l3-8 4 16 3-8h5',
+  },
+  {
+    id: 'scan',
+    label: 'Bloom driver scan',
+    hint: 'Driver radar',
+    icon: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 3v7M7 12H5M19 12h-2M12 7V5M12 19v-2',
   },
   {
     id: 'bfi',
     label: 'Bloom favorability',
-    hint: 'Drivers, summary & Q&A',
+    hint: 'Score and Q&A',
     icon: 'M4 6h16v4H4V6Zm0 6h10v4H4v-4Z',
+  },
+  {
+    id: 'recovery',
+    label: 'Incident recovery',
+    hint: 'Recovery steps',
+    icon: 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
   },
   {
     id: 'replay',
     label: 'X-Ray the Bay',
-    hint: 'Latest satellite predictions',
-    icon: 'M3 12h3l3-8 4 16 3-8h5',
+    hint: 'Satellite map',
+    icon: 'M9 3 3 7v12l6-3 6 3 6-3V7L9 3zm0 4v13m6-10v13',
   },
   {
     id: 'review',
     label: 'Analyst review',
-    hint: 'Check & improve scores',
+    hint: 'Model review',
     icon: 'M4 12l5 5L20 6',
   },
 ]
@@ -72,14 +84,6 @@ export function Sidebar({ current }: { current: ViewId }) {
           ))}
         </ul>
       </nav>
-
-      {current === 'replay' && (
-        <div className="sidebar__event">
-          <p className="sidebar__event-label">Live layer</p>
-          <p className="sidebar__event-title">Green Bay · satellite + river</p>
-          <span className="chip chip--candidate">Experimental · not advisory</span>
-        </div>
-      )}
 
       <svg
         className="sidebar__waves"
