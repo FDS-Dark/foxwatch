@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { BloomPredictionCard } from '../components/BloomPredictionCard'
+import { parsePrediction, type BloomPrediction } from '../data/types/prediction'
 import './CurrentView.css'
 
 const PARAMETERS: Record<string, string> = {
@@ -46,6 +48,8 @@ function timestamp(iso: string) {
 export function CurrentView() {
   const [data, setData] = useState<LatestObservations | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [prediction, setPrediction] = useState<BloomPrediction | null>(null)
+  const [predictionError, setPredictionError] = useState<string | null>(null)
   const [now, setNow] = useState(Date.now)
 
   useEffect(() => {
@@ -62,20 +66,34 @@ export function CurrentView() {
       controller = request
       const timeout = window.setTimeout(() => request.abort(), 20_000)
       try {
-        const response = await fetch('/api/observations/latest', {
-          signal: request.signal, cache: 'no-store',
-        })
-        if (!response.ok) throw new Error(`Request failed (${response.status})`)
-        const result: LatestObservations = await response.json()
-        if (result.source !== 'tiger_data' || !Array.isArray(result.readings)) {
-          throw new Error('Unexpected observation response')
+        async function fetchJson(path: string) {
+          const response = await fetch(path, { signal: request.signal, cache: 'no-store' })
+          if (!response.ok) throw new Error(`Request failed (${response.status})`)
+          return response.json()
         }
-        if (!stopped) {
-          setData(result)
+        const [observations, model] = await Promise.allSettled([
+          fetchJson('/api/observations/latest').then((result: LatestObservations) => {
+            if (result.source !== 'tiger_data' || !Array.isArray(result.readings)) {
+              throw new Error('Unexpected observation response')
+            }
+            return result
+          }),
+          fetchJson('/api/predictions/latest').then(parsePrediction),
+        ])
+        if (stopped) return
+        if (observations.status === 'fulfilled') {
+          setData(observations.value)
           setError(null)
+        } else {
+          setError('Unable to refresh stored observations. Check that the API and Tiger Data are available.')
         }
-      } catch {
-        if (!stopped) setError('Unable to refresh stored observations. Check that the API and Tiger Data are available.')
+        if (model.status === 'fulfilled') {
+          setPrediction(model.value)
+          setPredictionError(null)
+        } else {
+          setPrediction(null)
+          setPredictionError('Prediction unavailable. Retrying automatically on the next update.')
+        }
       } finally {
         window.clearTimeout(timeout)
         inFlight = false
@@ -120,6 +138,8 @@ export function CurrentView() {
           {data && <p className="current__note">Last fetched <time dateTime={data.fetched_at}>{timestamp(data.fetched_at)}</time></p>}
         </div>
       </section>
+
+      <BloomPredictionCard prediction={prediction} error={predictionError} updatedAt={now} />
 
       {error && <p className="current__notice" role="alert">{error}{data ? ' Showing previously fetched readings.' : ''}</p>}
       {!data && !error && <p role="status">Loading observations from Tiger Data…</p>}
