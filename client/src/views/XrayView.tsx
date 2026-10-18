@@ -5,6 +5,7 @@ import type { ExplanationSelection, LiveXray } from '@/models/xrayLive'
 import type { LatestObservations } from '@/models/observations'
 import { fetchLiveXray } from '@/services/xrayService'
 import { fetchLatestObservations } from '@/services/observationsService'
+import { isObservationStale } from '@/lib/observationFreshness'
 import './XrayView.css'
 import './XrayLiveView.css'
 
@@ -325,9 +326,9 @@ export function XrayView() {
         </div>
         {PARAMETERS.map((parameter) => {
           const reading = readings.get(parameter.code)
-          const delayed =
+          const stale =
             reading &&
-            now - Date.parse(reading.observed_at) > (observations?.stale_after_seconds ?? 1800) * 1000
+            isObservationStale(reading.observed_at, now, observations?.stale_after_seconds)
           return (
             <article className="live-river-reading" key={parameter.code}>
               <div>
@@ -345,7 +346,7 @@ export function XrayView() {
                   : stationError
                     ? 'Station unavailable'
                     : 'Waiting for readings'}
-                {delayed && <b>Delayed</b>}
+                {stale && <b title="No new reading for over two hours">Update overdue</b>}
                 {stationError && reading && <b>Cached</b>}
               </p>
             </article>

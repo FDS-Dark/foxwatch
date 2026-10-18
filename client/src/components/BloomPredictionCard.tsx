@@ -1,3 +1,4 @@
+import { isObservationStale } from '@/lib/observationFreshness'
 import { predictionBucket, type BloomPrediction } from '@/models/prediction'
 
 export function BloomPredictionCard({ prediction, error, updatedAt }: {
@@ -34,8 +35,8 @@ export function BloomPredictionCard({ prediction, error, updatedAt }: {
         <p className="current__note">Calculated <time dateTime={new Date(updatedAt).toISOString()}>{new Date(updatedAt).toLocaleTimeString()}</time>
           {fallbackCount > 0 && ` · Using last measured values for ${fallbackCount} ${fallbackCount === 1 ? 'feature' : 'features'}.`}
         </p>
-        {prediction.inputs.some((input) => updatedAt - Date.parse(input.observed_at) > 30 * 60_000) &&
-          <p className="current__note">Some input measurements are over 30 minutes old.</p>}
+        {prediction.inputs.some((input) => isObservationStale(input.observed_at, updatedAt)) &&
+          <p className="current__note">Some input measurements are over two hours old.</p>}
       </>}
       <p className="current__note">Experimental model score, not a confirmed bloom or calibrated risk. Trained on daily means; current inputs are instantaneous measurements.</p>
     </section>

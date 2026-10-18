@@ -1,0 +1,44 @@
+flowchart LR
+    observations["USGS + weather + nutrients"]
+    sentinel["Sentinel-2 imagery"]
+    tiger[("Tiger Data
+Observations + RAG vectors")]
+
+    subgraph app["Application · DigitalOcean"]
+        web["React + Leaflet
+Maps and dashboards"]
+        api["FastAPI
+Ingestion + API"]
+        models["Station analysis
+Logistic model + favorability
+Analyst review + retraining"]
+    end
+
+    subgraph satellite["Satellite pipeline · Vultr"]
+        worker["Satellite processing
+FLAMe-trained random forest"]
+        maps[("Object Storage
+Maps + point samples")]
+    end
+
+    ai["Gemini + RAG
+Literature + research evidence
+Cited answers + recovery advice"]
+
+    web <-->|"Queries / results"| api
+    api <-->|"Scores / feedback"| models
+    api -->|"Collects"| observations
+    api <-->|"Read / write"| tiger
+    api <-->|"Context / explanations"| ai
+    tiger -.->|"Vectors"| ai
+
+    sentinel --> worker -->|"Publishes"| maps
+    api -->|"Reads point data"| maps
+    web -->|"Loads map images"| maps
+
+    classDef satelliteNode fill:#e7f4ed,stroke:#27805c,color:#173d2b,stroke-width:2px
+    classDef insightNode fill:#f1edfa,stroke:#7964a9,color:#35274e,stroke-width:2px
+    classDef sourceNode fill:#f1f5f9,stroke:#8193a5,color:#223647,stroke-width:1.5px
+    class sentinel,worker,maps satelliteNode
+    class ai insightNode
+    class observations,tiger sourceNode

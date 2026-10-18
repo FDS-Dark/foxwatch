@@ -366,3 +366,23 @@ valid citation IDs alone cannot guarantee that every interpretation is correct.
 
 An already-running API without autoreload needs a normal restart to load the new
 route. Frontend HMR alone cannot activate it.
+
+## AI disclosure
+
+HackGB requires clear AI and tool use transparency. The canonical disclosure for
+the whole repository is in [`../README.md`](../README.md#ai-disclosure). Summary
+for this API:
+
+- **Development:** AI-assisted coding tools (including Cursor and Codex) helped implement
+  and document this service; the team reviewed all merged changes.
+- **Optional Gemini at runtime:** BFI insight narratives and X-Ray location
+  explanations when `GEMINI_API_KEY` is set. Evidence is retrieved server-side;
+  bad citations fall back to non-generative summaries (`services/gemini_client.py`,
+  `services/bfi_insights.py`, `services/xray_explanations.py`).
+- **RAG embeddings:** Offline `BAAI/bge-small-en-v1.5` (or hash fallback) for
+  literature retrieval—not direct LLM answers.
+- **Not LLM-driven:** USGS ingestion, logistic regression inference, X-Ray RF
+  map values, and the satellite worker pipeline.
+
+Users should verify AI-generated text against cited evidence; scores and maps are
+research demos, not confirmed bloom or toxin assessments.
