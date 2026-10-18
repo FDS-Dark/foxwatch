@@ -4,10 +4,10 @@ import json
 import unittest
 from pathlib import Path
 
-from api.rag.chunker import chunk_document, word_count
-from api.rag.document_processor import process_document
-from api.rag.embeddings import HashEmbedder, ingest_document, save_embedded_chunks, search_chunks
-from api.rag.metadata_tagger import assign_tags, tag_chunks
+from api.services.rag_chunker import chunk_document, word_count
+from api.services.rag_document_processor import process_document
+from api.services.rag_embeddings import HashEmbedder, ingest_document, save_embedded_chunks, search_chunks
+from api.services.rag_metadata_tagger import assign_tags, tag_chunks
 
 REPO = Path(__file__).resolve().parents[1]
 SAMPLE = REPO / "data" / "rag" / "sources" / "sample_phosphorus_hydrology.txt"

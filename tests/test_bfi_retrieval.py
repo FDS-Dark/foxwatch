@@ -4,15 +4,15 @@ import json
 import unittest
 from pathlib import Path
 
-from api.bfi.index import calculate_bloom_favorability
-from api.bfi.retrieval import (
+from api.services.bfi_scoring import calculate_bloom_favorability
+from api.services.bfi_retrieval import (
     build_evidence_package,
     extract_dominant_drivers,
     hybrid_retrieve,
     retrieval_tags_for_drivers,
 )
-from api.rag.embeddings import EmbeddedChunk, HashEmbedder, ingest_document
-from api.bfi.insights import compute_confidence, generate_bfi_insights, save_insight_example
+from api.services.rag_embeddings import EmbeddedChunk, HashEmbedder, ingest_document
+from api.services.bfi_insights import compute_confidence, generate_bfi_insights, save_insight_example
 
 REPO = Path(__file__).resolve().parents[1]
 SAMPLE = REPO / "data" / "rag" / "sources" / "sample_phosphorus_hydrology.txt"

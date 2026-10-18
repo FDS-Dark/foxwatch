@@ -222,4 +222,4 @@ __marimo__/
 .streamlit/secrets.toml
 
 # Locally trained model binaries and reports (regenerate from the training CSV).
-api/model/artifacts/
+api/services/ml/artifacts/

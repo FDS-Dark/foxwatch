@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { BloomPredictionCard } from '../components/BloomPredictionCard'
-import { parsePrediction, type BloomPrediction } from '../data/types/prediction'
+import type { BloomPrediction } from '@/models/prediction'
+import type { LatestObservations } from '@/models/observations'
+import { fetchLatestObservations } from '@/services/observationsService'
+import { fetchLatestPrediction } from '@/services/predictionsService'
 import './CurrentView.css'
 
 const PARAMETERS: Record<string, string> = {
@@ -15,27 +18,6 @@ const PARAMETERS: Record<string, string> = {
   '00060': 'Discharge',
   '63680': 'Turbidity',
   '00095': 'Specific conductance',
-}
-
-interface Reading {
-  parameter_code: string
-  time_series_id: string
-  observed_at: string
-  value: number | null
-  unit: string | null
-  approval_status: string | null
-  qualifier: string | null
-  ingested_at: string
-}
-
-interface LatestObservations {
-  source: 'tiger_data'
-  station_id: string
-  requested_parameters: string[]
-  readings: Reading[]
-  missing_parameters: string[]
-  fetched_at: string
-  stale_after_seconds: number
 }
 
 function timestamp(iso: string) {
@@ -66,19 +48,9 @@ export function CurrentView() {
       controller = request
       const timeout = window.setTimeout(() => request.abort(), 20_000)
       try {
-        async function fetchJson(path: string) {
-          const response = await fetch(path, { signal: request.signal, cache: 'no-store' })
-          if (!response.ok) throw new Error(`Request failed (${response.status})`)
-          return response.json()
-        }
         const [observations, model] = await Promise.allSettled([
-          fetchJson('/api/observations/latest').then((result: LatestObservations) => {
-            if (result.source !== 'tiger_data' || !Array.isArray(result.readings)) {
-              throw new Error('Unexpected observation response')
-            }
-            return result
-          }),
-          fetchJson('/api/predictions/latest').then(parsePrediction),
+          fetchLatestObservations(request.signal),
+          fetchLatestPrediction(request.signal),
         ])
         if (stopped) return
         if (observations.status === 'fulfilled') {

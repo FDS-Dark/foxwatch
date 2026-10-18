@@ -1,4 +1,4 @@
-import { predictionBucket, type BloomPrediction } from '../data/types/prediction'
+import { predictionBucket, type BloomPrediction } from '@/models/prediction'
 
 export function BloomPredictionCard({ prediction, error, updatedAt }: {
   prediction: BloomPrediction | null

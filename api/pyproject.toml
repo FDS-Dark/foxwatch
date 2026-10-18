@@ -1,7 +1,7 @@
 [project]
 name = "api"
 version = "0.1.0"
-description = "Add your description here"
+description = "FoxWatch API"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
@@ -11,4 +11,29 @@ dependencies = [
     "python-dotenv>=1.2.4",
     "scikit-learn>=1.9.1",
     "uvicorn>=0.54.0",
+    "pydantic-settings>=2.10.1",
+    "pyjwt>=2.10.1",
+    "sqlalchemy[asyncio]>=2.0.41",
+    "greenlet>=3.2.0",
+    "asyncpg>=0.30.0",
+    "structlog>=25.4.0",
+    "pandas>=2.3.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+]
+rag = [
+    "pypdf>=4.0",
+    "sentence-transformers>=3.0",
+    "google-generativeai>=0.8",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+filterwarnings = [
+    "ignore::DeprecationWarning",
 ]

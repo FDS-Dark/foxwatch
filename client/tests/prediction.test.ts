@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { parsePrediction, predictionBucket } from '../src/data/types/prediction'
+import { parsePrediction, predictionBucket } from '../src/models/prediction'
 
 test('classifies exact boundaries using the unrounded probability', () => {
   for (const [value, expected] of [[0, 'low'], [0.49999, 'low'], [0.5, 'medium'], [0.79999, 'medium'], [0.8, 'high'], [1, 'high']] as const) {
