@@ -52,7 +52,7 @@ export function InvestigateView() {
       <div className="xray-row"><div><h2>How well did the models perform?</h2></div>
         <span className="chip">2025 field study</span></div>
       <p>Compare predictions against withheld boat measurements from the FLAMe survey.</p>
-      <p className="muted">Historical results; current-season accuracy remains unverified.</p>
+      <p className="muted">Historical results. Current-season accuracy remains unverified.</p>
       <div className="xray-row" style={{ marginTop: '1rem' }}><label>Case <select value={segmentId} onChange={e => {
         controller.current?.abort(); setLoading(false); setSegmentId(Number(e.target.value)); setAnswer(null); setQuestion(''); setError(null)
       }}><option value={32}>Segment 32 · plume recovery</option><option value={31}>Segment 31 · failure case</option><option value={17}>Segment 17 · typical case</option></select></label>

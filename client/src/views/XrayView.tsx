@@ -286,7 +286,7 @@ export function XrayView() {
             <span>
               {selected === 'satellite'
                 ? 'Colorized reflectance'
-                : '2025-trained model; current-season accuracy unverified'}
+                : '2025-trained model. Current-season accuracy remains unverified.'}
             </span>
           </div>
           {selected === 'prediction' && (
@@ -372,12 +372,12 @@ export function XrayView() {
                 </p>
                 <p>
                   {snapshot.training_bins.toLocaleString()} FLAMe training bins, {snapshot.training_period}.{' '}
-                  {snapshot.extrapolated_cells.toLocaleString()} cells are beyond 3 km of training locations;{' '}
+                  {snapshot.extrapolated_cells.toLocaleString()} cells are beyond 3 km of training locations.{' '}
                   {snapshot.outside_feature_range_cells.toLocaleString()} have at least one satellite feature
                   outside the training range.
                 </p>
                 <p>
-                  Uncolored areas have no usable prediction. Scales adjust to each snapshot; smoothing adds no
+                  Uncolored areas have no usable prediction. Scales adjust to each snapshot. Smoothing adds no
                   measurements.
                 </p>
                 <p>
@@ -390,7 +390,7 @@ export function XrayView() {
                     <a href={snapshot.region.source_url} target="_blank" rel="noreferrer">
                       NWS marine-zone boundaries
                     </a>
-                    ; this boundary does not establish model accuracy.
+                    . This boundary does not establish model accuracy.
                   </p>
                 )}
                 <a href="#/investigate">Model validation</a>

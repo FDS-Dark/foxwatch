@@ -9,8 +9,8 @@ const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
   },
   {
     id: 'scan',
-    label: 'Bloom driver scan',
-    hint: 'Driver radar',
+    label: 'Condition severity',
+    hint: 'Water conditions',
     icon: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 3v7M7 12H5M19 12h-2M12 7V5M12 19v-2',
   },
   {
