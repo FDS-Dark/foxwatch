@@ -4,7 +4,22 @@ One FastAPI application serves USGS observations and evidence-backed bloom
 favorability insights. It collects continuous measurements for Fox River at Green
 Bay, station `USGS-040851385`, into a Tiger Data (TimescaleDB/PostgreSQL)
 hypertable. `main.py` owns the application and collector lifecycle;
-`foxwatch/routes.py` supplies the bloom-insights routes.
+`bfi/routes.py` supplies the bloom-insights routes.
+
+## Layout
+
+```text
+api/
+  main.py          # FastAPI app, ingestion lifecycle, observation endpoints
+  ingestion.py     # USGS collector and Tiger Data storage
+  config.py        # Shared repository paths and Gemini configuration
+  bfi/             # Bloom scoring, insights, and API router
+  rag/             # Document ingestion, embeddings, and retrieval support
+  model/           # Offline logistic-regression model
+```
+
+Run document ingestion from the repository root with `python -m api.rag.ingest`
+using the API environment.
 
 ## Run
 
@@ -18,8 +33,9 @@ uv run python main.py
 ```
 
 For reload mode, run `uv run uvicorn main:app --reload` from `api/`.
-The older `uvicorn foxwatch.main:app --reload --app-dir api` entry point also
-serves the same combined application. Only one API process is needed on port 8000.
+From the repository root, use `uvicorn api.main:app --reload` with the API
+environment activated. The old `foxwatch.main:app` entry point has been removed.
+Only one API process is needed on port 8000.
 
 Put `GEMINI_API_KEY` and optional `GEMINI_MODEL` in the repo-root `.env` (see
 `../.env.example`). Existing environment variables take precedence, followed by

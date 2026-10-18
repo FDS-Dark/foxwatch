@@ -1,0 +1,12 @@
+{
+"type": "FeatureCollection",
+"name": "sampling_candidates_GreenBay_2025_Jun__chl_RFU_exo_tau",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "rank": 1, "predicted": 1.1378199583127828, "sd_model_space": 0.3732388845259586, "dist_to_nearest_obs_m": 2958.4473309399059, "method": "greedy integrated-variance-reduction (GP); suggestion, not proven optimal", "variable": "chl_RFU_exo_tau", "units": "RFU", "model_version": "xray-bay-0.1.0" }, "geometry": { "type": "Point", "coordinates": [ -87.773915643737965, 44.808773680836559 ] } },
+{ "type": "Feature", "properties": { "rank": 2, "predicted": 1.1289705073351159, "sd_model_space": 0.36952590268360141, "dist_to_nearest_obs_m": 2814.3343073978913, "method": "greedy integrated-variance-reduction (GP); suggestion, not proven optimal", "variable": "chl_RFU_exo_tau", "units": "RFU", "model_version": "xray-bay-0.1.0" }, "geometry": { "type": "Point", "coordinates": [ -87.778997067399033, 44.71646561181543 ] } },
+{ "type": "Feature", "properties": { "rank": 3, "predicted": 1.3214942852231792, "sd_model_space": 0.34798581489560326, "dist_to_nearest_obs_m": 2593.2429435807471, "method": "greedy integrated-variance-reduction (GP); suggestion, not proven optimal", "variable": "chl_RFU_exo_tau", "units": "RFU", "model_version": "xray-bay-0.1.0" }, "geometry": { "type": "Point", "coordinates": [ -87.844522941426561, 44.664236010879357 ] } },
+{ "type": "Feature", "properties": { "rank": 4, "predicted": 1.1503876600497196, "sd_model_space": 0.35556559793045411, "dist_to_nearest_obs_m": 2426.5522274106734, "method": "greedy integrated-variance-reduction (GP); suggestion, not proven optimal", "variable": "chl_RFU_exo_tau", "units": "RFU", "model_version": "xray-bay-0.1.0" }, "geometry": { "type": "Point", "coordinates": [ -87.817441149564075, 44.756707407852609 ] } },
+{ "type": "Feature", "properties": { "rank": 5, "predicted": 1.3357760554022993, "sd_model_space": 0.35775944537708226, "dist_to_nearest_obs_m": 2157.8609358760259, "method": "greedy integrated-variance-reduction (GP); suggestion, not proven optimal", "variable": "chl_RFU_exo_tau", "units": "RFU", "model_version": "xray-bay-0.1.0" }, "geometry": { "type": "Point", "coordinates": [ -87.655088654429591, 44.924294337111057 ] } }
+]
+}

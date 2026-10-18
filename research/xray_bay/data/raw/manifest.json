@@ -1,0 +1,37 @@
+{
+  "doi": "10.5066/P1XHRFKZ",
+  "sciencebase_item": "https://www.sciencebase.gov/catalog/item/672e5378d34ea9e450891ffe?format=json",
+  "title": "High spatial resolution sensor-based surface water quality data along the Lake Winnebago-Fox River-Green Bay continuum in 2023-2025",
+  "files": [
+    {
+      "name": "FLAMe_data_dictionary.csv",
+      "size": 14541,
+      "sha256": "bbe4ddf7d6b2e697e43de117dda2431592a4803101f8b1ec44f4eec3164f9276",
+      "url": "https://www.sciencebase.gov/catalog/file/get/672e5378d34ea9e450891ffe?f=__disk__69%2Fbe%2F23%2F69be239a6e9cbda2d1a731f17b1d9bb3478c81b2"
+    },
+    {
+      "name": "FLAMe_map.png",
+      "size": 1325535,
+      "sha256": "6781fe5d92b3013f20df9449a1ce90790347d45492c5b601350e5a5169ce3e4d",
+      "url": "https://www.sciencebase.gov/catalog/file/get/672e5378d34ea9e450891ffe?f=__disk__17%2F9a%2Fcd%2F179acdaf0a36d1faba9d3fd7e9b49148f7d62817"
+    },
+    {
+      "name": "FLAMe_samples.csv",
+      "size": 117803,
+      "sha256": "d4d4c1e95f9071ada0e9308f61188da0b8dd5b75427f5a515ac9aa12ef073667",
+      "url": "https://www.sciencebase.gov/catalog/file/get/672e5378d34ea9e450891ffe?f=__disk__3a%2F3e%2Ffe%2F3a3efea8fcd800806e14b526bc1cae8e7176d3bd"
+    },
+    {
+      "name": "FLAMe_data.csv",
+      "size": 4255,
+      "sha256": "01d324b90d086dd7389e13cfabbc185a7b7afe7917620e05254248773d01e1a2",
+      "url": "https://sciencebase.usgs.gov/manager/download/cmo1zzg2b00ph0uo4ej0ehsrz"
+    },
+    {
+      "name": "FLAMe_metadata.xml",
+      "size": 121274,
+      "sha256": "e77e50b3345ef504fe2c1777adc34a06cad98f8178f8dc9df59cdb72eda8c437",
+      "url": "https://www.sciencebase.gov/catalog/file/get/672e5378d34ea9e450891ffe?f=__disk__9d%2F22%2Fae%2F9d22ae51f548be81d8430d63d26420a63d04632d"
+    }
+  ]
+}

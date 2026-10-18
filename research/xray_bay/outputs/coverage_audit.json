@@ -1,0 +1,85 @@
+{
+  "GreenBay_2025_Jun": {
+    "n_raw_rows_in_green_bay": 40776,
+    "n_bins_100m": 2497,
+    "track_km_in_bay": 263.4,
+    "water_area_in_bbox_km2": 1050.4,
+    "frac_water_within_0.5km": 0.188,
+    "frac_water_within_1km": 0.351,
+    "frac_water_within_2km": 0.601,
+    "frac_water_within_3km": 0.759,
+    "frac_water_within_5km": 0.895,
+    "median_dist_water_to_obs_km": 1.55,
+    "max_dist_water_to_obs_km": 12.19,
+    "days_utc": [
+      "2025-06-30",
+      "2025-07-01"
+    ]
+  },
+  "GreenBay_2025_Apr": {
+    "n_raw_rows_in_green_bay": 43897,
+    "n_bins_100m": 1702,
+    "track_km_in_bay": 175.0,
+    "water_area_in_bbox_km2": 1060.1,
+    "frac_water_within_0.5km": 0.129,
+    "frac_water_within_1km": 0.25,
+    "frac_water_within_2km": 0.46,
+    "frac_water_within_3km": 0.636,
+    "frac_water_within_5km": 0.848,
+    "median_dist_water_to_obs_km": 2.21,
+    "max_dist_water_to_obs_km": 13.02,
+    "days_utc": [
+      "2025-04-18",
+      "2025-04-19",
+      "2025-04-20"
+    ]
+  },
+  "Fox_2025_Jul": {
+    "n_raw_rows_in_green_bay": 9448,
+    "n_bins_100m": 626,
+    "track_km_in_bay": 65.8,
+    "water_area_in_bbox_km2": 160.1,
+    "frac_water_within_0.5km": 0.287,
+    "frac_water_within_1km": 0.511,
+    "frac_water_within_2km": 0.77,
+    "frac_water_within_3km": 0.895,
+    "frac_water_within_5km": 0.974,
+    "median_dist_water_to_obs_km": 0.97,
+    "max_dist_water_to_obs_km": 6.76,
+    "days_utc": [
+      "2025-07-10"
+    ]
+  },
+  "Fox_2024_Jul": {
+    "n_raw_rows_in_green_bay": 9046,
+    "n_bins_100m": 710,
+    "track_km_in_bay": 74.3,
+    "water_area_in_bbox_km2": 159.9,
+    "frac_water_within_0.5km": 0.291,
+    "frac_water_within_1km": 0.511,
+    "frac_water_within_2km": 0.771,
+    "frac_water_within_3km": 0.892,
+    "frac_water_within_5km": 0.971,
+    "median_dist_water_to_obs_km": 0.97,
+    "max_dist_water_to_obs_km": 6.87,
+    "days_utc": [
+      "2024-07-30"
+    ]
+  },
+  "Fox_2024_Aug": {
+    "n_raw_rows_in_green_bay": 7776,
+    "n_bins_100m": 578,
+    "track_km_in_bay": 61.4,
+    "water_area_in_bbox_km2": 161.1,
+    "frac_water_within_0.5km": 0.283,
+    "frac_water_within_1km": 0.503,
+    "frac_water_within_2km": 0.766,
+    "frac_water_within_3km": 0.889,
+    "frac_water_within_5km": 0.971,
+    "median_dist_water_to_obs_km": 0.99,
+    "max_dist_water_to_obs_km": 6.93,
+    "days_utc": [
+      "2024-08-21"
+    ]
+  }
+}

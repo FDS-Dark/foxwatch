@@ -1,4 +1,5 @@
 import asyncio
+import sys
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -12,10 +13,12 @@ load_dotenv(Path(__file__).with_name(".env"))
 
 if __package__:
     from .ingestion import Collector, Settings
-    from .foxwatch.routes import router as insights_router
+    from .bfi.routes import router as insights_router
 else:
     from ingestion import Collector, Settings
-    from foxwatch.routes import router as insights_router
+    # Keep direct startup (`python main.py`) working with the api package.
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from api.bfi.routes import router as insights_router
 
 
 async def collect_forever(collector, stop):

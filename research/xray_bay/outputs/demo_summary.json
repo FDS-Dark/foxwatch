@@ -1,0 +1,126 @@
+{
+  "GreenBay_2025_Jun__chl_RFU_exo_tau": {
+    "campaign": "GreenBay_2025_Jun",
+    "target": "chl_RFU_exo_tau",
+    "units": "RFU",
+    "segments": {
+      "hardest": {
+        "segment": 32,
+        "n_hidden": 46,
+        "gp": {
+          "n": 46,
+          "MAE": 3.7907202686910866,
+          "RMSE": 4.473774490014946,
+          "R2": -0.7611975679945882,
+          "bias": -3.620130765052355
+        },
+        "idw": {
+          "n": 46,
+          "MAE": 4.444799366983035,
+          "RMSE": 4.9964284128165675,
+          "R2": -1.1967429344829883,
+          "bias": -4.444799366983035
+        },
+        "gp_80pct_interval_hit_rate": 0.34782608695652173,
+        "kernel": "0.735**2 * Matern(length_scale=2.46, nu=1.5) + WhiteKernel(noise_level=0.00574)"
+      },
+      "central": {
+        "segment": 23,
+        "n_hidden": 47,
+        "gp": {
+          "n": 47,
+          "MAE": 0.2814060850636914,
+          "RMSE": 0.2992588402038928,
+          "R2": -28.231979113468725,
+          "bias": 0.2814060850636914
+        },
+        "idw": {
+          "n": 47,
+          "MAE": 0.0626944336776682,
+          "RMSE": 0.07770264639715407,
+          "R2": -0.9707696399702443,
+          "bias": 0.015731715852822764
+        },
+        "gp_80pct_interval_hit_rate": 1.0,
+        "kernel": "0.766**2 * Matern(length_scale=2.34, nu=1.5) + WhiteKernel(noise_level=0.00506)"
+      }
+    },
+    "sampling_candidates": [
+      {
+        "rank": 1,
+        "predicted": 1.1378199583127828,
+        "sd_model_space": 0.3732388845259586,
+        "dist_to_nearest_obs_m": 2958.447330939906,
+        "method": "greedy integrated-variance-reduction (GP); suggestion, not proven optimal",
+        "variable": "chl_RFU_exo_tau",
+        "units": "RFU",
+        "model_version": "xray-bay-0.1.0",
+        "lon": -87.77391564373796,
+        "lat": 44.80877368083656
+      },
+      {
+        "rank": 2,
+        "predicted": 1.128970507335116,
+        "sd_model_space": 0.3695259026836014,
+        "dist_to_nearest_obs_m": 2814.3343073978913,
+        "method": "greedy integrated-variance-reduction (GP); suggestion, not proven optimal",
+        "variable": "chl_RFU_exo_tau",
+        "units": "RFU",
+        "model_version": "xray-bay-0.1.0",
+        "lon": -87.77899706739903,
+        "lat": 44.71646561181543
+      },
+      {
+        "rank": 3,
+        "predicted": 1.3214942852231792,
+        "sd_model_space": 0.34798581489560326,
+        "dist_to_nearest_obs_m": 2593.242943580747,
+        "method": "greedy integrated-variance-reduction (GP); suggestion, not proven optimal",
+        "variable": "chl_RFU_exo_tau",
+        "units": "RFU",
+        "model_version": "xray-bay-0.1.0",
+        "lon": -87.84452294142656,
+        "lat": 44.66423601087936
+      },
+      {
+        "rank": 4,
+        "predicted": 1.1503876600497196,
+        "sd_model_space": 0.3555655979304541,
+        "dist_to_nearest_obs_m": 2426.5522274106734,
+        "method": "greedy integrated-variance-reduction (GP); suggestion, not proven optimal",
+        "variable": "chl_RFU_exo_tau",
+        "units": "RFU",
+        "model_version": "xray-bay-0.1.0",
+        "lon": -87.81744114956408,
+        "lat": 44.75670740785261
+      },
+      {
+        "rank": 5,
+        "predicted": 1.3357760554022993,
+        "sd_model_space": 0.35775944537708226,
+        "dist_to_nearest_obs_m": 2157.860935876026,
+        "method": "greedy integrated-variance-reduction (GP); suggestion, not proven optimal",
+        "variable": "chl_RFU_exo_tau",
+        "units": "RFU",
+        "model_version": "xray-bay-0.1.0",
+        "lon": -87.65508865442959,
+        "lat": 44.92429433711106
+      }
+    ],
+    "active_sampling_replay": {
+      "n_segments": 53,
+      "mean_mae_before": 0.45659689366862954,
+      "mean_mae_after_random": 0.34666548253285007,
+      "mean_rel_improvement_random": 0.22019804067146043,
+      "mean_mae_after_max_sd": 0.3171216245506277,
+      "mean_rel_improvement_max_sd": 0.29275295151829206,
+      "segments_max_sd_beats_random": 36,
+      "mean_mae_after_ivr": 0.3326585425166221,
+      "mean_rel_improvement_ivr": 0.28448314574536415,
+      "segments_ivr_beats_random": 36,
+      "mean_mae_after_max_dist": 0.3211794234518411,
+      "mean_rel_improvement_max_dist": 0.2779544791959661,
+      "segments_max_dist_beats_random": 38
+    }
+  }
+}

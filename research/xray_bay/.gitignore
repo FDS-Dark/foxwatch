@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+# raw downloads are reproducible via scripts/01_download.py (FLAMe_data.csv needs a manual login download)
+data/raw/FLAMe_data.csv
+data/raw/Highspatialreso.zip
+data/processed/
+outputs/metrics/*.stdout

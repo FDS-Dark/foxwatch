@@ -1,0 +1,15 @@
+{
+ "collection": "sentinel-2-c1-l2a",
+ "stac": "https://earth-search.aws.element84.com/v1",
+ "main_time_matched": [
+  "S2A_T16TDQ_20250630T164706_L2A",
+  "S2C_T16TDQ_20250701T165332_L2A"
+ ],
+ "sensitivity_24_72h": [
+  "S2C_T16TDQ_20250628T164829_L2A"
+ ],
+ "fetched_qa_only": [
+  "S2A_T16TDQ_20250703T165928_L2A"
+ ],
+ "export_scene": "S2C_T16TDQ_20250701T165332_L2A"
+}
