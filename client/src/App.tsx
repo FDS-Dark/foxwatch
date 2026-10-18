@@ -7,37 +7,33 @@ import { ReplayView } from './views/ReplayView'
 import { ReviewView } from './views/ReviewView'
 import { BfiInsightsView } from './views/BfiInsightsView'
 import { CurrentView } from './views/CurrentView'
+import { InvestigateView } from './views/InvestigateView'
 import './App.css'
+
+type RouteId = ViewId | 'investigate'
 
 const VIEWS: ViewId[] = ['current', 'bfi', 'replay', 'review']
 
-function viewFromHash(): ViewId {
+function viewFromHash(): RouteId {
   const raw = window.location.hash.replace('#/', '').split('?')[0]
-  if (raw === 'investigate') return 'bfi'
+  if (raw === 'investigate') return 'investigate'
   const id = raw as ViewId
   return VIEWS.includes(id) ? id : 'current'
 }
 
-const TITLES: Record<ViewId, string> = {
+const TITLES: Record<RouteId, string> = {
   current: 'Current conditions',
   bfi: 'Bloom favorability',
   replay: 'X-Ray the Bay',
   review: 'Analyst review',
+  investigate: 'Model validation',
 }
 
 function App() {
-  const [view, setView] = useState<ViewId>(viewFromHash)
+  const [view, setView] = useState<RouteId>(viewFromHash)
 
   useEffect(() => {
-    const onHash = () => {
-      const raw = window.location.hash.replace('#/', '').split('?')[0]
-      if (raw === 'investigate') {
-        const rest = window.location.hash.includes('?') ? window.location.hash.split('?').slice(1).join('?') : ''
-        window.location.replace(`#/bfi${rest ? `?${rest}` : ''}`)
-        return
-      }
-      setView(viewFromHash())
-    }
+    const onHash = () => setView(viewFromHash())
     onHash()
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
@@ -56,7 +52,7 @@ function App() {
         Skip to content
       </a>
       <div className="shell">
-        <Sidebar current={view} />
+        <Sidebar current={view === 'investigate' ? 'replay' : view} />
         <div className="shell__body">
           <header className="topbar">
             <div>
@@ -66,7 +62,7 @@ function App() {
             {view === 'current' ? (
               <p className="status-pill status-pill--live" role="status">
                 <span className="status-pill__dot" aria-hidden="true" />
-                Live station data
+                USGS observations
               </p>
             ) : view === 'replay' ? (
               <p className="status-pill status-pill--live" role="status">
@@ -81,7 +77,11 @@ function App() {
             ) : view === 'bfi' ? (
               <p className="status-pill status-pill--live" role="status">
                 <span className="status-pill__dot" aria-hidden="true" />
-                Live drivers &amp; summary
+                USGS + scientific literature
+              </p>
+            ) : view === 'investigate' ? (
+              <p className="status-pill" role="status">
+                FLAMe field study · 2025
               </p>
             ) : (
               <StatusPill />
@@ -92,6 +92,7 @@ function App() {
             {view === 'replay' && <ReplayView />}
             {view === 'bfi' && <BfiInsightsView />}
             {view === 'review' && <ReviewView />}
+            {view === 'investigate' && <InvestigateView />}
           </main>
           <footer className="shell__footer">
             {view === 'current'
@@ -102,7 +103,9 @@ function App() {
                   ? 'Favorability from recent conditions and published references. Not a bloom forecast.'
                   : view === 'replay'
                     ? 'Recent satellite predictions with acquisition dates. Experimental fluorescence estimates, not confirmed harmful blooms.'
-                    : 'Indicators are not confirmed harmful algal blooms or official advisories.'}
+                    : view === 'investigate'
+                      ? 'Validation against withheld 2025 boat measurements. Not a live bloom assessment.'
+                      : 'Experimental estimates · not a bloom advisory.'}
           </footer>
         </div>
       </div>

@@ -4,7 +4,7 @@ const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
   {
     id: 'current',
     label: 'Current conditions',
-    hint: 'Live station & bloom score',
+    hint: 'Latest station readings',
     icon: 'M3 12h3l3-8 4 16 3-8h5',
   },
   {
@@ -17,7 +17,7 @@ const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
     id: 'replay',
     label: 'X-Ray the Bay',
     hint: 'Latest satellite predictions',
-    icon: 'M3 6l6-3 6 3 6-3v12l-6 3-6-3-6 3V6z M9 3v18 M15 6v18',
+    icon: 'M3 12h3l3-8 4 16 3-8h5',
   },
   {
     id: 'review',
@@ -45,7 +45,7 @@ export function Sidebar({ current }: { current: ViewId }) {
           width={480}
           height={86}
         />
-        <span className="sidebar__tagline">Water quality · Green Bay</span>
+        <span className="sidebar__tagline">Green Bay water monitoring</span>
       </a>
 
       <nav aria-label="Primary">
