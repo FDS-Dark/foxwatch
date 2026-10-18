@@ -1,0 +1,74 @@
+{
+  "bfi": {
+    "classification": "LOW FAVORABILITY",
+    "score": 0,
+    "max_possible_score": 12,
+    "drivers": []
+  },
+  "insights": {
+    "executive_summary": "The current assessment is LOW FAVORABILITY (0/12). Primary contributing conditions include limited scored drivers. No positive BFI driver factors were available; retrieval used general bloom-driver literature with limited driver-specific filtering.",
+    "bloom_assessment": "Bloom favorability is classified as LOW FAVORABILITY based on the BFI score of 0 out of 12.",
+    "key_contributing_factors": [
+      "No BFI factors scored favorably in the current assessment"
+    ],
+    "scientific_interpretation": "This section explains cyanobacteria ecology. Runoff-driven loading is often episodic, so bloom risk may rise even when long-term average phosphorus concentrations appear moderate. This section explains cyanobacteria ecology. Elevated phosphorus concentrations promote cyanobacterial growth by increasing nutrient availability in the euphotic zone. This section explains cyanobacteria ecology. Wind-driven mixing and fall turnover redistribute nutrients, sometimes fueling late-season cyanobacteria peaks if phosphorus remains available in the water column or is released from sediments under anoxic conditions.",
+    "confidence": {
+      "level": "High",
+      "percent": 72,
+      "reason": "6 BFI input factor(s) available; 5/5 target evidence chunks retrieved; 1 unique source document(s); no positive BFI drivers limited driver-aware retrieval."
+    },
+    "sources": [
+      {
+        "title": "Sample Phosphorus Hydrology",
+        "chapter": "Harmful Algal Bloom Ecology and Water Quality",
+        "section": "Harmful Algal Bloom Ecology and Water Quality",
+        "authors": "",
+        "year": ""
+      },
+      {
+        "title": "Sample Phosphorus Hydrology",
+        "chapter": "Phosphorus Controls on Bloom Formation",
+        "section": "Phosphorus Controls on Bloom Formation",
+        "authors": "",
+        "year": ""
+      },
+      {
+        "title": "Sample Phosphorus Hydrology",
+        "chapter": "Temperature, Sunlight, and Cyanobacteria Growth",
+        "section": "Temperature, Sunlight, and Cyanobacteria Growth",
+        "authors": "",
+        "year": ""
+      },
+      {
+        "title": "Sample Phosphorus Hydrology",
+        "chapter": "Rainfall, Runoff, and Precipitation Effects",
+        "section": "Rainfall, Runoff, and Precipitation Effects",
+        "authors": "",
+        "year": ""
+      },
+      {
+        "title": "Sample Phosphorus Hydrology",
+        "chapter": "Hydrology, Streamflow, and Residence Time",
+        "section": "Hydrology, Streamflow, and Residence Time",
+        "authors": "",
+        "year": ""
+      }
+    ],
+    "generation_mode": "evidence_synthesis"
+  },
+  "evidence": {
+    "context_summary": "No positive BFI driver factors were available; retrieval used general bloom-driver literature with limited driver-specific filtering.",
+    "sources": [
+      {
+        "document_title": "Sample Phosphorus Hydrology",
+        "chapter": "Harmful Algal Bloom Ecology and Water Quality",
+        "section": "Harmful Algal Bloom Ecology and Water Quality",
+        "authors": "",
+        "year": "",
+        "chunk_id": "sample-phosphorus-hydrology__harmful-algal-bloom-ecology-an__0005__c887bdf3fb",
+        "source_type": "research_paper"
+      }
+    ],
+    "retrieval_tags": []
+  }
+}

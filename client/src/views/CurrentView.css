@@ -1,0 +1,13 @@
+.current { display: grid; gap: 1.25rem; }
+.current__intro { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; padding: 1.5rem; }
+.current__intro h2 { margin: 0.3rem 0; }
+.current__refresh { display: grid; align-content: center; justify-items: start; gap: 0.5rem; }
+.current__note { color: var(--muted); font-size: 0.82rem; }
+.current__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1rem; }
+.current__reading { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.35rem; }
+.current__reading-heading { display: flex; flex-wrap: wrap; align-items: start; justify-content: space-between; gap: 0.5rem; }
+.current__reading h3 { font-size: 1rem; }
+.current__value { font: 600 2.2rem var(--display); color: var(--deep); margin-top: 0.75rem; }
+.current__unit { color: var(--muted); margin-bottom: 0.6rem; }
+.current__code { color: var(--muted); font: 0.72rem var(--mono); margin-top: auto; padding-top: 0.8rem; }
+.current__notice { padding: 1rem 1.25rem; border: 1px solid var(--fox); border-radius: var(--radius-sm); background: var(--fox-soft); }

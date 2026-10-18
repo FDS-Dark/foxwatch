@@ -6,18 +6,22 @@ import { StatusPill } from './components/StatusPill'
 import { InvestigateView } from './views/InvestigateView'
 import { ReplayView } from './views/ReplayView'
 import { ReviewView } from './views/ReviewView'
+import { BfiInsightsView } from './views/BfiInsightsView'
+import { CurrentView } from './views/CurrentView'
 import './App.css'
 
-const VIEWS: ViewId[] = ['replay', 'investigate', 'review']
+const VIEWS: ViewId[] = ['current', 'replay', 'investigate', 'bfi', 'review']
 
 function viewFromHash(): ViewId {
   const id = window.location.hash.replace('#/', '') as ViewId
-  return VIEWS.includes(id) ? id : 'replay'
+  return VIEWS.includes(id) ? id : 'current'
 }
 
 const TITLES: Record<ViewId, string> = {
+  current: 'Current conditions',
   replay: 'Historical replay',
   investigate: 'Investigate evidence',
+  bfi: 'Bloom favorability insights',
   review: 'Review & retrain',
 }
 
@@ -50,17 +54,19 @@ function App() {
               <p className="topbar__eyebrow">Lower Fox River · Green Bay</p>
               <h1 className="topbar__title">{TITLES[view]}</h1>
             </div>
-            <StatusPill />
+            {view === 'current' ? <p className="status-pill">USGS via Tiger Data</p> : <StatusPill />}
           </header>
           <main id="main" tabIndex={-1} className="shell__main">
+            {view === 'current' && <CurrentView />}
             {view === 'replay' && <ReplayView />}
             {view === 'investigate' && <InvestigateView />}
+            {view === 'bfi' && <BfiInsightsView />}
             {view === 'review' && <ReviewView />}
           </main>
           <footer className="shell__footer">
-            Historical replay for education. Satellite values are
+            {view === 'current' ? 'Current station measurements from USGS, served from Tiger Data.' : <>Historical replay for education. Satellite values are
             dimensionless proxies, not confirmed harmful algal blooms. Scenarios
-            are assumptions, not forecasts.
+            are assumptions, not forecasts.</>}
           </footer>
         </div>
       </div>
