@@ -25,7 +25,7 @@ function viewFromHash(): RouteId {
 
 const TITLES: Record<RouteId, string> = {
   current: 'Current conditions',
-  scan: 'Bloom driver scan',
+  scan: 'Condition severity',
   bfi: 'Bloom favorability',
   recovery: 'Incident recovery',
   replay: 'X-Ray the Bay',

@@ -4,6 +4,7 @@ import type { BloomPrediction } from '@/models/prediction'
 import type { LatestObservations } from '@/models/observations'
 import { fetchLatestObservations } from '@/services/observationsService'
 import { fetchLatestPrediction } from '@/services/predictionsService'
+import { isObservationStale } from '@/lib/observationFreshness'
 import './CurrentView.css'
 
 const PARAMETERS: Record<string, string> = {
@@ -100,14 +101,14 @@ export function CurrentView() {
         <p id="current-title" className="current__intro-line">
           <span className="current__intro-label">USGS</span>
           <span className="current__intro-station">{data?.station_id ?? 'Loading…'}</span>
-          <span className="current__intro-muted">· latest per parameter · &gt;30m marked delayed</span>
+          <span className="current__intro-muted">· USGS typically publishes hourly · page refreshes every 15s</span>
         </p>
         <div className="current__intro-aside">
           <p className={`chip chip--compact ${error ? 'chip--warn' : data ? 'chip--ok' : ''}`} role="status">
-            {error ? 'Reconnecting' : data ? 'Live' : 'Connecting…'}
+            {error ? 'Reconnecting' : data ? 'Connected' : 'Connecting…'}
           </p>
           {data && (
-            <time className="current__intro-fetched" dateTime={data.fetched_at}>
+            <time className="current__intro-fetched" dateTime={data.fetched_at} title="Last page refresh; observation times appear on each reading">
               {timestamp(data.fetched_at)}
             </time>
           )}
@@ -123,12 +124,12 @@ export function CurrentView() {
       {data && <section className="current__grid" aria-label="Latest measurements">
         {data.requested_parameters.map((code) => {
           const reading = readings.get(code)
-          const stale = reading && now - Date.parse(reading.observed_at) > data.stale_after_seconds * 1000
+          const stale = reading && isObservationStale(reading.observed_at, now, data.stale_after_seconds)
           return (
             <article className="card current__reading" key={code}>
               <div className="current__reading-heading">
                 <h3>{PARAMETERS[code] ?? code}</h3>
-                {stale && <span className="chip chip--warn">Delayed</span>}
+                {stale && <span className="chip chip--warn" title="No new reading for over two hours">Update overdue</span>}
               </div>
               <p className="current__value">{reading?.value != null
                 ? reading.value.toLocaleString(undefined, { maximumFractionDigits: 3 })

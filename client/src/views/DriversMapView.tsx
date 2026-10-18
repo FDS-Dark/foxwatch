@@ -92,9 +92,10 @@ export function DriversMapView() {
   return (
     <div className="driver-scan">
       <p className="driver-scan__lede">
-        Live bloom-driver scan for the Fox River mouth. Wedge length and color follow the same
-        viridis-style scale as X-Ray the Bay: cool tones mean lower bloom favorability, bright
-        yellow means more bloom-favorable conditions. Not a bloom forecast.
+        Live water conditions on the Lower Fox River near Green Bay including temperature, nutrients,
+        flow, rainfall, and related drivers in a severity-style readout. Cooler colors mean milder
+        conditions in the water. Brighter tones mean more stress or bloom favorability. This is not a
+        bloom forecast.
       </p>
 
       {error ? (
@@ -103,12 +104,12 @@ export function DriversMapView() {
         </p>
       ) : null}
 
-      <section className="driver-scan__stage" aria-label="Bloom driver radar">
+      <section className="driver-scan__stage" aria-label="Water condition severity">
         {loading && !bfi ? (
           <div className="live-map-loading driver-scan__loading" role="status">
             <div className="live-orbit" />
-            <h3>Scanning live drivers</h3>
-            <p>Pulling USGS, rainfall, and BFI inputs...</p>
+            <h3>Loading water conditions</h3>
+            <p>Pulling USGS readings and live inputs…</p>
           </div>
         ) : (
           <div className="driver-scan__layout">
@@ -120,7 +121,7 @@ export function DriversMapView() {
               classification={bfi?.bfi.classification}
             />
             <aside className="driver-scan__panel">
-              <h2 className="driver-scan__panel-title">Driver readout</h2>
+              <h2 className="driver-scan__panel-title">Condition readout</h2>
               <ul className="driver-detail-list">
                 {cells.map((cell) => (
                   <DriverDetail key={cell.id} cell={cell} />
