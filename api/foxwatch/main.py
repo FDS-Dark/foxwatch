@@ -1,14 +1,15 @@
 """
-FoxWatch API — BFI scoring and evidence-backed bloom insights.
+FoxWatch API — current observations (Tiger Data), BFI scoring, and RAG insights.
 """
 
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 from functools import lru_cache
 from typing import Any, Optional
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -16,11 +17,20 @@ from foxwatch.bfi.index import calculate_bloom_favorability
 from foxwatch.bfi.insights import generate_bfi_insights
 from foxwatch.bfi.gemini import gemini_configured, model_candidates
 from foxwatch.config import RAG_INDEX_PATH, REPO_ROOT
+from foxwatch.observations import observation_lifespan, register_observation_routes
 from foxwatch.rag.embeddings import HashEmbedder, create_production_embedder, load_embedded_chunks
 
 load_dotenv(REPO_ROOT / ".env")
+load_dotenv(REPO_ROOT / "api" / ".env", override=False)
 
-app = FastAPI(title="FoxWatch API", version="0.1.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with observation_lifespan(app):
+        yield
+
+
+app = FastAPI(title="FoxWatch API", version="0.1.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
@@ -28,6 +38,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+register_observation_routes(app)
 
 
 class BfiInsightRequest(BaseModel):
@@ -58,24 +70,29 @@ def _index():
 
 @app.get("/")
 def root() -> dict[str, Any]:
-    """Browser-friendly index (UI is served by Vite on port 5173)."""
     return {
         "service": "FoxWatch API",
         "docs": "/docs",
         "health": "/api/health",
+        "observations_latest": "GET /api/observations/latest",
         "bfi_insights": "POST /api/v1/bfi/insights",
-        "ui": "http://127.0.0.1:5173/#/bfi",
+        "ui_current": "http://127.0.0.1:5173/#/current",
+        "ui_bfi": "http://127.0.0.1:5173/#/bfi",
     }
 
 
 @app.get("/api/health")
-def health() -> dict[str, Any]:
+def health(request: Request) -> dict[str, Any]:
+    collector = getattr(request.app.state, "collector", None)
+    tiger_ok = bool(collector and collector.settings.database_url)
     return {
         "status": "ok",
         "rag_index": str(RAG_INDEX_PATH),
         "rag_index_present": RAG_INDEX_PATH.is_file(),
         "gemini_configured": gemini_configured(),
         "gemini_models": model_candidates(),
+        "tiger_data_configured": tiger_ok,
+        "ingestion": collector.status.copy() if collector else None,
     }
 
 

@@ -15,6 +15,11 @@ Copy-Item .env.example .env
 uv run python main.py
 ```
 
+This single process serves **Current conditions** (`GET /api/observations/latest`) and
+**BFI insights** (`POST /api/v1/bfi/insights`). Equivalent from `api/`:
+`uv run uvicorn foxwatch.main:app --reload --host 127.0.0.1 --port 8000`.
+Repo-root `.env` holds `GEMINI_API_KEY`; `api/.env` holds the Tiger/Timescale URL.
+
 Copy the PostgreSQL connection URL from your Tiger Cloud service's connection
 details, including its port, database, password and `sslmode=require`. Keep it in
 the ignored `.env` file. The database must have TimescaleDB enabled and the user

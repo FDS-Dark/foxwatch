@@ -32,8 +32,13 @@ class Settings:
 
     @classmethod
     def from_env(cls):
+        database_url = (
+            os.getenv("TIGER_DATABASE_URL", "").strip()
+            or os.getenv("INGEST_DATABASE_URL", "").strip()
+            or os.getenv("TIMESCALE_SERVICE_URL", "").strip()
+        )
         settings = cls(
-            database_url=os.getenv("TIGER_DATABASE_URL", ""),
+            database_url=database_url,
             api_key=os.getenv("USGS_API_KEY", ""),
             station=os.getenv("USGS_STATION_ID", "USGS-040851385"),
             poll_seconds=int(os.getenv("USGS_POLL_SECONDS", "300")),
