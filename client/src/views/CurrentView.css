@@ -11,3 +11,10 @@
 .current__unit { color: var(--muted); margin-bottom: 0.6rem; }
 .current__code { color: var(--muted); font: 0.72rem var(--mono); margin-top: auto; padding-top: 0.8rem; }
 .current__notice { padding: 1rem 1.25rem; border: 1px solid var(--fox); border-radius: var(--radius-sm); background: var(--fox-soft); }
+.bloom-prediction { display: grid; gap: 0.65rem; padding: 1.5rem; }
+.bloom-prediction__result { display: flex; align-items: center; flex-wrap: wrap; gap: 1.25rem; }
+.bloom-prediction__score { font: 600 clamp(2.5rem, 5vw, 3.5rem) var(--display); color: var(--deep); font-variant-numeric: tabular-nums; }
+.bloom-prediction__bucket { padding: 0.4rem 0.9rem; border-radius: 999px; font-weight: 600; }
+.bloom-prediction__bucket--low { background: var(--algae-soft); color: #365115; }
+.bloom-prediction__bucket--medium { background: #fff0ca; color: #785100; }
+.bloom-prediction__bucket--high { background: var(--fox-soft); color: #902e10; }

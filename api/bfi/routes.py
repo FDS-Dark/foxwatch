@@ -8,7 +8,7 @@ from functools import lru_cache
 from typing import Any, Optional
 
 from dotenv import load_dotenv
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 
 from .index import calculate_bloom_favorability
@@ -55,19 +55,25 @@ def root() -> dict[str, Any]:
         "service": "FoxWatch API",
         "docs": "/docs",
         "health": "/api/health",
+        "observations_latest": "GET /api/observations/latest",
         "bfi_insights": "POST /api/v1/bfi/insights",
-        "ui": "http://127.0.0.1:5173/#/bfi",
+        "ui_current": "http://127.0.0.1:5173/#/current",
+        "ui_bfi": "http://127.0.0.1:5173/#/bfi",
     }
 
 
 @router.get("/api/health")
-def health() -> dict[str, Any]:
+def health(request: Request) -> dict[str, Any]:
+    collector = getattr(request.app.state, "collector", None)
+    tiger_ok = bool(collector and collector.settings.database_url)
     return {
         "status": "ok",
         "rag_index": str(RAG_INDEX_PATH),
         "rag_index_present": RAG_INDEX_PATH.is_file(),
         "gemini_configured": gemini_configured(),
         "gemini_models": model_candidates(),
+        "tiger_data_configured": tiger_ok,
+        "ingestion": collector.status.copy() if collector else None,
     }
 
 

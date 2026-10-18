@@ -32,8 +32,13 @@ class Settings:
 
     @classmethod
     def from_env(cls):
+        database_url = (
+            os.getenv("TIGER_DATABASE_URL", "").strip()
+            or os.getenv("INGEST_DATABASE_URL", "").strip()
+            or os.getenv("TIMESCALE_SERVICE_URL", "").strip()
+        )
         settings = cls(
-            database_url=os.getenv("TIGER_DATABASE_URL", ""),
+            database_url=database_url,
             api_key=os.getenv("USGS_API_KEY", ""),
             station=os.getenv("USGS_STATION_ID", "USGS-040851385"),
             poll_seconds=int(os.getenv("USGS_POLL_SECONDS", "300")),
@@ -180,6 +185,37 @@ class Collector:
             "fetched_at": utcnow(),
             "stale_after_seconds": 1800,
         }
+
+    def prediction_readings(self, parameter_codes):
+        """Resolve missing latest values from earlier measurements in one snapshot."""
+        with psycopg.connect(self.settings.database_url, connect_timeout=10,
+                             options="-c statement_timeout=10000 -c default_transaction_read_only=on",
+                             row_factory=dict_row) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("""WITH latest AS (
+                    SELECT DISTINCT ON (parameter_code) *
+                    FROM usgs_observations
+                    WHERE station_id = %s AND parameter_code = ANY(%s)
+                    ORDER BY parameter_code, observed_at DESC, time_series_id ASC
+                )
+                SELECT latest.parameter_code, latest.observed_at AS latest_observed_at,
+                    COALESCE(latest.value, previous.value) AS value,
+                    CASE WHEN latest.value IS NULL THEN previous.observed_at ELSE latest.observed_at END AS observed_at,
+                    CASE WHEN latest.value IS NULL THEN previous.unit ELSE latest.unit END AS unit,
+                    CASE WHEN latest.value IS NULL THEN previous.approval_status ELSE latest.approval_status END AS approval_status,
+                    CASE WHEN latest.value IS NULL THEN previous.time_series_id ELSE latest.time_series_id END AS time_series_id,
+                    CASE WHEN latest.value IS NULL THEN previous.source->>'qualifier' ELSE latest.source->>'qualifier' END AS qualifier,
+                    (latest.value IS NULL AND previous.value IS NOT NULL) AS used_fallback
+                FROM latest
+                LEFT JOIN LATERAL (
+                    SELECT * FROM usgs_observations AS history
+                    WHERE latest.value IS NULL AND history.station_id = latest.station_id
+                        AND history.parameter_code = latest.parameter_code
+                        AND history.observed_at <= latest.observed_at AND history.value IS NOT NULL
+                    ORDER BY history.observed_at DESC, history.time_series_id ASC LIMIT 1
+                ) AS previous ON TRUE
+                ORDER BY latest.parameter_code""", (self.settings.station, list(parameter_codes)))
+                return cursor.fetchall()
 
     def poll(self):
         if not self.settings.database_url:
