@@ -6,7 +6,7 @@ from typing import Any
 from fastapi import HTTPException
 
 from models.bfi import BfiInsightRequest
-from services.bfi_insights import generate_bfi_insights
+from services.bfi_insights import answer_bfi_question, generate_bfi_insights
 from services.bfi_scoring import calculate_bloom_favorability
 from services.bfi_tiger_inputs import bfi_kwargs_from_readings
 from services.rag_embeddings import HashEmbedder, create_production_embedder, load_embedded_chunks
@@ -103,3 +103,21 @@ class BfiService:
             payload["inputs_provenance"] = provenance
             payload["inputs"] = {k: calc_kwargs.get(k) for k in _BFI_CALC_KEYS}
         return payload
+
+    def ask(
+        self,
+        question: str,
+        body: BfiInsightRequest,
+        *,
+        collector: UsgsCollector | None = None,
+    ) -> dict[str, Any]:
+        index = self.load_index()
+        calc_kwargs, _provenance = self._calc_kwargs(body, collector)
+        bfi = calculate_bloom_favorability(**calc_kwargs)
+        return answer_bfi_question(
+            question,
+            bfi,
+            index,
+            _embedder(),
+            use_gemini=body.use_gemini,
+        )

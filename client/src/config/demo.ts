@@ -1,7 +1,5 @@
 /** Demo constants — replace with route params when timeline API lands (Owner B). */
-export const DEMO_EVENT_ID = 'green_bay_candidate_window'
 export const DEMO_SCENE_ID = 'sentinel_scene_001'
-export const DEMO_PARENT_RUN_ID = 'run_v1_ndci_20261017'
 
 export const TAXONOMY_OPTIONS = [
   {

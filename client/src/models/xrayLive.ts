@@ -18,3 +18,12 @@ export type LiveSample = {
   status: 'available' | 'outside' | 'masked'; lat: number; lon: number; value?: number
   acquired_at?: string; scene_id?: string; outside_support?: boolean
 }
+
+export type ExplanationSelection = { runId: string; lat: number; lon: number; sample: LiveSample }
+export type LiveExplanation = {
+  status: LiveSample['status']; run_id: string; sample: LiveSample; question?: string
+  generation_mode: string; gemini_status: string; retrieval_status?: string; image_age_hours?: number
+  message?: string; paragraphs: { text: string; source_ids: string[] }[]; limitations: string[]
+  sources: { id: string; title: string; kind: string; text: string; url?: string; chunk_id?: string
+    metadata?: { authors?: string; year?: number | string; section?: string } }[]
+}

@@ -3,6 +3,12 @@ from typing import Optional
 from pydantic import BaseModel
 
 
+class BfiAskRequest(BaseModel):
+    question: str
+    use_live_data: bool = True
+    use_gemini: bool = True
+
+
 class BfiInsightRequest(BaseModel):
     water_temperature_c: Optional[float] = None
     phosphorus_ug_l: Optional[float] = None

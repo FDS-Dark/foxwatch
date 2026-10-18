@@ -62,7 +62,7 @@ export function XrayMap({ training, target, display, focusKey, layer, highlightI
       <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors · Observations: USGS FLAMe" />
       {layer && <ImageOverlay url={xrayResourceUrl(layer.url)} bounds={layer.bounds} opacity={layer.scope === 'full_fit_not_holdout' ? 0.65 : 1}
         eventHandlers={{ error: () => setFailedLayer(layer.url), load: () => setFailedLayer(undefined) }} />}
-      {layer && failedLayer === layer.url && <div className="xray-layer-error" role="alert">Prediction image could not load. Restart the API and reload this page.</div>}
+      {layer && failedLayer === layer.url && <div className="xray-layer-error" role="alert">Map layer could not load. Reload the page.</div>}
       {extraLayer && <ImageOverlay url={xrayResourceUrl(extraLayer.url)} bounds={extraLayer.bounds} opacity={1} />}
       {showBins && training.map(p => <CircleMarker key={`train-${p.id}`} center={[p.lat, p.lon]} radius={2.5}
         pathOptions={{ stroke: false, fillColor: fluorescenceColor(p.value, displayMax), fillOpacity: 0.75 }}>

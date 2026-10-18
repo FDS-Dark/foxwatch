@@ -3,33 +3,38 @@ import { EvidenceProvider } from './components/EvidenceContext'
 import { ReplayDataProvider } from './features/replay/ReplayDataContext'
 import { Sidebar, type ViewId } from './components/Sidebar'
 import { StatusPill } from './components/StatusPill'
-import { InvestigateView } from './views/InvestigateView'
 import { ReplayView } from './views/ReplayView'
 import { ReviewView } from './views/ReviewView'
 import { BfiInsightsView } from './views/BfiInsightsView'
 import { CurrentView } from './views/CurrentView'
+import { InvestigateView } from './views/InvestigateView'
 import './App.css'
 
-const VIEWS: ViewId[] = ['current', 'replay', 'investigate', 'bfi', 'review']
+type RouteId = ViewId | 'investigate'
 
-function viewFromHash(): ViewId {
-  const id = window.location.hash.replace('#/', '').split('?')[0] as ViewId
-  return VIEWS.includes(id) ? id : 'replay'
+const VIEWS: ViewId[] = ['current', 'bfi', 'replay', 'review']
+
+function viewFromHash(): RouteId {
+  const raw = window.location.hash.replace('#/', '').split('?')[0]
+  if (raw === 'investigate') return 'investigate'
+  const id = raw as ViewId
+  return VIEWS.includes(id) ? id : 'current'
 }
 
-const TITLES: Record<ViewId, string> = {
+const TITLES: Record<RouteId, string> = {
   current: 'Current conditions',
+  bfi: 'Bloom favorability',
   replay: 'X-Ray the Bay',
-  investigate: 'Investigate the research',
-  bfi: 'Bloom favorability insights',
-  review: 'Review & retrain',
+  review: 'Analyst review',
+  investigate: 'Model validation',
 }
 
 function App() {
-  const [view, setView] = useState<ViewId>(viewFromHash)
+  const [view, setView] = useState<RouteId>(viewFromHash)
 
   useEffect(() => {
     const onHash = () => setView(viewFromHash())
+    onHash()
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
@@ -47,7 +52,7 @@ function App() {
         Skip to content
       </a>
       <div className="shell">
-        <Sidebar current={view} />
+        <Sidebar current={view === 'investigate' ? 'replay' : view} />
         <div className="shell__body">
           <header className="topbar">
             <div>
@@ -55,20 +60,28 @@ function App() {
               <h1 className="topbar__title">{TITLES[view]}</h1>
             </div>
             {view === 'current' ? (
-              <p className="status-pill">USGS via Tiger Data</p>
+              <p className="status-pill status-pill--live" role="status">
+                <span className="status-pill__dot" aria-hidden="true" />
+                USGS observations
+              </p>
             ) : view === 'replay' ? (
-              <p className="status-pill">Sentinel-2 + USGS</p>
-            ) : view === 'investigate' ? (
-              <p className="status-pill">USGS FLAMe · June 30–July 1, 2025</p>
+              <p className="status-pill status-pill--live" role="status">
+                <span className="status-pill__dot" aria-hidden="true" />
+                Sentinel-2 + USGS
+              </p>
             ) : view === 'review' ? (
               <p className="status-pill status-pill--live" role="status">
                 <span className="status-pill__dot" aria-hidden="true" />
-                Logistic v2 · Tiger · live refit
+                Live scoring &amp; review
               </p>
             ) : view === 'bfi' ? (
               <p className="status-pill status-pill--live" role="status">
                 <span className="status-pill__dot" aria-hidden="true" />
-                RAG + Tiger · API
+                USGS + scientific literature
+              </p>
+            ) : view === 'investigate' ? (
+              <p className="status-pill" role="status">
+                FLAMe field study · 2025
               </p>
             ) : (
               <StatusPill />
@@ -77,24 +90,22 @@ function App() {
           <main id="main" tabIndex={-1} className="shell__main">
             {view === 'current' && <CurrentView />}
             {view === 'replay' && <ReplayView />}
-            {view === 'investigate' && <InvestigateView />}
             {view === 'bfi' && <BfiInsightsView />}
             {view === 'review' && <ReviewView />}
+            {view === 'investigate' && <InvestigateView />}
           </main>
           <footer className="shell__footer">
             {view === 'current'
-              ? 'Current station measurements from USGS, served from Tiger Data.'
-              : view === 'replay'
-                ? 'Recent satellite predictions with acquisition dates. Experimental fluorescence estimates, not confirmed harmful blooms.'
-                : view === 'investigate'
-                  ? 'Historical research: fluorescence in RFU, not confirmed harmful blooms. Satellite reconstructions are experimental.'
-                  : view === 'review'
-                    ? 'Bloom classifier queue and refit use live Tiger readings and labeled_openai.csv; analyst denials append correction rows.'
-                    : view === 'bfi'
-                      ? 'BFI scores live USGS inputs; narrative uses RAG evidence and optional Gemini.'
-                      : <>Historical replay for education. Satellite values are
-            dimensionless proxies, not confirmed harmful algal blooms. Scenarios
-            are assumptions, not forecasts.</>}
+              ? 'Provisional USGS measurements. Fluorescence shows algae pigments—not a confirmed harmful bloom.'
+              : view === 'review'
+                ? 'Analyst feedback can update the bloom score model. Not a regulatory decision.'
+                : view === 'bfi'
+                  ? 'Favorability from recent conditions and published references. Not a bloom forecast.'
+                  : view === 'replay'
+                    ? 'Recent satellite predictions with acquisition dates. Experimental fluorescence estimates, not confirmed harmful blooms.'
+                    : view === 'investigate'
+                      ? 'Validation against withheld 2025 boat measurements. Not a live bloom assessment.'
+                      : 'Experimental estimates · not a bloom advisory.'}
           </footer>
         </div>
       </div>

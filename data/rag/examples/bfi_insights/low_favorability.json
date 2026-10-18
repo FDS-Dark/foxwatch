@@ -6,12 +6,12 @@
     "drivers": []
   },
   "insights": {
-    "executive_summary": "The current assessment is LOW FAVORABILITY (0/12). Primary contributing conditions include limited scored drivers. No positive BFI driver factors were available; retrieval used general bloom-driver literature with limited driver-specific filtering.",
+    "executive_summary": "Bloom favorability is LOW FAVORABILITY (0 of 12 points). The score mainly reflects No BFI factors scored favorably in the current assessment.",
     "bloom_assessment": "Bloom favorability is classified as LOW FAVORABILITY based on the BFI score of 0 out of 12.",
     "key_contributing_factors": [
       "No BFI factors scored favorably in the current assessment"
     ],
-    "scientific_interpretation": "This section explains cyanobacteria ecology. Runoff-driven loading is often episodic, so bloom risk may rise even when long-term average phosphorus concentrations appear moderate. This section explains cyanobacteria ecology. Elevated phosphorus concentrations promote cyanobacterial growth by increasing nutrient availability in the euphotic zone. This section explains cyanobacteria ecology. Wind-driven mixing and fall turnover redistribute nutrients, sometimes fueling late-season cyanobacteria peaks if phosphorus remains available in the water column or is released from sediments under anoxic conditions.",
+    "scientific_interpretation": "Retrieved guidance and research describe how nutrients, temperature, and mixing interact to influence bloom favorability. See Sources for details.",
     "confidence": {
       "level": "High",
       "percent": 72,
@@ -19,42 +19,88 @@
     },
     "sources": [
       {
-        "title": "Sample Phosphorus Hydrology",
-        "chapter": "Harmful Algal Bloom Ecology and Water Quality",
-        "section": "Harmful Algal Bloom Ecology and Water Quality",
-        "authors": "",
-        "year": ""
+        "name": "EPA Harmful Algal Blooms",
+        "organization": "U.S. Environmental Protection Agency",
+        "summary": "Federal overview of nutrient pollution and harmful algal bloom causes and response.",
+        "url": "https://www.epa.gov/nutrientpollution/harmful-algal-blooms",
+        "source_origin": "catalog",
+        "evidence_indices": [
+          1,
+          2
+        ],
+        "consistency": "aligned",
+        "backing_publications": [
+          {
+            "title": "Sample Phosphorus Hydrology",
+            "authors": "",
+            "year": "",
+            "section": "Harmful Algal Bloom Ecology and Water Quality"
+          }
+        ]
       },
       {
-        "title": "Sample Phosphorus Hydrology",
-        "chapter": "Phosphorus Controls on Bloom Formation",
-        "section": "Phosphorus Controls on Bloom Formation",
-        "authors": "",
-        "year": ""
+        "name": "USGS Water Data for the Nation",
+        "organization": "U.S. Geological Survey",
+        "summary": "National portal for streamflow, nutrients, and continuous water-quality monitoring.",
+        "url": "https://waterdata.usgs.gov/",
+        "source_origin": "catalog",
+        "evidence_indices": [
+          1,
+          2
+        ],
+        "consistency": "aligned",
+        "backing_publications": [
+          {
+            "title": "Sample Phosphorus Hydrology",
+            "authors": "",
+            "year": "",
+            "section": "Harmful Algal Bloom Ecology and Water Quality"
+          }
+        ]
       },
       {
-        "title": "Sample Phosphorus Hydrology",
-        "chapter": "Temperature, Sunlight, and Cyanobacteria Growth",
-        "section": "Temperature, Sunlight, and Cyanobacteria Growth",
-        "authors": "",
-        "year": ""
+        "name": "WHO Recreational Water Quality — Cyanobacteria",
+        "organization": "World Health Organization",
+        "summary": "International guidance on cyanobacteria risks in recreational waters.",
+        "url": "https://www.who.int/teams/environment-climate-change-and-health/water-sanitation-and-health/water-quality-and-health/recreational-waters",
+        "source_origin": "catalog",
+        "evidence_indices": [
+          1,
+          2
+        ],
+        "consistency": "aligned",
+        "backing_publications": [
+          {
+            "title": "Sample Phosphorus Hydrology",
+            "authors": "",
+            "year": "",
+            "section": "Harmful Algal Bloom Ecology and Water Quality"
+          }
+        ]
       },
       {
-        "title": "Sample Phosphorus Hydrology",
-        "chapter": "Rainfall, Runoff, and Precipitation Effects",
-        "section": "Rainfall, Runoff, and Precipitation Effects",
-        "authors": "",
-        "year": ""
-      },
-      {
-        "title": "Sample Phosphorus Hydrology",
-        "chapter": "Hydrology, Streamflow, and Residence Time",
-        "section": "Hydrology, Streamflow, and Residence Time",
-        "authors": "",
-        "year": ""
+        "name": "NOAA Harmful Algal Bloom resources",
+        "organization": "NOAA National Ocean Service",
+        "summary": "Coastal and Great Lakes harmful algal bloom background and monitoring context.",
+        "url": "https://oceanservice.noaa.gov/hazards/hab/",
+        "source_origin": "catalog",
+        "evidence_indices": [
+          1,
+          2
+        ],
+        "consistency": "aligned",
+        "backing_publications": [
+          {
+            "title": "Sample Phosphorus Hydrology",
+            "authors": "",
+            "year": "",
+            "section": "Harmful Algal Bloom Ecology and Water Quality"
+          }
+        ]
       }
     ],
-    "generation_mode": "evidence_synthesis"
+    "rag_grounded": true,
+    "generation_mode": "fallback_missing_google_generativeai"
   },
   "evidence": {
     "context_summary": "No positive BFI driver factors were available; retrieval used general bloom-driver literature with limited driver-specific filtering.",

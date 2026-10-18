@@ -11,19 +11,18 @@ export function BloomPredictionCard({ prediction, error, updatedAt }: {
   return (
     <section className="card bloom-prediction" aria-labelledby="bloom-prediction-title">
       <div>
-        <p className="eyebrow">Logistic regression · Latest Tiger Data readings</p>
-        <h2 id="bloom-prediction-title">Algal bloom prediction</h2>
-        <p className="current__note">Recalculated with each automatic update, every 15 seconds.</p>
+        <p className="eyebrow">Experimental station model</p>
+        <h2 id="bloom-prediction-title">Bloom model score</h2>
       </div>
       <div aria-live="polite" aria-atomic="true">
         {error ? <p className="current__notice">{error}</p>
           : prediction?.status === 'available' ? (
             <div className="bloom-prediction__result">
-              <p className="bloom-prediction__score" title={`Full probability: ${prediction.probability}`}>
-                <span className="sr-only">Model probability: </span>{prediction.probability.toFixed(4)}
+              <p className="bloom-prediction__score" title={`Model score: ${prediction.probability}`}>
+                <span className="sr-only">Model score: </span>{prediction.probability.toFixed(4)}
               </p>
               <span className={`bloom-prediction__bucket bloom-prediction__bucket--${bucket}`}>
-                {bucket === 'low' ? 'Low chance' : bucket === 'medium' ? 'Medium chance' : 'High chance'}
+                {bucket === 'low' ? 'Low score' : bucket === 'medium' ? 'Medium score' : 'High score'}
               </span>
             </div>
           ) : prediction?.status === 'unavailable' ? (

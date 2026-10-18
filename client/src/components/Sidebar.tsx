@@ -1,4 +1,4 @@
-export type ViewId = 'current' | 'replay' | 'investigate' | 'bfi' | 'review'
+export type ViewId = 'current' | 'bfi' | 'replay' | 'review'
 
 const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
   {
@@ -8,27 +8,21 @@ const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
     icon: 'M3 12h3l3-8 4 16 3-8h5',
   },
   {
+    id: 'bfi',
+    label: 'Bloom favorability',
+    hint: 'Drivers, summary & Q&A',
+    icon: 'M4 6h16v4H4V6Zm0 6h10v4H4v-4Z',
+  },
+  {
     id: 'replay',
     label: 'X-Ray the Bay',
     hint: 'Latest satellite predictions',
     icon: 'M3 12h3l3-8 4 16 3-8h5',
   },
   {
-    id: 'investigate',
-    label: 'Investigate',
-    hint: 'Ask with cited evidence',
-    icon: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm9 16-4.3-4.3',
-  },
-  {
-    id: 'bfi',
-    label: 'BFI insights',
-    hint: 'Drivers + RAG + Gemini',
-    icon: 'M4 6h16v4H4V6Zm0 6h10v4H4v-4Z',
-  },
-  {
     id: 'review',
-    label: 'Review & retrain',
-    hint: 'Human-in-the-loop',
+    label: 'Analyst review',
+    hint: 'Check & improve scores',
     icon: 'M4 12l5 5L20 6',
   },
 ]
@@ -36,7 +30,7 @@ const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
 export function Sidebar({ current }: { current: ViewId }) {
   return (
     <aside className="sidebar">
-      <a href="#/replay" className="sidebar__brand" aria-label="FoxWatch home">
+      <a href="#/current" className="sidebar__brand" aria-label="FoxWatch home">
         <img
           className="sidebar__emblem"
           src="/foxwatch-emblem.png"
@@ -51,9 +45,7 @@ export function Sidebar({ current }: { current: ViewId }) {
           width={480}
           height={86}
         />
-        <span className="sidebar__tagline">
-          Watershed intelligence &amp; incident response
-        </span>
+        <span className="sidebar__tagline">Green Bay water monitoring</span>
       </a>
 
       <nav aria-label="Primary">
@@ -68,11 +60,7 @@ export function Sidebar({ current }: { current: ViewId }) {
                 <span className="nav__step" aria-hidden="true">
                   {i + 1}
                 </span>
-                <svg
-                  className="nav__icon"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
+                <svg className="nav__icon" viewBox="0 0 24 24" aria-hidden="true">
                   <path d={item.icon} />
                 </svg>
                 <span className="nav__text">
@@ -85,11 +73,13 @@ export function Sidebar({ current }: { current: ViewId }) {
         </ul>
       </nav>
 
-      {current === 'investigate' && <div className="sidebar__event">
-        <p className="sidebar__event-label">Active event</p>
-        <p className="sidebar__event-title">June 30–July 1, 2025</p>
-        <span className="chip chip--candidate">FLAMe · historical research</span>
-      </div>}
+      {current === 'replay' && (
+        <div className="sidebar__event">
+          <p className="sidebar__event-label">Live layer</p>
+          <p className="sidebar__event-title">Green Bay · satellite + river</p>
+          <span className="chip chip--candidate">Experimental · not advisory</span>
+        </div>
+      )}
 
       <svg
         className="sidebar__waves"

@@ -12,7 +12,13 @@ from api.services.bfi_retrieval import (
     retrieval_tags_for_drivers,
 )
 from api.services.rag_embeddings import EmbeddedChunk, HashEmbedder, ingest_document
-from api.services.bfi_insights import compute_confidence, generate_bfi_insights, save_insight_example
+from api.services.bfi_insights import (
+    attach_rag_consistency,
+    build_fallback_external_sources,
+    compute_confidence,
+    generate_bfi_insights,
+    save_insight_example,
+)
 
 REPO = Path(__file__).resolve().parents[1]
 SAMPLE = REPO / "data" / "rag" / "sources" / "sample_phosphorus_hydrology.txt"
@@ -108,7 +114,27 @@ class TestHybridRetrieval(unittest.TestCase):
                 section="Public communication",
                 priority="low",
             ),
+            _chunk(
+                "e1",
+                "EPA harmful algal bloom guidance links nutrient pollution to cyanobacteria outbreaks.",
+                ["phosphorus", "nutrients", "cyanobacteria", "eutrophication"],
+                title="EPA Harmful Algal Bloom Guidance",
+                source_type="epa_guidance",
+                section="Nutrient pollution",
+            ),
         ]
+
+    def test_diversify_prefers_distinct_source_types(self) -> None:
+        bfi = calculate_bloom_favorability(
+            water_temperature_c=28.0,
+            phosphorus_ug_l=80.0,
+            streamflow_cfs=80.0,
+            seasonal_median_streamflow_cfs=150.0,
+            solar_radiation_level="high",
+        )
+        ranked = hybrid_retrieve(bfi, self.index, self.embedder, top_k=4)
+        types = {str(r.chunk.metadata.get("source_type")) for r in ranked}
+        self.assertGreaterEqual(len(types), 2)
 
     def test_phosphorus_driver_retrieval(self) -> None:
         bfi = calculate_bloom_favorability(
@@ -181,6 +207,41 @@ class TestInsightGeneration(unittest.TestCase):
         self.assertGreaterEqual(conf.percent, 0)
         self.assertLessEqual(conf.percent, 100)
 
+    def test_external_sources_use_catalog_not_rag_titles(self) -> None:
+        bfi = calculate_bloom_favorability(
+            water_temperature_c=27.0,
+            phosphorus_ug_l=75.0,
+            streamflow_cfs=80.0,
+            seasonal_median_streamflow_cfs=150.0,
+        )
+        evidence = build_evidence_package(bfi, self.index, self.embedder, top_k=3)
+        catalog = build_fallback_external_sources(evidence)
+        self.assertGreaterEqual(len(catalog), 2)
+        self.assertTrue(all(str(row.get("url", "")).startswith("https://") for row in catalog))
+
+    def test_attach_rag_links_consistency_without_replacing_names(self) -> None:
+        bfi = calculate_bloom_favorability(
+            water_temperature_c=27.0,
+            phosphorus_ug_l=75.0,
+            streamflow_cfs=80.0,
+            seasonal_median_streamflow_cfs=150.0,
+        )
+        evidence = build_evidence_package(bfi, self.index, self.embedder, top_k=3)
+        external = [
+            {
+                "name": "EPA Harmful Algal Blooms",
+                "organization": "U.S. Environmental Protection Agency",
+                "summary": "Nutrient pollution and cyanobacteria.",
+                "url": "https://www.epa.gov/nutrientpollution/harmful-algal-blooms",
+                "source_origin": "web_search",
+            }
+        ]
+        linked = attach_rag_consistency(
+            external, evidence, self.embedder, self.index, min_score=0.0
+        )
+        self.assertEqual(linked[0]["name"], "EPA Harmful Algal Blooms")
+        self.assertIn(linked[0]["consistency"], {"aligned", "partial", "unverified"})
+
     def test_insight_payload_structure(self) -> None:
         payload = self._payload_for(
             water_temperature_c=27.0,
@@ -193,6 +254,11 @@ class TestInsightGeneration(unittest.TestCase):
         self.assertIn("scientific_interpretation", insights)
         self.assertIn("confidence", insights)
         self.assertIn("sources", insights)
+        if insights["sources"]:
+            row = insights["sources"][0]
+            self.assertIn("name", row)
+            self.assertIn("organization", row)
+            self.assertIn("evidence_indices", row)
         self.assertIn("gemini_prompt", payload)
         self.assertLessEqual(len(payload["evidence"]["supporting_chunks"]), 5)
 

@@ -302,7 +302,60 @@ clicking Predictions returns the numerical value from the nearest ~200 m cell.
 The Satellite tab shows water-only, glint-corrected B03 reflectance using the
 same palette as predictions, with the full reflectance range preserved.
 It is a satellite input layer, not a true-color photograph or predicted RFU.
+Live exports are clipped to the union of NWS Green Bay marine forecast zones
+LMZ221, LMZ521 and LMZ522, packaged in `data/xray/green_bay_boundary.geojson`.
+The same geographic mask applies to predictions, satellite signal, image age,
+training-limit hatching, and inspection values. Counts and summaries describe
+the retained bay cells. The forecast-zone outline is a display domain, not a
+surveyed shoreline; the satellite water/cloud mask still applies. This removes
+off-bay extrapolation without changing retained model values or establishing
+validation inside the bay. Sources and retrieval date are retained in the GeoJSON.
+
+To republish the current map from cached numerical inputs after display changes,
+without restarting the API or downloading imagery:
+
+```bash
+research/xray_bay/.venv/bin/python scripts/xray_satellite_layer.py
+```
+
 Training-limits hatching marks spatial extrapolation beyond 3 km or any satellite
 feature outside its training range. It is not an uncertainty interval. Uncolored
 areas have no usable satellite prediction. Snapshot source IDs and timestamps,
 model inputs, and original observations remain inspectable.
+
+
+### Explain a satellite prediction
+
+On the Predictions map, click colored water and choose **Explain this location**.
+The panel supports follow-up questions and clickable citations, and stays pinned
+to the selected immutable snapshot even when the map refreshes.
+
+`POST /api/xray/live/{run_id}/explain` accepts `lat`, `lon`, `question` (1–1000
+characters), and optional `use_gemini` (default true). Predictions, acquisition
+dates, scene IDs and training-support flags are loaded on the server; clients
+cannot supply replacement evidence. Masked locations return no generated answer.
+
+Evidence combines the selected cell, snapshot method, packaged 2025 research,
+and relevant passages from the existing `data/rag/index/chunks.jsonl` corpus.
+Literature retrieval uses BM25 keyword relevance, excludes sample documents,
+and exposes original chunk IDs and excerpts. It does not create a new index or
+require Tiger Data or embedding-model downloads. Missing literature still leaves
+the snapshot and packaged research available.
+
+Gemini uses the existing `GEMINI_API_KEY`, `GEMINI_MODEL` and fallback settings via
+[generateContent REST](https://ai.google.dev/api/generate-content), with the
+existing httpx dependency. Source IDs in generated answers must refer to supplied
+evidence; malformed citations fall back to a labeled factual summary. Requests
+have bounded timeouts and two concurrent generation slots. Missing keys, failed
+requests and disabled generation also fall back to evidence, never fabricated AI
+answers. The frontend gives requests 60 seconds. No credentials reach the client.
+
+This is evidence-grounded interpretation, not feature attribution. No SHAP values
+or local feature contributions are available. Historical GP results are separate
+from the current random forest; support checks do not validate seasonal transfer.
+RFU is predicted fluorescence, not toxins or bloom probability. USGS and BFI
+remain separate context, not model inputs. Gemini prose still requires review;
+valid citation IDs alone cannot guarantee that every interpretation is correct.
+
+An already-running API without autoreload needs a normal restart to load the new
+route. Frontend HMR alone cannot activate it.
