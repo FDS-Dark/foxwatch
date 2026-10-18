@@ -74,7 +74,8 @@ class ObservationsService:
             "readings": readings,
             "missing_parameters": sorted(set(REQUESTED_PARAMETER_CODES) - available),
             "fetched_at": utcnow().isoformat(),
-            "stale_after_seconds": 1800,
+            # Hourly USGS publication batches plus transmission and ingestion time.
+            "stale_after_seconds": 2 * 60 * 60,
         }
 
     async def prediction_readings(self, parameter_codes: list[str]) -> list[dict[str, Any]]:

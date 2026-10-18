@@ -1,0 +1,22 @@
+{
+  "layout": "dagre",
+  "theme": "base",
+  "themeVariables": {
+    "fontFamily": "Arial, sans-serif",
+    "fontSize": "22px",
+    "primaryColor": "#ffffff",
+    "primaryTextColor": "#18333e",
+    "primaryBorderColor": "#52727d",
+    "lineColor": "#617681",
+    "clusterBkg": "#fafcfd",
+    "clusterBorder": "#bfccd3",
+    "edgeLabelBackground": "#ffffff"
+  },
+  "flowchart": {
+    "htmlLabels": false,
+    "nodeSpacing": 40,
+    "rankSpacing": 60,
+    "wrappingWidth": 260,
+    "curve": "linear"
+  }
+}

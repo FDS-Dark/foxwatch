@@ -1,0 +1,103 @@
+flowchart LR
+    subgraph sources["Data sources"]
+        usgs["USGS station observations"]
+        weather["Open-Meteo rainfall"]
+        nutrients["Water Quality Portal nutrient samples"]
+        sentinel["Sentinel-2 imagery / Earth Search"]
+        flame["FLAMe 2025 boat survey + matched imagery"]
+        boundary["NWS Green Bay boundary"]
+        papers["Scientific papers and guidance"]
+    end
+
+    subgraph storage["Data and artifacts"]
+        tiger[("Tiger Data: observations + pgvector embeddings")]
+        chunks[("RAG text chunks: packaged JSONL")]
+        research[("Historical observations, holdout results and reports")]
+        maps[("Vultr Object Storage: map PNGs, manifests, sample grids")]
+        models[("Local model artifacts + review-state JSON")]
+        labeled[("Labeled training CSV")]
+    end
+
+    subgraph satellite["Satellite worker - Vultr Cloud Compute"]
+        preparation["Hourly discovery, download, cloud masks and bay clipping"]
+        forest["Location + satellite random forest"]
+        export["Export predictions, reflectance, image age and training support"]
+    end
+
+    subgraph ingestion["Research and RAG preparation"]
+        documents["Parse, chunk, tag and embed literature"]
+        evaluation["Spatial holdout evaluation and research export"]
+    end
+
+    subgraph backend["One FastAPI application - DigitalOcean App Platform"]
+        collector["USGS collector"]
+        readings["Observation queries"]
+        classifier["Station logistic-regression model"]
+        bfi["Bloom Favorability scoring + Q&A"]
+        retrieval["Hybrid literature retrieval"]
+        recovery["Incident recovery suggestions"]
+        xray["X-Ray metadata + point inspection"]
+        lexical["Satellite literature retrieval: BM25"]
+        explanation["Selected-cell evidence + cited explanation"]
+        validation["Historical model validation"]
+        review["Analyst review + retraining"]
+        api["REST API"]
+    end
+
+    gemini["Gemini: evidence-grounded narratives"]
+
+    subgraph frontend["React + Leaflet frontend - DigitalOcean App Platform"]
+        web["Current conditions / Bloom driver scan / Bloom favorability / Incident recovery / X-Ray the Bay / Analyst review / Model validation"]
+    end
+
+    usgs --> collector --> tiger
+    tiger --> readings --> classifier
+    tiger -->|"Readings + seasonal flow history"| bfi
+    weather -->|"Supplement missing rainfall"| bfi
+    nutrients -->|"Supplement missing nutrients"| bfi
+    readings --> api
+    classifier --> api
+    bfi --> api
+    bfi -->|"Conditions and driver scores"| recovery
+    recovery --> api
+
+    papers --> documents
+    documents --> chunks
+    documents -->|"Embedding vectors"| tiger
+    tiger -->|"Vectors"| retrieval
+    chunks -->|"Text and citations"| retrieval
+    retrieval --> bfi
+    retrieval --> recovery
+    bfi <-->|"Prompt / narrative"| gemini
+    recovery <-->|"Prompt / recommendations"| gemini
+
+    sentinel --> preparation
+    boundary --> preparation
+    preparation -->|"Coordinates + B03, B04, B05, NDCI"| forest
+    flame -->|"Training data"| forest
+    forest --> export --> maps
+    maps -->|"Manifests + point samples"| xray
+    xray --> api
+    maps -->|"Public PNG overlays, loaded directly"| web
+
+    flame --> evaluation --> research
+    research --> validation --> api
+    research --> explanation
+    chunks --> lexical --> explanation
+    xray -->|"Value, acquisition date, scene and support flag"| explanation
+    api -->|"Selected location + question"| explanation
+    explanation <-->|"Evidence / cited answer"| gemini
+    explanation -->|"Answer or evidence-only fallback"| api
+
+    api -->|"Review decisions"| review
+    classifier -->|"Prediction snapshots"| review
+    labeled --> review
+    review <-->|"Model versions and decisions"| models
+    models -->|"Active model"| classifier
+    review -->|"Queue and training results"| api
+    api <-->|"Requests / JSON responses"| web
+
+    classDef xrayAdded fill:#d9f4e7,stroke:#16805b,color:#123a2d,stroke-width:2px
+    classDef recentAdded fill:#fff0cf,stroke:#b98213,color:#4a3308,stroke-width:2px
+    class sentinel,flame,boundary,preparation,forest,export,maps,xray,lexical,explanation,evaluation,research,validation xrayAdded
+    class weather,nutrients,recovery recentAdded
