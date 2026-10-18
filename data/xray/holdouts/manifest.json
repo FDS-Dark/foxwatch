@@ -1,0 +1,218 @@
+{
+  "32": {
+    "layers": {
+      "rf_xy": {
+        "url": "/api/xray/holdouts/32/rf_xy",
+        "bounds": [
+          [
+            44.55977725404963,
+            -87.96227198034941
+          ],
+          [
+            44.652656373410245,
+            -87.82737611651613
+          ]
+        ],
+        "title": "rf_xy",
+        "units": "RFU",
+        "scene_id": "S2C_T16TDQ_20250701T165332_L2A",
+        "acquired_at": "2025-07-01T17:01:30.795000Z",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "hard_holdout",
+        "id": "rf_xy"
+      },
+      "rf_xysat": {
+        "url": "/api/xray/holdouts/32/rf_xysat",
+        "bounds": [
+          [
+            44.55977725404963,
+            -87.96227198034941
+          ],
+          [
+            44.652656373410245,
+            -87.82737611651613
+          ]
+        ],
+        "title": "rf_xysat",
+        "units": "RFU",
+        "scene_id": "S2C_T16TDQ_20250701T165332_L2A",
+        "acquired_at": "2025-07-01T17:01:30.795000Z",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "hard_holdout",
+        "id": "rf_xysat"
+      },
+      "gp_resid": {
+        "url": "/api/xray/holdouts/32/gp_resid",
+        "bounds": [
+          [
+            44.55977725404963,
+            -87.96227198034941
+          ],
+          [
+            44.652656373410245,
+            -87.82737611651613
+          ]
+        ],
+        "title": "gp_resid",
+        "units": "RFU",
+        "scene_id": "S2C_T16TDQ_20250701T165332_L2A",
+        "acquired_at": "2025-07-01T17:01:30.795000Z",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "hard_holdout",
+        "id": "gp_resid"
+      }
+    },
+    "training_bins": 1555,
+    "matched_test_bins": 45,
+    "resolution_m": 100,
+    "support_radius_m": 3000,
+    "note": "Maps use the dominant scene for continuous context. Scored points use their individual matched scenes. Blank = invalid water pixels or >3 km from training evidence."
+  },
+  "31": {
+    "layers": {
+      "rf_xy": {
+        "url": "/api/xray/holdouts/31/rf_xy",
+        "bounds": [
+          [
+            44.548480455596476,
+            -88.02119034660493
+          ],
+          [
+            44.632610532050556,
+            -87.85984499450122
+          ]
+        ],
+        "title": "rf_xy",
+        "units": "RFU",
+        "scene_id": "S2C_T16TDQ_20250701T165332_L2A",
+        "acquired_at": "2025-07-01T17:01:30.795000Z",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "hard_holdout",
+        "id": "rf_xy"
+      },
+      "rf_xysat": {
+        "url": "/api/xray/holdouts/31/rf_xysat",
+        "bounds": [
+          [
+            44.548480455596476,
+            -88.02119034660493
+          ],
+          [
+            44.632610532050556,
+            -87.85984499450122
+          ]
+        ],
+        "title": "rf_xysat",
+        "units": "RFU",
+        "scene_id": "S2C_T16TDQ_20250701T165332_L2A",
+        "acquired_at": "2025-07-01T17:01:30.795000Z",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "hard_holdout",
+        "id": "rf_xysat"
+      },
+      "gp_resid": {
+        "url": "/api/xray/holdouts/31/gp_resid",
+        "bounds": [
+          [
+            44.548480455596476,
+            -88.02119034660493
+          ],
+          [
+            44.632610532050556,
+            -87.85984499450122
+          ]
+        ],
+        "title": "gp_resid",
+        "units": "RFU",
+        "scene_id": "S2C_T16TDQ_20250701T165332_L2A",
+        "acquired_at": "2025-07-01T17:01:30.795000Z",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "hard_holdout",
+        "id": "gp_resid"
+      }
+    },
+    "training_bins": 1507,
+    "matched_test_bins": 33,
+    "resolution_m": 100,
+    "support_radius_m": 3000,
+    "note": "Maps use the dominant scene for continuous context. Scored points use their individual matched scenes. Blank = invalid water pixels or >3 km from training evidence."
+  },
+  "17": {
+    "layers": {
+      "rf_xy": {
+        "url": "/api/xray/holdouts/17/rf_xy",
+        "bounds": [
+          [
+            44.75760713984135,
+            -87.93010593218095
+          ],
+          [
+            44.84916519972395,
+            -87.79053571894528
+          ]
+        ],
+        "title": "rf_xy",
+        "units": "RFU",
+        "scene_id": "S2C_T16TDQ_20250701T165332_L2A",
+        "acquired_at": "2025-07-01T17:01:30.795000Z",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "hard_holdout",
+        "id": "rf_xy"
+      },
+      "rf_xysat": {
+        "url": "/api/xray/holdouts/17/rf_xysat",
+        "bounds": [
+          [
+            44.75760713984135,
+            -87.93010593218095
+          ],
+          [
+            44.84916519972395,
+            -87.79053571894528
+          ]
+        ],
+        "title": "rf_xysat",
+        "units": "RFU",
+        "scene_id": "S2C_T16TDQ_20250701T165332_L2A",
+        "acquired_at": "2025-07-01T17:01:30.795000Z",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "hard_holdout",
+        "id": "rf_xysat"
+      },
+      "gp_resid": {
+        "url": "/api/xray/holdouts/17/gp_resid",
+        "bounds": [
+          [
+            44.75760713984135,
+            -87.93010593218095
+          ],
+          [
+            44.84916519972395,
+            -87.79053571894528
+          ]
+        ],
+        "title": "gp_resid",
+        "units": "RFU",
+        "scene_id": "S2C_T16TDQ_20250701T165332_L2A",
+        "acquired_at": "2025-07-01T17:01:30.795000Z",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "hard_holdout",
+        "id": "gp_resid"
+      }
+    },
+    "training_bins": 1536,
+    "matched_test_bins": 39,
+    "resolution_m": 100,
+    "support_radius_m": 3000,
+    "note": "Maps use the dominant scene for continuous context. Scored points use their individual matched scenes. Blank = invalid water pixels or >3 km from training evidence."
+  }
+}

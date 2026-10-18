@@ -13,6 +13,7 @@ from routers.ingestion import router as ingestion_router
 from routers.meta import router as meta_router
 from routers.observations import router as observations_router
 from routers.predictions import router as predictions_router
+from routers.xray import router as xray_router
 
 
 async def collect_forever(collector, stop):
@@ -53,7 +54,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[
+        "http://localhost:5173", "http://127.0.0.1:5173",
+        "http://localhost:6173", "http://127.0.0.1:6173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -64,6 +68,7 @@ app.include_router(observations_router)
 app.include_router(ingestion_router)
 app.include_router(predictions_router)
 app.include_router(bfi_router)
+app.include_router(xray_router)
 
 
 if __name__ == "__main__":

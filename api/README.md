@@ -102,7 +102,9 @@ page labels previously fetched values and retains their original timestamps.
 There is no fallback to USGS or demo fixtures on this route. `/usgs/latest` remains
 a separate diagnostic preview that is not used by the frontend.
 
-Run the API on port 8000 and `bun run dev` in `client`. Vite proxies `/api` to
+Run the API on port 8000 and `bun run dev` in `client`. The UI opens at
+`http://127.0.0.1:6173`. Vite runs with Bun explicitly; this avoids using an older
+system Node installation. Port 6173 avoids the Windows-reserved 5173 range. Vite proxies `/api` to
 `http://localhost:8000`; restart Vite after changing its configuration. In production,
 configure your web host/reverse proxy to forward `/api/*` to FastAPI, preserving
 the path. Database credentials stay in the backend's `.env`; never put them in a
@@ -155,7 +157,7 @@ Train and save the model from `data/labeled_openai.csv` (run from `api`):
 uv run python -m services.ml.logistic_regression_v2
 ```
 
-This writes `services/ml/artifacts/logistic_regression_v2.pkl` and an accompanying JSON
+This writes `model/artifacts/logistic_regression_v2.pkl` and an accompanying JSON
 validation report. These generated files are ignored by Git; train on deployment
 or copy your trusted generated artifact there. The API caches the fitted model
 and reloads it when the artifact changes. Training is never performed per request.
@@ -202,3 +204,55 @@ uv run python -m unittest discover -s tests -v
 - [USGS continuous API and pagination](https://api.waterdata.usgs.gov/docs/ogcapi/)
 - [USGS API keys for higher rate limits](https://api.waterdata.usgs.gov/docs/ogcapi/keys/)
 - [Tiger Data hypertables](https://www.tigerdata.com/docs/reference/timescaledb/hypertables/create_hypertable)
+
+
+## X-Ray the Bay
+
+Open `http://127.0.0.1:6173/#/replay` for the historical FLAMe experiment.
+The default Bay gradient view renders location-only and satellite-informed
+full-survey RF predictions over expanded satellite coverage. It includes
+extrapolation, marked with diagonal stripes beyond 3 km of training evidence.
+The actual satellite mosaic is available in the layer selector.
+The X-Ray experiment compares location-only and satellite-informed held-out predictions as
+linked gradient maps, then reveals the measured boat transect. The same
+0–16 RFU color scale applies to every holdout panel; the bay overview uses
+0–4 RFU for lower-level variation, with larger values saturated at yellow. Individual samples are optional.
+Segment 32 demonstrates plume recovery; segments 31 and 17 provide contrasting
+cases. `#/investigate` explains the stored evidence with source links.
+
+The read-only `/api/xray` routes serve the portable `data/xray` export without
+querying the database or fitting models. `/survey` returns timestamped measured
+bins; `/segments/{id}?stage=hidden|location|satellite|reveal` controls the values
+shown in the experiment. `/holdouts/{id}/{model}` serves prediction fields;
+`/evidence/{source_id}` serves the underlying research records. Restart the API
+after updating exports because JSON metadata is cached in process.
+
+To regenerate exports, run `scripts/export_xray_demo.py` followed by
+`scripts/export_xray_holdout_maps.py` from the repository root using the research
+Python environment. These require the existing Phase 1/2 artifacts and research
+dependencies. The map exporter reproduces the saved fold predictions before
+rendering, excluding hidden targets and their buffers. Display interpolation
+smooths the 100 m prediction grid; it does not add observations or change scores.
+Local exports retain the valid-water mask and 3 km training-support limit.
+After generating the expanded overview, run
+`scripts/export_xray_holdout_maps.py --bay` to render those same held-out fits
+over the wider satellite mosaic. This export marks extrapolation beyond 3 km
+instead of clipping it. The experiment defaults to Whole bay, with a Hidden
+segment zoom option. Scored track predictions retain each bin's original scene;
+the multi-date field is separate visualization, not additional validation. The full-survey fit in the survey overlay is
+separate from holdout validation. RFU is fluorescence, not harmful-bloom risk.
+
+The expanded overview is generated separately with
+`scripts/fetch_xray_bay_scenes.py` and `scripts/export_xray_bay_map.py` in the
+research Python environment. The downloader selects adjacent July 1, 2025
+Sentinel-2 tiles (16TDQ/16TDR) and a June 30 tile (16TER) for northeastern
+coverage, plus July 3 tiles (16TDR/16TER) to fill remaining cloud or quality
+gaps. It caches original scaled 20 m reflectance/QA and true-color windows
+under `research/xray_bay/phase2_satellite/bay_overview`, leaving holdout inputs
+unchanged. The overview uses the same 100 m valid-water sampling and model
+features, evaluated on a 200 m display grid. July 1 valid pixels take priority;
+June 30 fills missing coverage, followed by July 3 where needed. This is a multi-date mosaic, not a simultaneous
+bay-wide measurement. Cloud, land, and failed-quality pixels remain masked.
+Portable images and acquisition metadata are in `data/xray/bay`; original
+research caches are not required by the running API. Per-cell scene provenance,
+training distance, features and predictions are retained in `overview_inputs.npz`.

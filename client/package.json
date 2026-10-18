@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "bun --bun vite",
+    "build": "tsc -b && bun --bun vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "bun --bun vite preview --host 127.0.0.1"
   },
   "dependencies": {
     "axios": "^1.12.2",

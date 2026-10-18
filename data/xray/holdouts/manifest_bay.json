@@ -1,0 +1,281 @@
+{
+  "32": {
+    "layers": {
+      "rf_xy": {
+        "url": "/api/xray/holdouts/32/rf_xy?extent=bay",
+        "bounds": [
+          [
+            44.44369578347627,
+            -88.1819126673949
+          ],
+          [
+            45.95636810386517,
+            -86.6379436783083
+          ]
+        ],
+        "title": "rf_xy",
+        "units": "RFU",
+        "scene_id": "Expanded multi-date mosaic",
+        "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "holdout_extrapolation",
+        "id": "rf_xy"
+      },
+      "rf_xysat": {
+        "url": "/api/xray/holdouts/32/rf_xysat?extent=bay",
+        "bounds": [
+          [
+            44.44369578347627,
+            -88.1819126673949
+          ],
+          [
+            45.95636810386517,
+            -86.6379436783083
+          ]
+        ],
+        "title": "rf_xysat",
+        "units": "RFU",
+        "scene_id": "Expanded multi-date mosaic",
+        "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "holdout_extrapolation",
+        "id": "rf_xysat"
+      },
+      "gp_resid": {
+        "url": "/api/xray/holdouts/32/gp_resid?extent=bay",
+        "bounds": [
+          [
+            44.44369578347627,
+            -88.1819126673949
+          ],
+          [
+            45.95636810386517,
+            -86.6379436783083
+          ]
+        ],
+        "title": "gp_resid",
+        "units": "RFU",
+        "scene_id": "Expanded multi-date mosaic",
+        "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "holdout_extrapolation",
+        "id": "gp_resid"
+      }
+    },
+    "training_bins": 1555,
+    "matched_test_bins": 45,
+    "resolution_m": 200,
+    "support_radius_m": 3000,
+    "note": "Whole-bay fields use the expanded multi-date mosaic and include extrapolation beyond 3 km from training evidence. Scored points retain their original satellite matches; the broader field is not additional validation.",
+    "extrapolation": {
+      "url": "/api/xray/holdouts/32/extrapolation?extent=bay",
+      "bounds": [
+        [
+          44.44369578347627,
+          -88.1819126673949
+        ],
+        [
+          45.95636810386517,
+          -86.6379436783083
+        ]
+      ],
+      "title": "Beyond training support",
+      "units": "RFU",
+      "scene_id": "Expanded multi-date mosaic",
+      "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+      "display_min": 0,
+      "display_max": 16,
+      "scope": "holdout_extrapolation",
+      "id": "extrapolation"
+    }
+  },
+  "31": {
+    "layers": {
+      "rf_xy": {
+        "url": "/api/xray/holdouts/31/rf_xy?extent=bay",
+        "bounds": [
+          [
+            44.44369578347627,
+            -88.1819126673949
+          ],
+          [
+            45.95636810386517,
+            -86.6379436783083
+          ]
+        ],
+        "title": "rf_xy",
+        "units": "RFU",
+        "scene_id": "Expanded multi-date mosaic",
+        "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "holdout_extrapolation",
+        "id": "rf_xy"
+      },
+      "rf_xysat": {
+        "url": "/api/xray/holdouts/31/rf_xysat?extent=bay",
+        "bounds": [
+          [
+            44.44369578347627,
+            -88.1819126673949
+          ],
+          [
+            45.95636810386517,
+            -86.6379436783083
+          ]
+        ],
+        "title": "rf_xysat",
+        "units": "RFU",
+        "scene_id": "Expanded multi-date mosaic",
+        "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "holdout_extrapolation",
+        "id": "rf_xysat"
+      },
+      "gp_resid": {
+        "url": "/api/xray/holdouts/31/gp_resid?extent=bay",
+        "bounds": [
+          [
+            44.44369578347627,
+            -88.1819126673949
+          ],
+          [
+            45.95636810386517,
+            -86.6379436783083
+          ]
+        ],
+        "title": "gp_resid",
+        "units": "RFU",
+        "scene_id": "Expanded multi-date mosaic",
+        "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "holdout_extrapolation",
+        "id": "gp_resid"
+      }
+    },
+    "training_bins": 1507,
+    "matched_test_bins": 33,
+    "resolution_m": 200,
+    "support_radius_m": 3000,
+    "note": "Whole-bay fields use the expanded multi-date mosaic and include extrapolation beyond 3 km from training evidence. Scored points retain their original satellite matches; the broader field is not additional validation.",
+    "extrapolation": {
+      "url": "/api/xray/holdouts/31/extrapolation?extent=bay",
+      "bounds": [
+        [
+          44.44369578347627,
+          -88.1819126673949
+        ],
+        [
+          45.95636810386517,
+          -86.6379436783083
+        ]
+      ],
+      "title": "Beyond training support",
+      "units": "RFU",
+      "scene_id": "Expanded multi-date mosaic",
+      "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+      "display_min": 0,
+      "display_max": 16,
+      "scope": "holdout_extrapolation",
+      "id": "extrapolation"
+    }
+  },
+  "17": {
+    "layers": {
+      "rf_xy": {
+        "url": "/api/xray/holdouts/17/rf_xy?extent=bay",
+        "bounds": [
+          [
+            44.44369578347627,
+            -88.1819126673949
+          ],
+          [
+            45.95636810386517,
+            -86.6379436783083
+          ]
+        ],
+        "title": "rf_xy",
+        "units": "RFU",
+        "scene_id": "Expanded multi-date mosaic",
+        "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "holdout_extrapolation",
+        "id": "rf_xy"
+      },
+      "rf_xysat": {
+        "url": "/api/xray/holdouts/17/rf_xysat?extent=bay",
+        "bounds": [
+          [
+            44.44369578347627,
+            -88.1819126673949
+          ],
+          [
+            45.95636810386517,
+            -86.6379436783083
+          ]
+        ],
+        "title": "rf_xysat",
+        "units": "RFU",
+        "scene_id": "Expanded multi-date mosaic",
+        "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "holdout_extrapolation",
+        "id": "rf_xysat"
+      },
+      "gp_resid": {
+        "url": "/api/xray/holdouts/17/gp_resid?extent=bay",
+        "bounds": [
+          [
+            44.44369578347627,
+            -88.1819126673949
+          ],
+          [
+            45.95636810386517,
+            -86.6379436783083
+          ]
+        ],
+        "title": "gp_resid",
+        "units": "RFU",
+        "scene_id": "Expanded multi-date mosaic",
+        "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+        "display_min": 0,
+        "display_max": 16,
+        "scope": "holdout_extrapolation",
+        "id": "gp_resid"
+      }
+    },
+    "training_bins": 1536,
+    "matched_test_bins": 39,
+    "resolution_m": 200,
+    "support_radius_m": 3000,
+    "note": "Whole-bay fields use the expanded multi-date mosaic and include extrapolation beyond 3 km from training evidence. Scored points retain their original satellite matches; the broader field is not additional validation.",
+    "extrapolation": {
+      "url": "/api/xray/holdouts/17/extrapolation?extent=bay",
+      "bounds": [
+        [
+          44.44369578347627,
+          -88.1819126673949
+        ],
+        [
+          45.95636810386517,
+          -86.6379436783083
+        ]
+      ],
+      "title": "Beyond training support",
+      "units": "RFU",
+      "scene_id": "Expanded multi-date mosaic",
+      "acquired_at": "2025-06-30 / 2025-07-01 / 2025-07-03",
+      "display_min": 0,
+      "display_max": 16,
+      "scope": "holdout_extrapolation",
+      "id": "extrapolation"
+    }
+  }
+}

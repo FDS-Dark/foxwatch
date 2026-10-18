@@ -25,7 +25,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 DEFAULT_DATA_PATH = Path(__file__).resolve().parents[3] / "data" / "labeled_openai.csv"
-DEFAULT_MODEL_PATH = Path(__file__).with_name("artifacts") / "logistic_regression_v2.pkl"
+DEFAULT_MODEL_PATH = Path(__file__).resolve().parents[2] / "model" / "artifacts" / "logistic_regression_v2.pkl"
 FEATURE_PARAMETERS = {
     "chlorophyll_fluorescence_mean": "32316",
     "discharge_mean": "00060",

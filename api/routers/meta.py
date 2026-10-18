@@ -20,8 +20,8 @@ def root() -> dict[str, Any]:
         "health": "/api/health",
         "observations_latest": "GET /api/observations/latest",
         "bfi_insights": "POST /api/v1/bfi/insights",
-        "ui_current": "http://127.0.0.1:5173/#/current",
-        "ui_bfi": "http://127.0.0.1:5173/#/bfi",
+        "ui_current": "http://127.0.0.1:6173/#/current",
+        "ui_bfi": "http://127.0.0.1:6173/#/bfi",
     }
 
 

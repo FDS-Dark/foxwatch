@@ -9,8 +9,8 @@ const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
   },
   {
     id: 'replay',
-    label: 'Replay',
-    hint: 'Map, timeline, gauges',
+    label: 'X-Ray the Bay',
+    hint: 'Hide → predict → reveal',
     icon: 'M3 12h3l3-8 4 16 3-8h5',
   },
   {
@@ -85,10 +85,10 @@ export function Sidebar({ current }: { current: ViewId }) {
         </ul>
       </nav>
 
-      {current !== 'current' && <div className="sidebar__event">
+      {(current === 'replay' || current === 'investigate') && <div className="sidebar__event">
         <p className="sidebar__event-label">Active event</p>
-        <p className="sidebar__event-title">June 1–14, 2020</p>
-        <span className="chip chip--candidate">Candidate · not confirmed</span>
+        <p className="sidebar__event-title">June 30–July 1, 2025</p>
+        <span className="chip chip--candidate">FLAMe · historical research</span>
       </div>}
 
       <svg

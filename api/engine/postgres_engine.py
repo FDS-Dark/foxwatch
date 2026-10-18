@@ -18,6 +18,12 @@ class PostgresDBEngine(BaseEngine):
             url = make_url(url)
         if url.drivername in ("postgresql", "postgres"):
             url = url.set(drivername="postgresql+asyncpg")
+        if url.drivername == "postgresql+asyncpg" and "sslmode" in url.query:
+            # libpq/psycopg URLs use sslmode; asyncpg accepts the same mode as ssl.
+            query = dict(url.query)
+            mode = query.pop("sslmode")
+            query.setdefault("ssl", mode)
+            url = url.set(query=query)
         logger.info("Creating Postgres database engine", host=url.host, database=url.database)
         return create_async_engine(url, pool_pre_ping=True)
 
