@@ -15,7 +15,7 @@ export function setupDocument() {
 
   meta(
     'description',
-    'FoxWatch: historical watershed replay for the Lower Fox River and Green Bay.',
+    'FoxWatch: recent satellite predictions and live river observations for Green Bay.',
   )
   meta('theme-color', '#0e3b43')
 

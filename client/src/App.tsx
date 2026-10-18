@@ -14,7 +14,7 @@ const VIEWS: ViewId[] = ['current', 'replay', 'investigate', 'bfi', 'review']
 
 function viewFromHash(): ViewId {
   const id = window.location.hash.replace('#/', '').split('?')[0] as ViewId
-  return VIEWS.includes(id) ? id : 'current'
+  return VIEWS.includes(id) ? id : 'replay'
 }
 
 const TITLES: Record<ViewId, string> = {
@@ -54,7 +54,7 @@ function App() {
               <p className="topbar__eyebrow">Lower Fox River · Green Bay</p>
               <h1 className="topbar__title">{TITLES[view]}</h1>
             </div>
-            {view === 'current' ? <p className="status-pill">USGS via Tiger Data</p> : view === 'replay' || view === 'investigate' ? <p className="status-pill">USGS FLAMe · June 30–July 1, 2025</p> : <StatusPill />}
+            {view === 'current' ? <p className="status-pill">USGS via Tiger Data</p> : view === 'replay' ? <p className="status-pill">Sentinel-2 + USGS</p> : view === 'investigate' ? <p className="status-pill">USGS FLAMe · June 30–July 1, 2025</p> : <StatusPill />}
           </header>
           <main id="main" tabIndex={-1} className="shell__main">
             {view === 'current' && <CurrentView />}
@@ -64,7 +64,7 @@ function App() {
             {view === 'review' && <ReviewView />}
           </main>
           <footer className="shell__footer">
-            {view === 'current' ? 'Current station measurements from USGS, served from Tiger Data.' : view === 'replay' || view === 'investigate' ? 'Historical research: fluorescence in RFU, not confirmed harmful blooms. Satellite reconstructions are experimental.' : <>Historical replay for education. Satellite values are
+            {view === 'current' ? 'Current station measurements from USGS, served from Tiger Data.' : view === 'replay' ? 'Recent satellite predictions with acquisition dates. Experimental fluorescence estimates, not confirmed harmful blooms.' : view === 'investigate' ? 'Historical research: fluorescence in RFU, not confirmed harmful blooms. Satellite reconstructions are experimental.' : <>Historical replay for education. Satellite values are
             dimensionless proxies, not confirmed harmful algal blooms. Scenarios
             are assumptions, not forecasts.</>}
           </footer>

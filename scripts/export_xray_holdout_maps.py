@@ -13,7 +13,7 @@ import pandas as pd
 from PIL import Image
 import rasterio
 from rasterio.transform import from_origin, array_bounds
-from rasterio.warp import calculate_default_transform, reproject, Resampling
+from rasterio.warp import calculate_default_transform, reproject, Resampling, transform_bounds
 from scipy.spatial import cKDTree
 from matplotlib import colormaps
 
@@ -35,22 +35,24 @@ mm = module("matchup", "03_masks_matchup.py")
 xc = ex.xc
 
 
-def render(values, shape, transform, filename, display_max=16):
+def render(values, shape, transform, filename, display_max=16, target_crs="EPSG:4326", display_min=0):
     height, width = shape
     bounds = array_bounds(height, width, transform)
-    dst_transform, w, h = calculate_default_transform("EPSG:32616", "EPSG:4326", width, height, *bounds)
+    dst_transform, w, h = calculate_default_transform("EPSG:32616", target_crs, width, height, *bounds)
     # Interpolate the display between prediction cells without filling masked
     # areas or changing the saved predictions used for evaluation.
     dst_transform = dst_transform * rasterio.Affine.scale(0.25, 0.25)
     w, h = w * 4, h * 4
     warped = np.full((h, w), np.nan, dtype="float32")
     reproject(values.reshape(shape), warped, src_transform=transform, src_crs="EPSG:32616",
-              dst_transform=dst_transform, dst_crs="EPSG:4326", src_nodata=np.nan, dst_nodata=np.nan,
+              dst_transform=dst_transform, dst_crs=target_crs, src_nodata=np.nan, dst_nodata=np.nan,
               resampling=Resampling.bilinear)
-    colors = colormaps["viridis"](np.clip(np.nan_to_num(warped / display_max), 0, 1), bytes=True)
+    colors = colormaps["viridis"](np.clip(np.nan_to_num((warped - display_min) / (display_max - display_min)), 0, 1), bytes=True)
     colors[~np.isfinite(warped), 3] = 0
     Image.fromarray(colors).save(DEST / filename)
     west, south, east, north = array_bounds(h, w, dst_transform)
+    if target_crs != "EPSG:4326":
+        west, south, east, north = transform_bounds(target_crs, "EPSG:4326", west, south, east, north)
     return [[south, west], [north, east]]
 
 

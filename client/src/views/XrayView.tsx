@@ -1,171 +1,126 @@
 import { useEffect, useState } from 'react'
-import { XrayBayOverview } from '@/components/XrayBayOverview'
-import { XrayMap } from '@/components/XrayMap'
-import { XrayComparison } from '@/components/XrayComparison'
-import { XrayProfile } from '@/components/XrayProfile'
-import type { SatelliteModel, XrayMetadata, XrayObservation, XraySegment, XrayStage } from '@/models/xray'
-import { fetchXrayMetadata, fetchXraySegment, fetchXraySurvey, xrayResourceUrl } from '@/services/xrayService'
+import { XrayLiveMap } from '@/components/XrayLiveMap'
+import type { LiveXray } from '@/models/xrayLive'
+import type { LatestObservations } from '@/models/observations'
+import { fetchLiveXray } from '@/services/xrayService'
+import { fetchLatestObservations } from '@/services/observationsService'
 import './XrayView.css'
+import './XrayLiveView.css'
 
-const STAGES: { id: XrayStage; label: string; detail: string }[] = [
-  { id: 'hidden', label: 'Hide', detail: 'Remove the segment and its neighboring measurements.' },
-  { id: 'location', label: 'Predict from location', detail: 'Reconstruct the missing segment using geographic coordinates.' },
-  { id: 'satellite', label: 'Add satellite', detail: 'Compare a reconstruction that also uses satellite reflectance.' },
-  { id: 'reveal', label: 'Reveal measurements', detail: 'Compare saved predictions against the withheld boat measurements.' },
+const date = (value: string, includeTime = false) => new Date(value).toLocaleString(undefined, {
+  month: 'short', day: 'numeric', year: 'numeric',
+  ...(includeTime ? { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' as const } : {}),
+})
+const PARAMETERS = [
+  { code: '00010', title: 'Water temperature', icon: '°' },
+  { code: '00060', title: 'River discharge', icon: '≈' },
+  { code: '00300', title: 'Dissolved oxygen', icon: 'O₂' },
 ]
 
-const date = (value: string) => new Date(value).toLocaleString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) + ' UTC'
-
 export function XrayView() {
-  const [metadata, setMetadata] = useState<XrayMetadata | null>(null)
-  const [mode, setMode] = useState<'bay' | 'experiment' | 'survey'>(() => window.location.hash.includes('segment=') ? 'experiment' : 'bay')
-  const [segmentId, setSegmentId] = useState(() => {
-    const value = Number(new URLSearchParams(window.location.hash.split('?')[1]).get('segment'))
-    return [17, 31, 32].includes(value) ? value : 32
-  })
-  const [stage, setStage] = useState<XrayStage>('hidden')
-  const [segment, setSegment] = useState<XraySegment | null>(null)
-  const [satelliteModel, setSatelliteModel] = useState<SatelliteModel>('gp_resid')
-  const [survey, setSurvey] = useState<XrayObservation[]>([])
-  const [cursor, setCursor] = useState(0)
-  const [playing, setPlaying] = useState(false)
-  const [layerId, setLayerId] = useState('none')
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [data, setData] = useState<LiveXray | null>(null)
+  const [observations, setObservations] = useState<LatestObservations | null>(null)
+  const [error, setError] = useState(false)
+  const [stationError, setStationError] = useState(false)
+  const [refreshing, setRefreshing] = useState(true)
   const [attempt, setAttempt] = useState(0)
+  const [selected, setSelected] = useState('prediction')
+  const [showSupport, setShowSupport] = useState(false)
+  const [opacity, setOpacity] = useState(0.88)
+  const [focus, setFocus] = useState(0)
+  const [expanded, setExpanded] = useState(false)
+  const [now, setNow] = useState(Date.now)
 
   useEffect(() => {
-    const controller = new AbortController()
-    fetchXrayMetadata(controller.signal).then(setMetadata).catch(() => {
-      if (!controller.signal.aborted) setError('Research data could not be loaded. Check that the FoxWatch API is running.')
-    })
-    return () => controller.abort()
+    let stopped = false
+    let timer: number | undefined
+    let controller: AbortController | undefined
+    async function load() {
+      controller = new AbortController()
+      const timeout = window.setTimeout(() => controller?.abort(), 20_000)
+      const results = await Promise.allSettled([fetchLiveXray(controller.signal), fetchLatestObservations(controller.signal)])
+      window.clearTimeout(timeout)
+      if (stopped) return
+      if (results[0].status === 'fulfilled') { setData(results[0].value); setError(false) } else setError(true)
+      if (results[1].status === 'fulfilled') { setObservations(results[1].value); setStationError(false) } else setStationError(true)
+      setRefreshing(false)
+      setNow(Date.now())
+      timer = window.setTimeout(() => void load(), 15_000)
+    }
+    void load()
+    return () => { stopped = true; window.clearTimeout(timer); controller?.abort() }
   }, [attempt])
 
   useEffect(() => {
-    const controller = new AbortController()
-    if (mode === 'experiment') {
-      fetchXraySegment(segmentId, stage, controller.signal).then(setSegment).catch(() => {
-        if (!controller.signal.aborted) setError('The saved holdout case is unavailable. No substitute predictions are shown.')
-      }).finally(() => { if (!controller.signal.aborted) setLoading(false) })
-    } else {
-      fetchXraySurvey(controller.signal).then(points => {
-        setSurvey(points)
-        setCursor(points.length - 1)
-      }).catch(() => {
-        if (!controller.signal.aborted) setError('The historical observation export is unavailable.')
-      }).finally(() => { if (!controller.signal.aborted) setLoading(false) })
-    }
-    return () => controller.abort()
-  }, [mode, segmentId, stage, attempt])
+    if (!expanded) return
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') setExpanded(false) }
+    const previous = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKey)
+    return () => { document.body.style.overflow = previous; window.removeEventListener('keydown', onKey) }
+  }, [expanded])
 
-  useEffect(() => {
-    if (!playing || mode !== 'survey') return
-    const timer = window.setInterval(() => setCursor(value => {
-      if (value >= survey.length - 1) { setPlaying(false); return value }
-      return Math.min(value + 15, survey.length - 1)
-    }), 150)
-    return () => window.clearInterval(timer)
-  }, [playing, mode, survey.length])
+  const snapshot = data?.map
+  const connected = !!data && !error && !data.refresh.overdue && data.refresh.phase !== 'error'
+  const readings = new Map(observations?.readings.map(reading => [reading.parameter_code, reading]))
+  const range = snapshot ? `${date(snapshot.acquisition_start)} – ${date(snapshot.acquisition_end)}` : 'Checking recent acquisitions'
+  const activeLayer = snapshot?.layers.find(layer => layer.id === selected)
+  const min = activeLayer?.display_min ?? 0
+  const max = activeLayer?.display_max ?? 4
 
-  function changeStage(next: XrayStage) {
-    if (next === stage) return
-    setLoading(true)
-    setError(null)
-    setSegment(null)
-    setStage(next)
-  }
-
-  function changeMode(next: 'bay' | 'experiment' | 'survey') {
-    if (next !== mode) { setLoading(true); setError(null); setSegment(null) }
-    setMode(next); setLayerId('none'); setPlaying(false)
-  }
-
-  const activeIndex = STAGES.findIndex(s => s.id === stage)
-  const activeLayer = metadata?.layers.find(l => l.id === layerId && (mode === 'survey' || l.scope !== 'full_fit_not_holdout'))
-  const readySegment = segment?.id === segmentId && segment.stage === stage ? segment : null
-  const selectedObservation = survey[cursor]
-  const metric = readySegment?.metrics
-  const improvement = metric ? (1 - metric[satelliteModel].mae / metric.rf_xy.mae) * 100 : null
-
-  return <div className="xray">
-    <section className="xray-intro">
-      <div><p className="eyebrow">A real survey. A missing piece. A measurable answer.</p>
-        <h2>{mode === 'bay' ? 'See between the measurements.' : 'What did the boat miss?'}</h2>
-        <p>{mode === 'bay' ? 'Explore a continuous fluorescence reconstruction, then put the model to the test with a hidden boat transect.' : 'Hide a stretch of the Green Bay survey, reconstruct it, then reveal what was actually measured.'}</p>
-      </div>
-      <div className="xray-tag"><strong>JUN 30 — JUL 1, 2025</strong><span>USGS FLAMe · historical research</span></div>
+  return <div className="live-xray">
+    <section className="live-intro">
+      <div><p className="eyebrow">Satellite intelligence / Green Bay</p><h2>See the bay differently.</h2>
+        <p>Recent satellite imagery. A continuous prediction. The river's pulse, live.</p></div>
+      <div className="live-connection"><span className={connected ? 'is-connected' : ''}><i />{error ? 'Reconnecting' : connected ? 'Automatic updates on' : data?.refresh.phase === 'error' ? 'Refresh interrupted' : data?.refresh.overdue ? 'Refresh overdue' : 'Connecting data'}</span>
+        <button className="btn" disabled={refreshing} onClick={() => { setRefreshing(true); setAttempt(v => v + 1) }}>{refreshing ? 'Syncing…' : '↻ Sync data'}</button></div>
     </section>
-    <div className="xray-mode" aria-label="Replay mode">
-      <button className={`btn ${mode === 'bay' ? 'btn--primary' : ''}`} aria-pressed={mode === 'bay'} onClick={() => changeMode('bay')}>Bay gradient</button>
-      <button className={`btn ${mode === 'experiment' ? 'btn--primary' : ''}`} aria-pressed={mode === 'experiment'} onClick={() => changeMode('experiment')}>X-Ray experiment</button>
-      <button className={`btn ${mode === 'survey' ? 'btn--primary' : ''}`} aria-pressed={mode === 'survey'} onClick={() => changeMode('survey')}>Explore measured survey</button>
-      <span className="muted">{metadata?.observation_count.toLocaleString() ?? '…'} measured bins · 100 m along-track medians · RFU</span>
-    </div>
-    {error && <div className="card xray-error" role="alert"><p>{error}</p><button className="btn" onClick={() => { setLoading(true); setError(null); setAttempt(v => v + 1) }}>Retry loading</button></div>}
-    {mode === 'experiment' ? <>
-      <div className="xray-row xray-controls">
-        <label>Research case <select value={segmentId} onChange={event => { setLoading(true); setError(null); setSegment(null); setSegmentId(Number(event.target.value)); setStage('hidden') }}>
-          {(metadata?.cases ?? [{ id: 32, label: 'Plume recovery' }, { id: 31, label: 'Failure case' }, { id: 17, label: 'Typical case' }]).map(c => <option key={c.id} value={c.id}>Segment {c.id} · {c.label}</option>)}
-        </select></label>
-        <label>Satellite model<select value={satelliteModel} onChange={e => setSatelliteModel(e.target.value as SatelliteModel)}>
-          <option value="gp_resid">Satellite trend + GP · diagnostic</option><option value="rf_xysat">Location + satellite RF · primary</option>
-        </select></label>
+    {error && <p className="live-notice" role="alert">Connection interrupted.{snapshot ? ' Showing the last downloaded map with its original acquisition dates.' : ' Retrying automatically.'}</p>}
+    {data?.status === 'stale' && <p className="live-notice">The newest usable image is more than three days old. Cloud cover and acquisition timing limit freshness.</p>}
+    {snapshot && (data?.refresh.phase === 'error' || data?.refresh.overdue) && <p className="live-notice">Satellite refresh {data.refresh.overdue ? 'is overdue' : 'failed'}. The last completed map remains visible; its imagery dates have not changed.</p>}
+    <section className={`live-map-shell ${expanded ? 'is-expanded' : ''}`} aria-label="Green Bay prediction map">
+      <div className="live-map-toolbar">
+        <div className="live-layer-switch" aria-label="Map layer">{[
+          ['prediction', 'Predictions'], ['satellite', 'Satellite'], ['age', 'Image age'],
+        ].map(([id, title]) => <button key={id} aria-pressed={selected === id} onClick={() => setSelected(id)}>{title}</button>)}</div>
+        <div className="live-map-actions"><button onClick={() => setFocus(v => v + 1)}>⌖ Whole bay</button>
+          <button aria-label={expanded ? 'Exit full screen' : 'Expand map'} onClick={() => setExpanded(v => !v)}>{expanded ? '↙ Close' : '⛶ Expand'}</button></div>
       </div>
-      <ol className="xray-steps" aria-label="Hide predict reveal steps">
-        {STAGES.map((s, i) => <li key={s.id}><button aria-label={s.label} aria-current={stage === s.id ? 'step' : undefined}
-          className={stage === s.id ? 'is-active' : i < activeIndex ? 'is-done' : ''} onClick={() => changeStage(s.id)}>
-          <span>{i + 1}</span>{s.label}</button></li>)}
-      </ol>
-      {loading || !readySegment ? <div className="card xray-map-placeholder" role="status">{error ? 'Research map unavailable' : 'Loading recorded holdout…'}</div> :
-        <XrayComparison key={segmentId} segment={readySegment} satelliteModel={satelliteModel} bayBounds={metadata?.bay?.layers[0]?.bounds} />}
-      <div className="xray-workspace">
-        {readySegment && <XrayProfile segment={readySegment} satelliteModel={satelliteModel} />}
-        <aside className="xray-panel">
-          <section className="card">
-            <p className="eyebrow">The comparison</p><h3>Location vs satellite</h3>
-            <p className="muted">{satelliteModel === 'gp_resid' ? 'A linear satellite trend plus a spatial Gaussian process. The striking segment-32 result comes from this diagnostic model.' : 'The primary comparison adds satellite bands to the same random-forest architecture used by the location-only baseline.'}</p>
-            {metric && improvement !== null ? <div className="xray-metrics" aria-live="polite">
-              <div><span>Location-only RF error</span><strong>{metric.rf_xy.mae.toFixed(2)} <small>RFU</small></strong></div>
-              <div><span>Selected satellite model error</span><strong>{metric[satelliteModel].mae.toFixed(2)} <small>RFU</small></strong></div>
-              <p className={improvement > 0 ? 'xray-gain' : 'xray-loss'}>{Math.abs(improvement).toFixed(1)}% {improvement > 0 ? 'lower' : 'higher'} mean absolute error on this segment</p>
-            </div> : <p className="xray-sealed">Measurement values and errors stay hidden until Reveal.</p>}
-            {activeIndex < STAGES.length - 1 ? <button className="btn btn--primary xray-next" disabled={loading} onClick={() => changeStage(STAGES[activeIndex + 1].id)}>{STAGES[activeIndex + 1].label} →</button>
-              : <a className="btn btn--primary xray-next" href={`#/investigate?segment=${segmentId}`}>Explain this result →</a>}
-          </section>
-          <section className="card xray-protocol"><h3>What was held out?</h3>
-            <p>A 5 km segment, its 1 km along-track neighbors, and all measurements within 1.5 km.</p>
-            {readySegment && <p><strong>{readySegment.training.length.toLocaleString()}</strong> matched training bins · <strong>{readySegment.matched_count}/{readySegment.total_count}</strong> matched target bins.</p>}
-            <p className="muted">Every model uses the same matched bins and exclusion zones. The reveal does not refit a model.</p>
-          </section>
-        </aside>
+      <div className="live-map-canvas">
+        {snapshot ? <XrayLiveMap snapshot={snapshot} selected={selected} showSupport={showSupport} opacity={opacity} focus={focus} /> :
+          <div className="live-map-loading" role="status"><div className="live-orbit" /><h3>{error ? 'Waiting for the API' : data?.refresh.phase === 'error' ? 'Satellite update interrupted' : 'Building the latest view'}</h3><p>{data?.refresh.message ?? 'Connecting satellite predictions and river observations…'}</p><span>The first satellite download can take several minutes.</span></div>}
+        <div className="live-map-title"><span>FOXWATCH / XRAY</span><h3>{selected === 'prediction' ? 'The shape of the signal.' : selected === 'satellite' ? 'A view from orbit.' : 'Every pixel has a date.'}</h3>
+          <p>{selected === 'prediction' ? 'Predicted chlorophyll fluorescence' : selected === 'satellite' ? 'Sentinel-2 green-band reflectance · water only' : 'Acquisition age at map generation'}</p></div>
+        {snapshot && <div className="live-map-stamp"><span>IMAGERY ACQUIRED</span><strong>{range}</strong><small>{snapshot.scenes.length} acquisitions · newest valid pixels first</small></div>}
+        {snapshot && <div className="live-map-legend">
+          <div className="live-legend-heading"><strong>{selected === 'age' ? 'Image age' : selected === 'satellite' ? 'Satellite reflectance' : 'Predicted fluorescence'}</strong><span>{selected === 'age' ? 'DAYS' : selected === 'satellite' ? 'B03' : 'RFU'}</span></div>
+          <div className="xray-colorbar" /><div className="xray-scale-ticks">{[0, .25, .5, .75, 1].map(f => <span key={f}>{(min + f * (max - min)).toFixed(selected === 'satellite' ? 3 : selected === 'age' ? 1 : 0)}</span>)}</div>
+          <p>{selected === 'prediction' ? 'Full prediction range. Click the water to inspect a value.' : selected === 'satellite' ? 'Glint-corrected reflectance · full value range. Land and clouds are transparent.' : 'Purple is newer. Yellow is older.'}</p>
+        </div>}
       </div>
-      {readySegment?.metrics && <details className="card"><summary>All saved models · same withheld measurements</summary><div className="xray-table-wrap"><table className="xray-table"><thead><tr><th>Model</th><th>MAE (RFU)</th><th>Bias (RFU)</th></tr></thead><tbody>
-        {Object.entries(readySegment.metrics).map(([key, value]) => <tr key={key}><td>{metadata?.models[key as keyof typeof metadata.models] ?? key}</td><td>{value.mae.toFixed(3)}</td><td>{value.bias.toFixed(3)}</td></tr>)}
-      </tbody></table></div><p className="muted">MAE: average absolute error; lower is better. Negative bias means underestimation. These are segment results, not bay-wide performance.</p></details>}
-      {readySegment && <details className="card"><summary>Inspect timestamps and satellite matches</summary><div className="xray-table-wrap"><table className="xray-table"><thead><tr><th>Bin</th><th>Boat observation (UTC)</th><th>Satellite scene</th><th>Image − boat (h)</th></tr></thead><tbody>
-        {readySegment.points.map(p => <tr key={p.id}><td>{p.id}</td><td>{date(p.observed_at)}</td><td>{p.scene_id}</td><td>{p.lag_hours.toFixed(2)}</td></tr>)}
-      </tbody></table></div><p className="muted">Negative lag means the image was acquired before the boat measurement. Matching allows up to 24 hours; images are not simultaneous with every observation.</p></details>}
-    </> : mode === 'bay' ? metadata && <XrayBayOverview metadata={metadata} observations={survey} /> : <section className="card xray-map-card">
-      <div className="xray-map-heading"><div><h3>Follow the research vessel</h3><p className="muted">Real measurements; timestamps and overnight gaps are preserved.</p></div>
-        <label>Research overlay<select value={layerId} onChange={e => setLayerId(e.target.value)}><option value="none">Measurements only</option>{metadata?.layers.map(l => <option key={l.id} value={l.id}>{l.title}</option>)}</select></label></div>
-      {activeLayer && <div className="xray-layer-note"><strong>{activeLayer.scope === 'full_fit_not_holdout' ? 'Full-survey fit — NOT held-out validation.' : 'Satellite input context — NOT measured fluorescence.'}</strong>
-        <p>{activeLayer.title} · {activeLayer.acquired_at} · display range {activeLayer.display_min.toFixed(3)}–{activeLayer.display_max.toFixed(3)} {activeLayer.units} (2nd–98th percentiles).</p>
-        <p>{activeLayer.scope === 'full_fit_not_holdout' ? 'This raster uses all matched training bins. It is excluded from the hide/reveal experiment. Blank areas have no valid pixels or are beyond 3 km of training evidence.' : 'This July 1 scene is context only; individual holdout bins may match another scene. Blank pixels are masked.'}</p></div>}
-      {survey.length > 0 && !loading ? <XrayMap training={survey.slice(0, cursor + 1)} target={[]} display={selectedObservation ? [selectedObservation] : []}
-        focusKey="whole-survey" highlightId={selectedObservation?.id} layer={activeLayer} /> : <div className="xray-map-placeholder">{error ? 'Survey unavailable' : 'Loading survey…'}</div>}
-      <div className="xray-timeline">
-        <div className="xray-row"><button className="btn btn--primary" disabled={!survey.length} onClick={() => { if (cursor >= survey.length - 1) setCursor(0); setPlaying(!playing) }}>{playing ? 'Pause survey' : 'Play survey'}</button>
-          <output aria-live={playing ? 'off' : 'polite'}>{selectedObservation && <>{date(selectedObservation.observed_at)} · <strong>{selectedObservation.value.toFixed(2)} RFU</strong> · bin {cursor + 1}/{survey.length}</>}</output></div>
-        <label htmlFor="survey-time">Vessel observation timeline (UTC)</label><input id="survey-time" type="range" min={0} max={Math.max(0, survey.length - 1)} value={cursor} onChange={e => { setPlaying(false); setCursor(Number(e.target.value)) }} />
-        <div className="xray-row muted"><span>{metadata && date(metadata.start)}</span><span>{metadata && date(metadata.end)}</span></div>
+      <div className="live-map-bottom"><div><span className="live-experimental">{selected === 'satellite' ? 'SATELLITE INPUT' : 'EXPERIMENTAL'}</span><span>{selected === 'satellite' ? 'Green-band reflectance · colorized satellite input, not predicted fluorescence' : '2025-trained model · recent imagery · unvalidated seasonal transfer'}</span></div>
+        {selected === 'prediction' && <div className="live-display-options"><label><input type="checkbox" checked={showSupport} onChange={e => setShowSupport(e.target.checked)} />Training limits</label><label>Opacity<input aria-label="Prediction opacity" type="range" min="0.2" max="1" step="0.05" value={opacity} onChange={e => setOpacity(Number(e.target.value))} /></label></div>}
       </div>
-    </section>}
-    {metadata && <section className="card xray-context"><div><p className="eyebrow">One recovery is not a general result</p><h3>Keep the failure in the story</h3>
-      <p>The primary satellite RF reduces pooled MAE by {Math.abs(metadata.overall.primary_comparison.pooled_MAE_change_pct).toFixed(1)}% across {metadata.overall.folds} folds. Its 95% interval for MAE change ({metadata.overall.primary_comparison.fold_bootstrap_95ci_pct.map(v => `${v > 0 ? '+' : ''}${v.toFixed(1)}%`).join(' to ')}) includes no improvement.</p>
-      <p>The diagnostic satellite-trend GP is worse than the location-only RF in {metadata.overall.diagnostic_comparison.folds_worse}/{metadata.overall.folds} folds.</p>
-      <button className="btn" onClick={() => { if (segmentId !== 31 || stage !== 'hidden' || mode !== 'experiment') { setLoading(true); setError(null); setSegment(null) } setMode('experiment'); setSegmentId(31); setStage('hidden'); setLayerId('none'); setPlaying(false) }}>Try segment 31: the failure case →</button>
-    </div><div><h3>What this signal means</h3><p>{metadata.limitations[0]}</p><p>{metadata.limitations[1]}</p><p className="muted">Historical reconstruction · {metadata.model_version}. No current bloom or forecast is implied.</p></div></section>}
-    {metadata && <section className="card"><h3>Trace the evidence</h3><p className="muted">{metadata.aggregation}. Data: USGS FLAMe, Loken et al. (2026).</p><div className="xray-sources">{metadata.sources.map(s => <a key={s.id} href={xrayResourceUrl(s.url)} target="_blank" rel="noreferrer">{s.title} ↗</a>)}</div></section>}
+    </section>
+    <section className="live-river" aria-label="Live river measurements">
+      <div className="live-river-heading"><p className="eyebrow">At the mouth of the Fox</p><h3>The river, right now.</h3>
+        <p>USGS {observations?.station_id.replace(/^USGS-/, '') ?? 'station'} · {stationError ? 'connection interrupted' : 'refreshes every 15 seconds'}</p><span>Station context · separate from map inputs</span></div>
+      {PARAMETERS.map(parameter => {
+        const reading = readings.get(parameter.code)
+        const delayed = reading && now - Date.parse(reading.observed_at) > (observations?.stale_after_seconds ?? 1800) * 1000
+        return <article className="live-river-reading" key={parameter.code}><div><span>{parameter.title}</span><i>{parameter.icon}</i></div>
+          <strong>{reading?.value != null ? reading.value.toLocaleString(undefined, { maximumFractionDigits: 1 }) : '—'} <small>{reading?.unit ?? ''}</small></strong>
+          <p>{reading ? date(reading.observed_at, true) : stationError ? 'Station unavailable' : 'Waiting for readings'}{delayed && <b>Delayed</b>}{stationError && reading && <b>Cached</b>}</p></article>
+      })}
+    </section>
+    {snapshot && <section className="live-details"><details><summary>Inside this prediction <span>{snapshot.modeled_area_km2.toLocaleString()} km² of modeled water · {snapshot.resolution_m} m grid</span></summary>
+      <div className="live-method"><div><h3>From reflectance to fluorescence</h3><p>{snapshot.note}</p>
+        <p>{snapshot.training_bins.toLocaleString()} FLAMe training bins · {snapshot.training_period}. {snapshot.extrapolated_cells.toLocaleString()} cells are beyond 3 km of training locations; {snapshot.outside_feature_range_cells.toLocaleString()} have at least one satellite feature outside the training range.</p>
+        <p>Transparent areas have no usable prediction. Each color scale covers the full value range of this snapshot; its limits can change with new data. Click Predictions to inspect a numerical value. A smooth display does not add observations.</p>
+        <p>Sharp bands and rectangular patches can occur when the model extrapolates far beyond its training locations. Turn on Training limits to identify unsupported areas; these boundaries are not measured plume edges.</p>
+        <a href="#/investigate">Explore the original research →</a></div>
+        <div><h3>Acquisitions behind the map</h3>{snapshot.scenes.map(scene => <a key={scene.id} href={scene.url} target="_blank" rel="noreferrer"><strong>{date(scene.acquired_at, true)} ↗</strong><span>{scene.id} · {scene.modeled_cells.toLocaleString()} cells</span></a>)}
+          <p>Map generated {date(snapshot.generated_at, true)}.<br />Catalog checked {date(data?.refresh.catalog_checked_at ?? snapshot.catalog_checked_at, true)}. Satellite worker checks hourly.</p></div></div>
+    </details></section>}
   </div>
 }

@@ -1,5 +1,14 @@
 import { api } from './api'
 import type { XrayAnswer, XrayMetadata, XrayObservation, XraySegment, XrayStage } from '@/models/xray'
+import type { LiveSample, LiveXray } from '@/models/xrayLive'
+
+export async function fetchLiveXray(signal?: AbortSignal): Promise<LiveXray> {
+  return (await api.get('/api/xray/live', { signal, headers: { 'Cache-Control': 'no-store' } })).data
+}
+
+export async function fetchLiveSample(runId: string, lat: number, lon: number, signal?: AbortSignal): Promise<LiveSample> {
+  return (await api.get(`/api/xray/live/${runId}/sample`, { params: { lat, lon }, signal })).data
+}
 
 export async function fetchXrayMetadata(signal?: AbortSignal): Promise<XrayMetadata> {
   return (await api.get('/api/xray', { signal })).data

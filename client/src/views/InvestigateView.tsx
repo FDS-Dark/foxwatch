@@ -56,7 +56,7 @@ export function InvestigateView() {
       <div className="xray-row" style={{ marginTop: '1rem' }}><label>Case <select value={segmentId} onChange={e => {
         controller.current?.abort(); setLoading(false); setSegmentId(Number(e.target.value)); setAnswer(null); setQuestion(''); setError(null)
       }}><option value={32}>Segment 32 · plume recovery</option><option value={31}>Segment 31 · failure case</option><option value={17}>Segment 17 · typical case</option></select></label>
-        <a className="btn" href={`#/replay?segment=${segmentId}`}>Open this experiment →</a></div>
+        <a className="btn" href="#/replay">Open latest satellite map →</a></div>
     </section>
     <section className="card"><h3>Explore the research</h3><div className="xray-sources">{questions.map(q => <button className="btn" key={q} onClick={() => { setDraft(q); void ask(q) }}>{q}</button>)}</div></section>
     <section className="card">

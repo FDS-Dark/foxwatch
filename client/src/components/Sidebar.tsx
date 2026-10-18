@@ -10,7 +10,7 @@ const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
   {
     id: 'replay',
     label: 'X-Ray the Bay',
-    hint: 'Hide → predict → reveal',
+    hint: 'Latest satellite predictions',
     icon: 'M3 12h3l3-8 4 16 3-8h5',
   },
   {
@@ -36,7 +36,7 @@ const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
 export function Sidebar({ current }: { current: ViewId }) {
   return (
     <aside className="sidebar">
-      <a href="#/current" className="sidebar__brand" aria-label="FoxWatch home">
+      <a href="#/replay" className="sidebar__brand" aria-label="FoxWatch home">
         <img
           className="sidebar__emblem"
           src="/foxwatch-emblem.png"
@@ -85,7 +85,7 @@ export function Sidebar({ current }: { current: ViewId }) {
         </ul>
       </nav>
 
-      {(current === 'replay' || current === 'investigate') && <div className="sidebar__event">
+      {current === 'investigate' && <div className="sidebar__event">
         <p className="sidebar__event-label">Active event</p>
         <p className="sidebar__event-title">June 30–July 1, 2025</p>
         <span className="chip chip--candidate">FLAMe · historical research</span>
