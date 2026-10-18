@@ -21,7 +21,7 @@ function viewFromHash(): ViewId {
 const TITLES: Record<ViewId, string> = {
   current: 'Current conditions',
   bfi: 'Bloom favorability',
-  replay: 'Bay survey replay',
+  replay: 'X-Ray the Bay',
   review: 'Analyst review',
 }
 
@@ -69,7 +69,10 @@ function App() {
                 Live station data
               </p>
             ) : view === 'replay' ? (
-              <p className="status-pill">June 2025 study · archived</p>
+              <p className="status-pill status-pill--live" role="status">
+                <span className="status-pill__dot" aria-hidden="true" />
+                Sentinel-2 + USGS
+              </p>
             ) : view === 'review' ? (
               <p className="status-pill status-pill--live" role="status">
                 <span className="status-pill__dot" aria-hidden="true" />
@@ -98,7 +101,7 @@ function App() {
                 : view === 'bfi'
                   ? 'Favorability from recent conditions and published references. Not a bloom forecast.'
                   : view === 'replay'
-                    ? 'Archived 2025 survey data for learning—not today’s conditions.'
+                    ? 'Recent satellite predictions with acquisition dates. Experimental fluorescence estimates, not confirmed harmful blooms.'
                     : 'Indicators are not confirmed harmful algal blooms or official advisories.'}
           </footer>
         </div>

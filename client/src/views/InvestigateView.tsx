@@ -56,7 +56,7 @@ export function InvestigateView() {
       <div className="xray-row" style={{ marginTop: '1rem' }}><label>Transect <select value={segmentId} onChange={e => {
         controller.current?.abort(); setLoading(false); setSegmentId(Number(e.target.value)); setAnswer(null); setQuestion(''); setError(null)
       }}><option value={32}>After plume (32)</option><option value={31}>Poor fit (31)</option><option value={17}>Typical (17)</option></select></label>
-        <a className="btn" href={`#/replay?segment=${segmentId}`}>Open gap test →</a></div>
+        <a className="btn" href="#/replay">Open X-Ray the Bay →</a></div>
     </section>
     <section className="card"><h3>Suggested questions</h3><div className="xray-sources">{questions.map(q => <button className="btn" key={q} onClick={() => { setDraft(q); void ask(q) }}>{q}</button>)}</div></section>
     <section className="card">

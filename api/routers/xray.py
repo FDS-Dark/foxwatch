@@ -1,12 +1,56 @@
 from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response, Query
 from fastapi.responses import FileResponse
 
-from models.xray import XrayQuestion
+from models.xray import XrayQuestion, LiveXrayQuestion
 from services.xray import EVIDENCE_FILES, XRAY_DIR, XrayService
+from services.xray_live import LIVE_DIR, live_metadata, sample_point
+from services.xray_explanations import explain_point
 
 router = APIRouter(prefix="/api/xray", tags=["xray"])
+
+
+@router.get("/live")
+def live(response: Response):
+    response.headers["Cache-Control"] = "no-store"
+    return live_metadata()
+
+
+def validate_snapshot(run_id: str):
+    import re
+    if not re.fullmatch(r"\d{8}T\d{6}Z-[a-f0-9]{8}", run_id):
+        raise HTTPException(404, "Unknown map snapshot")
+    if not (LIVE_DIR / run_id / "manifest.json").is_file():
+        raise HTTPException(404, "Map snapshot is unavailable")
+
+
+@router.get("/live/{run_id}/sample")
+def live_sample(run_id: str, lat: float = Query(ge=-90, le=90), lon: float = Query(ge=-180, le=180)):
+    validate_snapshot(run_id)
+    try:
+        return sample_point(run_id, lat, lon)
+    except FileNotFoundError:
+        raise HTTPException(503, "Interactive map values are unavailable") from None
+
+
+@router.post("/live/{run_id}/explain")
+def explain_live(run_id: str, body: LiveXrayQuestion, response: Response):
+    validate_snapshot(run_id)
+    response.headers["Cache-Control"] = "no-store"
+    try:
+        return explain_point(run_id, body.lat, body.lon, body.question, body.use_gemini)
+    except FileNotFoundError:
+        raise HTTPException(503, "Explanation evidence is unavailable for this snapshot") from None
+
+
+@router.get("/live/{run_id}/{layer_id}")
+def live_layer(run_id: str, layer_id: Literal["prediction", "satellite", "support", "age"]):
+    validate_snapshot(run_id)
+    path = LIVE_DIR / run_id / f"{layer_id}.png"
+    if not (path.parent / "manifest.json").is_file() or not path.is_file():
+        raise HTTPException(404, "Map snapshot is unavailable")
+    return FileResponse(path, media_type="image/png", headers={"Cache-Control": "public, max-age=31536000, immutable"})
 
 
 def get_xray_service():

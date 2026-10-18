@@ -15,8 +15,8 @@ const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
   },
   {
     id: 'replay',
-    label: 'Bay survey replay',
-    hint: 'June 2025 boat study',
+    label: 'X-Ray the Bay',
+    hint: 'Latest satellite predictions',
     icon: 'M3 6l6-3 6 3 6-3v12l-6 3-6-3-6 3V6z M9 3v18 M15 6v18',
   },
   {
@@ -75,9 +75,9 @@ export function Sidebar({ current }: { current: ViewId }) {
 
       {current === 'replay' && (
         <div className="sidebar__event">
-          <p className="sidebar__event-label">Study period</p>
-          <p className="sidebar__event-title">June 30 – July 1, 2025</p>
-          <span className="chip chip--candidate">Archived · not live</span>
+          <p className="sidebar__event-label">Live layer</p>
+          <p className="sidebar__event-title">Green Bay · satellite + river</p>
+          <span className="chip chip--candidate">Experimental · not advisory</span>
         </div>
       )}
 

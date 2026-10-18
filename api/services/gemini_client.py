@@ -221,6 +221,53 @@ def generate_grounded_text(prompt: str) -> tuple[Optional[str], str]:
     return None, f"error:{last_error}"
 
 
+def generate_grounded_json(instructions: str, evidence: dict[str, Any]) -> tuple[dict | None, str]:
+    """Bounded REST request using the same Gemini configuration as BFI.
+
+    Uses the API's existing httpx dependency, including installations without
+    the optional RAG SDK. Never log response bodies, prompts or credentials.
+    """
+    import time
+    from urllib.parse import quote
+    import httpx
+
+    key = _api_key()
+    if not key:
+        return None, "missing_api_key"
+    deadline = time.monotonic() + 40
+    last_error = "unavailable"
+    with httpx.Client() as client:
+        for name in _model_candidates():
+            remaining = deadline - time.monotonic()
+            if remaining <= 1:
+                break
+            try:
+                response = client.post(
+                    f"https://generativelanguage.googleapis.com/v1beta/models/{quote(name.removeprefix('models/'), safe='')}:generateContent",
+                    headers={"x-goog-api-key": key},
+                    json={
+                        "systemInstruction": {"parts": [{"text": instructions}]},
+                        "contents": [{"role": "user", "parts": [{"text": json.dumps(evidence)}]}],
+                        "generationConfig": {"responseMimeType": "application/json", "temperature": 0.2},
+                    },
+                    timeout=httpx.Timeout(min(18, remaining), connect=5),
+                )
+                if response.status_code != 200:
+                    last_error = f"http_{response.status_code}"
+                    if response.status_code in (401, 403, 429):
+                        break
+                    continue
+                candidates = response.json().get("candidates", [])
+                parts = candidates[0].get("content", {}).get("parts", []) if candidates else []
+                parsed = _extract_json_object("".join(p.get("text", "") for p in parts if not p.get("thought")))
+                if isinstance(parsed, dict):
+                    return parsed, f"gemini:{name}"
+                last_error = "invalid_response"
+            except (httpx.HTTPError, ValueError, TypeError, KeyError, IndexError):
+                last_error = "request_failed"
+    return None, last_error
+
+
 def generate_structured_insights(prompt: str) -> tuple[Optional[dict[str, Any]], str]:
     """
     Call Gemini with a grounded prompt and parse JSON-shaped insight output.
