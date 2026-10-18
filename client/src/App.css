@@ -1657,6 +1657,13 @@ input[type='range'] {
   color: #6b3a24;
 }
 
+.retrain__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
 .lineage {
   list-style: none;
   margin: 0;

@@ -146,6 +146,9 @@ RAG_LEGACY_INDEX_PATH = RAG_INDEX_DIR / "embedded_chunks.jsonl"
 RAG_INDEX_PATH = RAG_CHUNKS_PATH
 RAG_REPORTS_DIR = DATA_DIR / "rag" / "reports"
 USGS_MANIFEST_PATH = DATA_DIR / "attributes" / "usgs_parameter_manifest.csv"
+ML_ARTIFACTS_DIR = API_ROOT / "model" / "artifacts"
+ML_LABELED_DATA_PATH = DATA_DIR / "labeled_openai.csv"
+ML_REVIEW_STATE_PATH = DATA_DIR / "ml" / "review_state.json"
 
 RAG_VECTOR_BACKEND = os.getenv("RAG_VECTOR_BACKEND", "auto").strip().lower()
 

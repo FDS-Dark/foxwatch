@@ -73,6 +73,80 @@ def train_model(path: str | Path = DEFAULT_DATA_PATH):
     return build_model().fit(x, y)
 
 
+def clear_model_cache() -> None:
+    _load_model.cache_clear()
+
+
+def refit_with_feedback(
+    *,
+    base_data_path: Path | str = DEFAULT_DATA_PATH,
+    feedback_rows: list[tuple[list[float], int]],
+    model_path: Path | str,
+    parent_metadata: dict | None = None,
+) -> dict:
+    """
+    Refit on labeled CSV plus analyst correction rows (feature vector, algal_bloom 0/1).
+
+    Each feedback row comes from a denied live prediction where the analyst supplies
+    the opposite of the model's class label.
+    """
+    x_base, y_base = load_data(base_data_path)
+    if feedback_rows:
+        x_extra = np.asarray([row[0] for row in feedback_rows], dtype=float)
+        y_extra = np.asarray([row[1] for row in feedback_rows], dtype=int)
+        if not np.isfinite(x_extra).all():
+            raise ValueError("Feedback feature rows must be finite")
+        if set(y_extra.tolist()) - {0, 1}:
+            raise ValueError("Feedback labels must be 0 or 1")
+        x = np.vstack([x_base, x_extra])
+        y = np.concatenate([y_base, y_extra])
+    else:
+        x, y = x_base, y_base
+
+    folds = min(5, int(np.bincount(y).min()))
+    if folds < 2:
+        raise ValueError("At least two examples of each class are required for validation")
+
+    cv = StratifiedKFold(n_splits=folds, shuffle=True, random_state=42)
+    probabilities = cross_val_predict(build_model(), x, y, cv=cv, method="predict_proba")[:, 1]
+    report = {
+        "model_version": "logistic_regression_v2",
+        "trained_at": datetime.now(timezone.utc).isoformat(),
+        "training_file": Path(base_data_path).name,
+        "training_sha256": hashlib.sha256(Path(base_data_path).read_bytes()).hexdigest(),
+        "sklearn_version": sklearn.__version__,
+        "feature_columns": list(FEATURE_COLUMNS),
+        "feature_parameters": FEATURE_PARAMETERS,
+        "training_rows": int(len(y)),
+        "base_training_rows": int(len(y_base)),
+        "human_feedback_rows": len(feedback_rows),
+        "parent_trained_at": (parent_metadata or {}).get("trained_at"),
+        "class_counts": {str(i): int((y == i).sum()) for i in (0, 1)},
+        "validation": f"{folds}-fold stratified shuffled cross-validation after human feedback",
+        "classification_report": classification_report(
+            y, probabilities >= 0.5, output_dict=True, zero_division=0
+        ),
+        "confusion_matrix": confusion_matrix(y, probabilities >= 0.5).tolist(),
+        "roc_auc": float(roc_auc_score(y, probabilities)),
+        "limitations": [
+            "Few positive labels; validation estimates are uncertain and do not establish confirmed bloom detection.",
+            "Live inputs are instantaneous measurements; training inputs are daily means.",
+            "Human feedback rows are sparse corrections from denied predictions, not lab ground truth.",
+            "Class-weighted probabilities are model scores, not calibrated bloom risks.",
+        ],
+    }
+    artifact = {"model": build_model().fit(x, y), "metadata": report}
+    destination = Path(model_path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_suffix(".tmp")
+    with temporary.open("wb") as target:
+        pickle.dump(artifact, target)
+    temporary.replace(destination)
+    destination.with_suffix(".json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    clear_model_cache()
+    return report
+
+
 def train_and_save(data_path=DEFAULT_DATA_PATH, model_path=DEFAULT_MODEL_PATH):
     x, y = load_data(data_path)
     folds = min(5, int(np.bincount(y).min()))

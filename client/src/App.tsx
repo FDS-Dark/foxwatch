@@ -54,7 +54,23 @@ function App() {
               <p className="topbar__eyebrow">Lower Fox River · Green Bay</p>
               <h1 className="topbar__title">{TITLES[view]}</h1>
             </div>
-            {view === 'current' ? <p className="status-pill">USGS via Tiger Data</p> : view === 'replay' || view === 'investigate' ? <p className="status-pill">USGS FLAMe · June 30–July 1, 2025</p> : <StatusPill />}
+            {view === 'current' ? (
+              <p className="status-pill">USGS via Tiger Data</p>
+            ) : view === 'replay' || view === 'investigate' ? (
+              <p className="status-pill">USGS FLAMe · June 30–July 1, 2025</p>
+            ) : view === 'review' ? (
+              <p className="status-pill status-pill--live" role="status">
+                <span className="status-pill__dot" aria-hidden="true" />
+                Logistic v2 · Tiger · live refit
+              </p>
+            ) : view === 'bfi' ? (
+              <p className="status-pill status-pill--live" role="status">
+                <span className="status-pill__dot" aria-hidden="true" />
+                RAG + Tiger · API
+              </p>
+            ) : (
+              <StatusPill />
+            )}
           </header>
           <main id="main" tabIndex={-1} className="shell__main">
             {view === 'current' && <CurrentView />}
@@ -64,7 +80,15 @@ function App() {
             {view === 'review' && <ReviewView />}
           </main>
           <footer className="shell__footer">
-            {view === 'current' ? 'Current station measurements from USGS, served from Tiger Data.' : view === 'replay' || view === 'investigate' ? 'Historical research: fluorescence in RFU, not confirmed harmful blooms. Satellite reconstructions are experimental.' : <>Historical replay for education. Satellite values are
+            {view === 'current'
+              ? 'Current station measurements from USGS, served from Tiger Data.'
+              : view === 'review'
+                ? 'Bloom classifier queue and refit use live Tiger readings and labeled_openai.csv; analyst denials append correction rows.'
+                : view === 'bfi'
+                  ? 'BFI scores live USGS inputs; narrative uses RAG evidence and optional Gemini.'
+                  : view === 'replay' || view === 'investigate'
+                    ? 'Historical research: fluorescence in RFU, not confirmed harmful blooms. Satellite reconstructions are experimental.'
+                    : <>Historical replay for education. Satellite values are
             dimensionless proxies, not confirmed harmful algal blooms. Scenarios
             are assumptions, not forecasts.</>}
           </footer>

@@ -12,6 +12,7 @@ from routers.bfi import router as bfi_router
 from routers.ingestion import router as ingestion_router
 from routers.meta import router as meta_router
 from routers.observations import router as observations_router
+from routers.ml_review import router as ml_review_router
 from routers.predictions import router as predictions_router
 from routers.xray import router as xray_router
 
@@ -67,6 +68,7 @@ app.include_router(meta_router)
 app.include_router(observations_router)
 app.include_router(ingestion_router)
 app.include_router(predictions_router)
+app.include_router(ml_review_router)
 app.include_router(bfi_router)
 app.include_router(xray_router)
 
