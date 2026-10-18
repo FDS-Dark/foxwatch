@@ -1,0 +1,74 @@
+{
+  "model_version": "logistic_regression_v2",
+  "trained_at": "2026-10-18T03:17:54.142294+00:00",
+  "training_file": "labeled_openai.csv",
+  "training_sha256": "4be35d7c5eb77e8089faa6920362564a7b4255170f32432730f255dde4ba93eb",
+  "sklearn_version": "1.9.1",
+  "feature_columns": [
+    "chlorophyll_fluorescence_mean",
+    "discharge_mean",
+    "dissolved_oxygen_mean",
+    "phycocyanin_fluorescence_mean",
+    "specific_conductance_mean",
+    "turbidity_mean",
+    "water_temperature_mean"
+  ],
+  "feature_parameters": {
+    "chlorophyll_fluorescence_mean": "32316",
+    "discharge_mean": "00060",
+    "dissolved_oxygen_mean": "00300",
+    "phycocyanin_fluorescence_mean": "32319",
+    "specific_conductance_mean": "00095",
+    "turbidity_mean": "63680",
+    "water_temperature_mean": "00010"
+  },
+  "training_rows": 366,
+  "class_counts": {
+    "0": 358,
+    "1": 8
+  },
+  "validation": "5-fold stratified shuffled cross-validation; not a forecasting evaluation",
+  "classification_report": {
+    "0": {
+      "precision": 0.9969788519637462,
+      "recall": 0.9217877094972067,
+      "f1-score": 0.9579100145137881,
+      "support": 358.0
+    },
+    "1": {
+      "precision": 0.2,
+      "recall": 0.875,
+      "f1-score": 0.32558139534883723,
+      "support": 8.0
+    },
+    "accuracy": 0.9207650273224044,
+    "macro avg": {
+      "precision": 0.5984894259818732,
+      "recall": 0.8983938547486033,
+      "f1-score": 0.6417457049313127,
+      "support": 366.0
+    },
+    "weighted avg": {
+      "precision": 0.9795585491885825,
+      "recall": 0.9207650273224044,
+      "f1-score": 0.9440886239309475,
+      "support": 366.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      330,
+      28
+    ],
+    [
+      1,
+      7
+    ]
+  ],
+  "roc_auc": 0.9832402234636871,
+  "limitations": [
+    "Few positive labels; validation estimates are uncertain and do not establish confirmed bloom detection.",
+    "Live inputs are instantaneous measurements; training inputs are daily means.",
+    "Class-weighted probabilities are model scores, not calibrated bloom risks."
+  ]
+}
