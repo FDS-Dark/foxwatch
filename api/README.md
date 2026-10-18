@@ -3,8 +3,41 @@
 One FastAPI application serves USGS observations and evidence-backed bloom
 favorability insights. It collects continuous measurements for Fox River at Green
 Bay, station `USGS-040851385`, into a Tiger Data (TimescaleDB/PostgreSQL)
-hypertable. `main.py` owns the application and collector lifecycle;
-`foxwatch/routes.py` supplies the bloom-insights routes.
+hypertable. Layering matches the full-stack-app template:
+**routers → services → databridge → engine**.
+
+## Layout
+
+```text
+api/
+  main.py                 # FastAPI app + USGS collector lifecycle
+  settings.py             # APP__* settings, paths, Gemini, legacy Tiger/USGS env
+  dependencies.py         # Engine/databridge/service singletons (+ optional JWT)
+  routers/                # HTTP only — status codes, deps, no business logic
+  services/               # All domain logic
+    usgs_ingestion.py     # Background USGS → Postgres collector (write path)
+    usgs_client.py        # USGS OGC API fetch/normalize
+    observations.py       # Latest readings via databridge (read path)
+    predictions.py        # Logistic regression inference
+    bfi.py                # BFI insights orchestration
+    bfi_scoring.py        # Rule-based bloom favorability index
+    bfi_insights.py       # RAG + Gemini narrative synthesis
+    bfi_retrieval.py      # Hybrid evidence retrieval
+    gemini_client.py      # Optional Gemini API client
+    rag_*.py              # Corpus chunk/embed/ingest pipeline
+    ml/                   # Offline train/eval scripts + model artifacts
+  models/                 # Pydantic API models + domain constants (usgs, bfi_factors)
+  databridge/             # SQL → DataFrame
+  engine/                 # SQLAlchemy async Postgres pool
+database/                 # Local TimescaleDB + db-upgrader migrations
+```
+
+Build the RAG index from `api/`:
+
+```powershell
+uv sync --group rag
+uv run python -m services.rag_ingest
+```
 
 ## Run
 
@@ -17,20 +50,19 @@ uv sync
 uv run python main.py
 ```
 
-One process serves **Current conditions** (`GET /api/observations/latest`) and
-**BFI insights** (`POST /api/v1/bfi/insights`). For reload mode, run
-`uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000` from `api/`.
-`uvicorn foxwatch.main:app --reload --app-dir api` from the repo root is equivalent.
+For reload mode, run `uv run uvicorn main:app --reload` from `api/`.
+From the repository root, use `uvicorn api.main:app --reload` with the API
+environment activated. The old `foxwatch.main:app` entry point has been removed.
+Only one API process is needed on port 8000.
 
 Put `GEMINI_API_KEY` and optional `GEMINI_MODEL` in the repo-root `.env` (see
 `../.env.example`). Put the Tiger/Timescale URL in `api/.env` as
 `TIGER_DATABASE_URL`, `TIMESCALE_SERVICE_URL`, or `INGEST_DATABASE_URL`.
 Environment variables already set in the shell take precedence, then `api/.env`,
-then repo-root `.env`. `uv sync` installs the observation API and core BFI
-dependencies. To enable sentence-transformer embeddings, PDF ingestion, and
-Gemini generation, also run `uv pip install -r requirements.txt` from `api/`.
-Without those optional packages, the BFI endpoint retains its hash-embedding and
-evidence-synthesis fallbacks; it still requires an existing RAG index.
+then repo-root `.env`. `uv sync` installs the core API. Optional RAG/Gemini
+packages install with `uv sync --group rag`. Without them, the BFI endpoint
+uses hash embeddings and local synthesis fallbacks; it still requires a built
+RAG index under `data/rag/index/`.
 
 Copy the PostgreSQL connection URL from your Tiger Cloud service's connection
 details, including its port, database, password and `sslmode=require`. Keep it in
@@ -120,10 +152,10 @@ LIMIT 100;
 Train and save the model from `data/labeled_openai.csv` (run from `api`):
 
 ```powershell
-uv run python model/logistic_regression_v2.py
+uv run python -m services.ml.logistic_regression_v2
 ```
 
-This writes `model/artifacts/logistic_regression_v2.pkl` and an accompanying JSON
+This writes `services/ml/artifacts/logistic_regression_v2.pkl` and an accompanying JSON
 validation report. These generated files are ignored by Git; train on deployment
 or copy your trusted generated artifact there. The API caches the fitted model
 and reloads it when the artifact changes. Training is never performed per request.

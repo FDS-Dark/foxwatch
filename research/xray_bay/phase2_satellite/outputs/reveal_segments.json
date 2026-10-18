@@ -1,0 +1,70 @@
+[
+ {
+  "segment": 32,
+  "label": "predefined diagnostic",
+  "scene": "S2C_T16TDQ_20250701T165332_L2A",
+  "lag_h": [
+   -21.26421472222222,
+   2.9004986111111113
+  ],
+  "n_test_matched": 45,
+  "n_test_full": 46,
+  "n_train": 1555,
+  "MAE_idw": 5.231448667245673,
+  "MAE_rf_xy": 4.182800070972494,
+  "MAE_gp_xy": 4.733251702471888,
+  "MAE_rf_xysat": 3.8563195792113465,
+  "MAE_gp_resid": 1.6163990344736239
+ },
+ {
+  "segment": 17,
+  "label": "typical fold (median change)",
+  "scene": "S2C_T16TDQ_20250701T165332_L2A",
+  "lag_h": [
+   21.03160972222222,
+   21.46216527777778
+  ],
+  "n_test_matched": 39,
+  "n_test_full": 47,
+  "n_train": 1536,
+  "MAE_idw": 0.08406430662237056,
+  "MAE_rf_xy": 0.08906434890215169,
+  "MAE_gp_xy": 0.41790946844979043,
+  "MAE_rf_xysat": 0.08519646037697681,
+  "MAE_gp_resid": 0.20338540570954355
+ },
+ {
+  "segment": 31,
+  "label": "failure case (largest worsening)",
+  "scene": "S2C_T16TDQ_20250701T165332_L2A",
+  "lag_h": [
+   -21.230325833333332,
+   3.0346652777777776
+  ],
+  "n_test_matched": 33,
+  "n_test_full": 48,
+  "n_train": 1507,
+  "MAE_idw": 1.6554713990492227,
+  "MAE_rf_xy": 0.8629621141637317,
+  "MAE_gp_xy": 1.0303297822935398,
+  "MAE_rf_xysat": 1.2246658005612687,
+  "MAE_gp_resid": 2.5680773503440495
+ },
+ {
+  "segment": 52,
+  "label": "largest improvement",
+  "scene": "S2C_T16TDQ_20250701T165332_L2A",
+  "lag_h": [
+   -1.567001388888889,
+   -1.531723611111111
+  ],
+  "n_test_matched": 16,
+  "n_test_full": 33,
+  "n_train": 1539,
+  "MAE_idw": 2.3455933459094447,
+  "MAE_rf_xy": 3.4718499824324773,
+  "MAE_gp_xy": 1.065415087488498,
+  "MAE_rf_xysat": 2.730224980813741,
+  "MAE_gp_resid": 0.7425597496213223
+ }
+]

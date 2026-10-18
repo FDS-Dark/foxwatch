@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
-import type { BfiInsightResponse } from '../data/types/bfi'
+import type { BfiInsightResponse } from '@/models/bfi'
+import { fetchBfiHealth, fetchBfiInsights } from '@/services/bfiService'
 
 const DEMO_INPUT = {
   water_temperature_c: 27,
@@ -39,16 +40,7 @@ export function BfiInsightsView() {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch('/api/v1/bfi/insights', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...DEMO_INPUT, use_gemini: true }),
-      })
-      if (!res.ok) {
-        const detail = await res.text()
-        throw new Error(detail || res.statusText)
-      }
-      setData((await res.json()) as BfiInsightResponse)
+      setData(await fetchBfiInsights({ ...DEMO_INPUT, use_gemini: true }))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Request failed')
       setData(null)
@@ -58,8 +50,7 @@ export function BfiInsightsView() {
   }, [])
 
   useEffect(() => {
-    fetch('/api/health')
-      .then((r) => r.json())
+    fetchBfiHealth()
       .then((h) => setApiOk(h.gemini_configured === true))
       .catch(() => setApiOk(false))
   }, [])

@@ -3,14 +3,14 @@ import tempfile
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 import numpy as np
 from fastapi.testclient import TestClient
 
-from ingestion import Settings
+from services.usgs_ingestion import Settings
 from main import app
-from model.logistic_regression_v2 import (
+from services.ml.logistic_regression_v2 import (
     DEFAULT_DATA_PATH, FEATURE_COLUMNS, FEATURE_PARAMETERS,
     load_data, predict_readings, train_and_save,
 )
@@ -81,10 +81,12 @@ class ModelTests(unittest.TestCase):
         self.assertEqual(predict_readings(readings, self.path)["status"], "available")
 
     def test_prediction_endpoint_uses_tiger_data(self):
-        with patch("main.Settings.from_env", return_value=Settings(database_url="test", enabled=False)), \
-             patch("ingestion.Collector.prediction_readings", return_value=self.readings()) as read, \
-             patch("ingestion.fetch_features") as usgs, \
-             patch("main.predict_readings", side_effect=lambda rows: predict_readings(rows, self.path)), \
+        read = AsyncMock(return_value=self.readings())
+        with patch("settings.resolved_database_url", return_value="postgresql://127.0.0.1:5432/foxwatch"), \
+             patch("settings.IngestionSettings.from_env", return_value=Settings(database_url="postgresql://127.0.0.1:5432/foxwatch", enabled=False)), \
+             patch("services.observations.ObservationsService.prediction_readings", read), \
+             patch("services.usgs_ingestion.fetch_features") as usgs, \
+             patch("services.predictions.predict_readings", side_effect=lambda rows: predict_readings(rows, self.path)), \
              TestClient(app) as client:
             response = client.get("/api/predictions/latest")
         self.assertEqual(response.status_code, 200)
@@ -94,9 +96,10 @@ class ModelTests(unittest.TestCase):
         usgs.assert_not_called()
 
     def test_missing_artifact_returns_actionable_error(self):
-        with patch("main.Settings.from_env", return_value=Settings(database_url="test", enabled=False)), \
-             patch("ingestion.Collector.prediction_readings", return_value=self.readings()), \
-             patch("main.predict_readings", side_effect=FileNotFoundError), TestClient(app) as client:
+        with patch("settings.resolved_database_url", return_value="postgresql://127.0.0.1:5432/foxwatch"), \
+             patch("settings.IngestionSettings.from_env", return_value=Settings(database_url="postgresql://127.0.0.1:5432/foxwatch", enabled=False)), \
+             patch("services.observations.ObservationsService.prediction_readings", AsyncMock(return_value=self.readings())), \
+             patch("services.predictions.predict_readings", side_effect=FileNotFoundError), TestClient(app) as client:
             response = client.get("/api/predictions/latest")
         self.assertEqual(response.status_code, 503)
         self.assertIn("Train v2", response.json()["detail"])

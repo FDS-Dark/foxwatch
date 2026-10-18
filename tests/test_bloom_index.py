@@ -2,7 +2,7 @@
 
 import unittest
 
-from foxwatch.bfi.index import (
+from api.services.bfi_scoring import (
     BloomFavorabilityResult,
     RuleBasedScoringEngine,
     calculate_bloom_favorability,

@@ -3,8 +3,8 @@
 import unittest
 from pathlib import Path
 
-from foxwatch.bfi.index import calculate_bloom_favorability, calculate_bloom_favorability_from_observations
-from foxwatch.bfi.labels import (
+from api.services.bfi_scoring import calculate_bloom_favorability, calculate_bloom_favorability_from_observations
+from api.models.bfi_factors import (
     DEFAULT_MANIFEST_PATH,
     USGS_REFERENCE_THRESHOLDS,
     assert_bfi_labels_match_manifest,

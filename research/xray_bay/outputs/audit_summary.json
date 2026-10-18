@@ -1,0 +1,903 @@
+{
+  "source_file": "FLAMe_data.csv",
+  "n_rows_raw": 455102,
+  "n_rows_with_position_time": 455102,
+  "columns_in_file": [
+    "id",
+    "DateTime_UTC",
+    "latitude",
+    "longitude",
+    "speed",
+    "course",
+    "extPower",
+    "wiperPos",
+    "barom_mmHg",
+    "temp_int",
+    "temp_spect",
+    "temp_lamp",
+    "temp_logger",
+    "depth",
+    "temp_echo",
+    "temp_exo",
+    "specCond",
+    "pH",
+    "turb_FNU",
+    "ODO_percent",
+    "ODO_mgL",
+    "chl_RFU_exo",
+    "chl_ugL_exo",
+    "bga_RFU_exo",
+    "bga_ugL_exo",
+    "bga_to_chl_RFU_exo",
+    "fdom_RFU_exo",
+    "fdom_QSU_exo",
+    "pressure",
+    "CH4_ppm",
+    "H2O_ppm",
+    "CO2_ppm",
+    "NO3_uM",
+    "NO3_mgL",
+    "abs254",
+    "abs350",
+    "temp_exo_hyd",
+    "temp_exo_tau",
+    "specCond_hyd",
+    "specCond_tau",
+    "pH_hyd",
+    "pH_tau",
+    "turb_FNU_hyd",
+    "turb_FNU_tau",
+    "ODO_percent_hyd",
+    "ODO_percent_tau",
+    "ODO_mgL_hyd",
+    "ODO_mgL_tau",
+    "chl_RFU_exo_hyd",
+    "chl_RFU_exo_tau",
+    "chl_ugL_exo_hyd",
+    "chl_ugL_exo_tau",
+    "bga_RFU_exo_hyd",
+    "bga_RFU_exo_tau",
+    "bga_ugL_exo_hyd",
+    "bga_ugL_exo_tau",
+    "fdom_RFU_exo_hyd",
+    "fdom_RFU_exo_tau",
+    "fdom_QSU_exo_hyd",
+    "fdom_QSU_exo_tau",
+    "CH4_ppm_hyd",
+    "CH4_ppm_tau",
+    "CO2_ppm_hyd",
+    "CO2_ppm_tau",
+    "CH4_uM",
+    "CH4_Sat",
+    "CH4_uM_hyd",
+    "CH4_Sat_hyd",
+    "CH4_uM_tau",
+    "CH4_Sat_tau",
+    "CO2_uM",
+    "CO2_Sat",
+    "CO2_uM_hyd",
+    "CO2_Sat_hyd",
+    "CO2_uM_tau",
+    "CO2_Sat_tau",
+    "Trans_FP",
+    "GreenAlgae_FP",
+    "BlueGreen_FP",
+    "Diatoms_FP",
+    "Cryptophyta_FP",
+    "YellowSubs_FP"
+  ],
+  "crs_projected": "EPSG:32616",
+  "campaigns": {
+    "Fox_2023_Aug": {
+      "n_rows": 78128,
+      "start_utc": "2023-08-07 16:20:00+00:00",
+      "end_utc": "2023-08-10 18:47:00+00:00",
+      "local_days": [
+        "2023-08-07",
+        "2023-08-08",
+        "2023-08-09",
+        "2023-08-10"
+      ],
+      "bbox_lonlat": [
+        -88.54168,
+        43.9658,
+        -87.8944,
+        44.64034
+      ],
+      "median_dt_s": 1.0,
+      "track_length_km": 296.59727823458934,
+      "n_rows_in_green_bay_lat_gt_44_52": 15243,
+      "variables": {
+        "chl_RFU_exo_tau": {
+          "n_valid": 75229,
+          "frac_valid": 0.9629,
+          "min": 0.51,
+          "p05": 2.02,
+          "median": 4.96,
+          "p95": 8.92,
+          "max": 35.35,
+          "n_negative": 0
+        },
+        "bga_RFU_exo_tau": {
+          "n_valid": 73220,
+          "frac_valid": 0.9372,
+          "min": -0.05,
+          "p05": 1.18,
+          "median": 3.51,
+          "p95": 7.96,
+          "max": 144.8,
+          "n_negative": 1
+        },
+        "turb_FNU_tau": {
+          "n_valid": 68428,
+          "frac_valid": 0.8758,
+          "min": -17.92,
+          "p05": 9.233500000000005,
+          "median": 19.72,
+          "p95": 47.80649999999994,
+          "max": 1041.2,
+          "n_negative": 47
+        },
+        "specCond_tau": {
+          "n_valid": 75345,
+          "frac_valid": 0.9644,
+          "min": 252.1,
+          "p05": 313.2,
+          "median": 346.5,
+          "p95": 394.2,
+          "max": 579.6,
+          "n_negative": 0
+        },
+        "temp_exo_tau": {
+          "n_valid": 75357,
+          "frac_valid": 0.9645,
+          "min": 23.96,
+          "p05": 24.32,
+          "median": 25.97,
+          "p95": 27.58,
+          "max": 28.49,
+          "n_negative": 0
+        },
+        "fdom_QSU_exo_tau": {
+          "n_valid": 75353,
+          "frac_valid": 0.9645,
+          "min": 7.6,
+          "p05": 38.16,
+          "median": 57.86,
+          "p95": 63.87,
+          "max": 77.07,
+          "n_negative": 0
+        },
+        "BlueGreen_FP": {
+          "n_valid": 4997,
+          "frac_valid": 0.064,
+          "min": 7.4,
+          "p05": 9.72,
+          "median": 45.64,
+          "p95": 109.6719999999999,
+          "max": 983.4,
+          "n_negative": 0
+        },
+        "NO3_mgL": {
+          "n_valid": 4934,
+          "frac_valid": 0.0632,
+          "min": -0.088,
+          "p05": 0.12265000000000001,
+          "median": 0.16,
+          "p95": 0.295,
+          "max": 0.463,
+          "n_negative": 2
+        }
+      }
+    },
+    "Fox_2024_Aug": {
+      "n_rows": 59224,
+      "start_utc": "2024-08-19 16:30:00+00:00",
+      "end_utc": "2024-08-21 20:42:00+00:00",
+      "local_days": [
+        "2024-08-19",
+        "2024-08-20",
+        "2024-08-21"
+      ],
+      "bbox_lonlat": [
+        -88.55083,
+        43.99127,
+        -87.8828,
+        44.64867
+      ],
+      "median_dt_s": 1.0,
+      "track_length_km": 274.13175006545873,
+      "n_rows_in_green_bay_lat_gt_44_52": 11643,
+      "variables": {
+        "chl_RFU_exo_tau": {
+          "n_valid": 53503,
+          "frac_valid": 0.9034,
+          "min": 0.38,
+          "p05": 1.23,
+          "median": 2.08,
+          "p95": 3.37,
+          "max": 23.06,
+          "n_negative": 0
+        },
+        "bga_RFU_exo_tau": {
+          "n_valid": 52045,
+          "frac_valid": 0.8788,
+          "min": 0.89,
+          "p05": 2.02,
+          "median": 4.52,
+          "p95": 7.89,
+          "max": 19.01,
+          "n_negative": 0
+        },
+        "turb_FNU_tau": {
+          "n_valid": 52630,
+          "frac_valid": 0.8887,
+          "min": -0.79,
+          "p05": 11.04,
+          "median": 24.55,
+          "p95": 45.18,
+          "max": 75.84,
+          "n_negative": 1
+        },
+        "specCond_tau": {
+          "n_valid": 53633,
+          "frac_valid": 0.9056,
+          "min": 318.4,
+          "p05": 330.4,
+          "median": 360.4,
+          "p95": 380.7,
+          "max": 765.2,
+          "n_negative": 0
+        },
+        "temp_exo_tau": {
+          "n_valid": 53636,
+          "frac_valid": 0.9056,
+          "min": 21.48,
+          "p05": 21.98,
+          "median": 23.08,
+          "p95": 23.87,
+          "max": 24.95,
+          "n_negative": 0
+        },
+        "fdom_QSU_exo_tau": {
+          "n_valid": 53624,
+          "frac_valid": 0.9054,
+          "min": 39.52,
+          "p05": 67.51,
+          "median": 81.5,
+          "p95": 150.4909999999999,
+          "max": 165.72,
+          "n_negative": 0
+        },
+        "BlueGreen_FP": {
+          "n_valid": 6302,
+          "frac_valid": 0.1064,
+          "min": 6.38,
+          "p05": 27.66,
+          "median": 57.78,
+          "p95": 93.07,
+          "max": 199.01,
+          "n_negative": 0
+        },
+        "NO3_mgL": {
+          "n_valid": 4431,
+          "frac_valid": 0.0748,
+          "min": 0.155,
+          "p05": 0.201,
+          "median": 0.232,
+          "p95": 0.344,
+          "max": 0.701,
+          "n_negative": 0
+        }
+      }
+    },
+    "Fox_2024_Jul": {
+      "n_rows": 58684,
+      "start_utc": "2024-07-29 16:01:00+00:00",
+      "end_utc": "2024-07-31 20:41:00+00:00",
+      "local_days": [
+        "2024-07-29",
+        "2024-07-30",
+        "2024-07-31"
+      ],
+      "bbox_lonlat": [
+        -88.55081,
+        43.99176,
+        -87.8832,
+        44.64859
+      ],
+      "median_dt_s": 1.0,
+      "track_length_km": 257.28081687594374,
+      "n_rows_in_green_bay_lat_gt_44_52": 13534,
+      "variables": {
+        "chl_RFU_exo_tau": {
+          "n_valid": 52906,
+          "frac_valid": 0.9015,
+          "min": -0.29,
+          "p05": 1.19,
+          "median": 2.14,
+          "p95": 5.71,
+          "max": 15.39,
+          "n_negative": 1
+        },
+        "bga_RFU_exo_tau": {
+          "n_valid": 51388,
+          "frac_valid": 0.8757,
+          "min": 0.02,
+          "p05": 1.93,
+          "median": 4.3,
+          "p95": 14.14,
+          "max": 88.4,
+          "n_negative": 0
+        },
+        "turb_FNU_tau": {
+          "n_valid": 51847,
+          "frac_valid": 0.8835,
+          "min": -24.63,
+          "p05": 8.25,
+          "median": 17.53,
+          "p95": 47.05,
+          "max": 244.19,
+          "n_negative": 28
+        },
+        "specCond_tau": {
+          "n_valid": 53138,
+          "frac_valid": 0.9055,
+          "min": 315.9,
+          "p05": 335.8,
+          "median": 363.2,
+          "p95": 384.4,
+          "max": 729.6,
+          "n_negative": 0
+        },
+        "temp_exo_tau": {
+          "n_valid": 53148,
+          "frac_valid": 0.9057,
+          "min": 24.0,
+          "p05": 24.62,
+          "median": 26.31,
+          "p95": 28.42,
+          "max": 29.75,
+          "n_negative": 0
+        },
+        "fdom_QSU_exo_tau": {
+          "n_valid": 53042,
+          "frac_valid": 0.9039,
+          "min": -27.35,
+          "p05": 68.03,
+          "median": 79.88,
+          "p95": 195.4,
+          "max": 200.47,
+          "n_negative": 274
+        },
+        "BlueGreen_FP": {
+          "n_valid": 6437,
+          "frac_valid": 0.1097,
+          "min": 1.53,
+          "p05": 6.46,
+          "median": 31.78,
+          "p95": 91.56199999999997,
+          "max": 188.77,
+          "n_negative": 0
+        },
+        "NO3_mgL": {
+          "n_valid": 4227,
+          "frac_valid": 0.072,
+          "min": 0.159,
+          "p05": 0.201,
+          "median": 0.249,
+          "p95": 0.424,
+          "max": 1.378,
+          "n_negative": 0
+        }
+      }
+    },
+    "Fox_2024_Jun": {
+      "n_rows": 69925,
+      "start_utc": "2024-06-24 17:03:00+00:00",
+      "end_utc": "2024-06-27 17:28:00+00:00",
+      "local_days": [
+        "2024-06-24",
+        "2024-06-25",
+        "2024-06-26",
+        "2024-06-27"
+      ],
+      "bbox_lonlat": [
+        -88.55105,
+        43.98247,
+        -87.88282,
+        44.64857
+      ],
+      "median_dt_s": 1.0,
+      "track_length_km": 335.45606801010064,
+      "n_rows_in_green_bay_lat_gt_44_52": 13581,
+      "variables": {
+        "chl_RFU_exo_tau": {
+          "n_valid": 62993,
+          "frac_valid": 0.9009,
+          "min": -0.39,
+          "p05": 1.5,
+          "median": 2.77,
+          "p95": 8.12,
+          "max": 16.09,
+          "n_negative": 9
+        },
+        "bga_RFU_exo_tau": {
+          "n_valid": 63189,
+          "frac_valid": 0.9037,
+          "min": 0.12,
+          "p05": 0.56,
+          "median": 1.45,
+          "p95": 2.56,
+          "max": 7.75,
+          "n_negative": 0
+        },
+        "turb_FNU_tau": {
+          "n_valid": 62527,
+          "frac_valid": 0.8942,
+          "min": -21.2,
+          "p05": 3.49,
+          "median": 13.57,
+          "p95": 55.88,
+          "max": 125.8,
+          "n_negative": 5
+        },
+        "specCond_tau": {
+          "n_valid": 63309,
+          "frac_valid": 0.9054,
+          "min": 324.5,
+          "p05": 355.0,
+          "median": 386.3,
+          "p95": 416.5,
+          "max": 506.7,
+          "n_negative": 0
+        },
+        "temp_exo_tau": {
+          "n_valid": 63313,
+          "frac_valid": 0.9054,
+          "min": 21.08,
+          "p05": 22.64,
+          "median": 24.19,
+          "p95": 25.62,
+          "max": 26.62,
+          "n_negative": 0
+        },
+        "fdom_QSU_exo_tau": {
+          "n_valid": 63303,
+          "frac_valid": 0.9053,
+          "min": 30.45,
+          "p05": 59.01,
+          "median": 71.92,
+          "p95": 160.62899999999993,
+          "max": 175.98,
+          "n_negative": 0
+        },
+        "BlueGreen_FP": {
+          "n_valid": 3550,
+          "frac_valid": 0.0508,
+          "min": 0.0,
+          "p05": 0.0,
+          "median": 13.93,
+          "p95": 25.0555,
+          "max": 46.09,
+          "n_negative": 0
+        },
+        "NO3_mgL": {
+          "n_valid": 2660,
+          "frac_valid": 0.038,
+          "min": 0.147,
+          "p05": 0.20695,
+          "median": 0.611,
+          "p95": 2.0320999999999994,
+          "max": 2.18,
+          "n_negative": 0
+        }
+      }
+    },
+    "Fox_2025_Jul": {
+      "n_rows": 50528,
+      "start_utc": "2025-07-07 20:16:00+00:00",
+      "end_utc": "2025-07-10 18:37:00+00:00",
+      "local_days": [
+        "2025-07-07",
+        "2025-07-08",
+        "2025-07-09",
+        "2025-07-10"
+      ],
+      "bbox_lonlat": [
+        -88.5638,
+        43.99275,
+        -87.88329,
+        44.6486
+      ],
+      "median_dt_s": 1.0,
+      "track_length_km": 217.5591393206658,
+      "n_rows_in_green_bay_lat_gt_44_52": 13100,
+      "variables": {
+        "chl_RFU_exo_tau": {
+          "n_valid": 45517,
+          "frac_valid": 0.9008,
+          "min": -0.21,
+          "p05": 0.92,
+          "median": 2.0,
+          "p95": 6.81,
+          "max": 29.44,
+          "n_negative": 1
+        },
+        "bga_RFU_exo_tau": {
+          "n_valid": 44616,
+          "frac_valid": 0.883,
+          "min": -0.16,
+          "p05": 0.47,
+          "median": 4.3,
+          "p95": 10.13,
+          "max": 39.63,
+          "n_negative": 8
+        },
+        "turb_FNU_tau": {
+          "n_valid": 45138,
+          "frac_valid": 0.8933,
+          "min": -37.89,
+          "p05": 4.59,
+          "median": 22.36,
+          "p95": 74.10150000000002,
+          "max": 244.68,
+          "n_negative": 138
+        },
+        "specCond_tau": {
+          "n_valid": 45739,
+          "frac_valid": 0.9052,
+          "min": 320.4,
+          "p05": 330.0,
+          "median": 372.7,
+          "p95": 409.70999999999987,
+          "max": 804.6,
+          "n_negative": 0
+        },
+        "temp_exo_tau": {
+          "n_valid": 45745,
+          "frac_valid": 0.9053,
+          "min": 23.33,
+          "p05": 24.12,
+          "median": 25.72,
+          "p95": 27.91,
+          "max": 29.52,
+          "n_negative": 0
+        },
+        "fdom_QSU_exo_tau": {
+          "n_valid": 45739,
+          "frac_valid": 0.9052,
+          "min": 35.45,
+          "p05": 47.37,
+          "median": 76.1,
+          "p95": 127.64,
+          "max": 158.54,
+          "n_negative": 0
+        },
+        "BlueGreen_FP": {
+          "n_valid": 4724,
+          "frac_valid": 0.0935,
+          "min": 2.53,
+          "p05": 14.153,
+          "median": 66.505,
+          "p95": 115.21699999999998,
+          "max": 273.76,
+          "n_negative": 0
+        },
+        "NO3_mgL": {
+          "n_valid": 8392,
+          "frac_valid": 0.1661,
+          "min": 0.148,
+          "p05": 0.22,
+          "median": 0.2578,
+          "p95": 0.5255,
+          "max": 0.834,
+          "n_negative": 0
+        }
+      }
+    },
+    "Fox_2025_May": {
+      "n_rows": 44707,
+      "start_utc": "2025-04-28 16:35:00+00:00",
+      "end_utc": "2025-05-01 16:55:00+00:00",
+      "local_days": [
+        "2025-04-28",
+        "2025-04-29",
+        "2025-04-30",
+        "2025-05-01"
+      ],
+      "bbox_lonlat": [
+        -88.53556,
+        43.99171,
+        -87.8829,
+        44.64856
+      ],
+      "median_dt_s": 1.0,
+      "track_length_km": 163.46182802603576,
+      "n_rows_in_green_bay_lat_gt_44_52": 13862,
+      "variables": {
+        "chl_RFU_exo_tau": {
+          "n_valid": 40259,
+          "frac_valid": 0.9005,
+          "min": -0.39,
+          "p05": 2.08,
+          "median": 4.89,
+          "p95": 9.64,
+          "max": 37.97,
+          "n_negative": 8
+        },
+        "bga_RFU_exo_tau": {
+          "n_valid": 40402,
+          "frac_valid": 0.9037,
+          "min": 0.2,
+          "p05": 0.6,
+          "median": 1.0,
+          "p95": 1.6,
+          "max": 2.45,
+          "n_negative": 0
+        },
+        "turb_FNU_tau": {
+          "n_valid": 40366,
+          "frac_valid": 0.9029,
+          "min": -12.75,
+          "p05": 6.06,
+          "median": 11.67,
+          "p95": 40.72,
+          "max": 83.04,
+          "n_negative": 2
+        },
+        "specCond_tau": {
+          "n_valid": 40287,
+          "frac_valid": 0.9011,
+          "min": 0.06,
+          "p05": 351.96200000000005,
+          "median": 450.1,
+          "p95": 512.348,
+          "max": 1491.11,
+          "n_negative": 0
+        },
+        "temp_exo_tau": {
+          "n_valid": 40327,
+          "frac_valid": 0.902,
+          "min": 6.136,
+          "p05": 11.08,
+          "median": 12.54,
+          "p95": 13.98,
+          "max": 19.48,
+          "n_negative": 0
+        },
+        "fdom_QSU_exo_tau": {
+          "n_valid": 40381,
+          "frac_valid": 0.9032,
+          "min": -20.51,
+          "p05": 41.18,
+          "median": 77.86,
+          "p95": 109.34,
+          "max": 125.92,
+          "n_negative": 76
+        },
+        "BlueGreen_FP": {
+          "n_valid": 1374,
+          "frac_valid": 0.0307,
+          "min": 0.24,
+          "p05": 1.1,
+          "median": 5.11,
+          "p95": 7.93,
+          "max": 11.17,
+          "n_negative": 0
+        },
+        "NO3_mgL": {
+          "n_valid": 3372,
+          "frac_valid": 0.0754,
+          "min": 0.098,
+          "p05": 0.663,
+          "median": 1.0675,
+          "p95": 1.217,
+          "max": 3.895,
+          "n_negative": 0
+        }
+      }
+    },
+    "GreenBay_2025_Apr": {
+      "n_rows": 48543,
+      "start_utc": "2025-04-18 17:30:00+00:00",
+      "end_utc": "2025-04-20 16:50:00+00:00",
+      "local_days": [
+        "2025-04-18",
+        "2025-04-19",
+        "2025-04-20"
+      ],
+      "bbox_lonlat": [
+        -88.0043,
+        44.53986,
+        -87.56203,
+        45.10339
+      ],
+      "median_dt_s": 1.0,
+      "track_length_km": 176.75605130572657,
+      "n_rows_in_green_bay_lat_gt_44_52": 48543,
+      "variables": {
+        "chl_RFU_exo_tau": {
+          "n_valid": 43897,
+          "frac_valid": 0.9043,
+          "min": -0.11,
+          "p05": 0.04,
+          "median": 1.1,
+          "p95": 11.3,
+          "max": 27.84,
+          "n_negative": 843
+        },
+        "bga_RFU_exo_tau": {
+          "n_valid": 43935,
+          "frac_valid": 0.9051,
+          "min": 0.18,
+          "p05": 0.3,
+          "median": 0.46,
+          "p95": 2.01,
+          "max": 3.02,
+          "n_negative": 0
+        },
+        "turb_FNU_tau": {
+          "n_valid": 43772,
+          "frac_valid": 0.9017,
+          "min": 1.81,
+          "p05": 2.4,
+          "median": 4.13,
+          "p95": 18.14,
+          "max": 332.34,
+          "n_negative": 0
+        },
+        "specCond_tau": {
+          "n_valid": 43917,
+          "frac_valid": 0.9047,
+          "min": 202.0,
+          "p05": 267.7,
+          "median": 308.7,
+          "p95": 443.7,
+          "max": 549.9,
+          "n_negative": 0
+        },
+        "temp_exo_tau": {
+          "n_valid": 43796,
+          "frac_valid": 0.9022,
+          "min": 3.725,
+          "p05": 4.241,
+          "median": 8.248,
+          "p95": 10.97,
+          "max": 12.482,
+          "n_negative": 0
+        },
+        "fdom_QSU_exo_tau": {
+          "n_valid": 43880,
+          "frac_valid": 0.9039,
+          "min": 20.62,
+          "p05": 24.33,
+          "median": 41.21,
+          "p95": 122.85049999999995,
+          "max": 221.1,
+          "n_negative": 0
+        },
+        "BlueGreen_FP": {
+          "n_valid": 0,
+          "frac_valid": 0.0,
+          "min": null,
+          "p05": null,
+          "median": null,
+          "p95": null,
+          "max": null,
+          "n_negative": 0
+        },
+        "NO3_mgL": {
+          "n_valid": 3666,
+          "frac_valid": 0.0755,
+          "min": 0.326,
+          "p05": 0.379,
+          "median": 0.438,
+          "p95": 1.1997499999999999,
+          "max": 2.123,
+          "n_negative": 0
+        }
+      }
+    },
+    "GreenBay_2025_Jun": {
+      "n_rows": 45363,
+      "start_utc": "2025-06-30 14:25:00+00:00",
+      "end_utc": "2025-07-01 18:39:00+00:00",
+      "local_days": [
+        "2025-06-30",
+        "2025-07-01"
+      ],
+      "bbox_lonlat": [
+        -88.00866,
+        44.53722,
+        -87.56369,
+        45.10386
+      ],
+      "median_dt_s": 1.0,
+      "track_length_km": 265.7698231728932,
+      "n_rows_in_green_bay_lat_gt_44_52": 45363,
+      "variables": {
+        "chl_RFU_exo_tau": {
+          "n_valid": 41005,
+          "frac_valid": 0.9039,
+          "min": 0.36,
+          "p05": 0.54,
+          "median": 1.06,
+          "p95": 8.3,
+          "max": 16.57,
+          "n_negative": 0
+        },
+        "bga_RFU_exo_tau": {
+          "n_valid": 41018,
+          "frac_valid": 0.9042,
+          "min": 0.01,
+          "p05": 0.12,
+          "median": 0.28,
+          "p95": 1.58,
+          "max": 2.82,
+          "n_negative": 0
+        },
+        "turb_FNU_tau": {
+          "n_valid": 40859,
+          "frac_valid": 0.9007,
+          "min": 0.85,
+          "p05": 1.08,
+          "median": 2.25,
+          "p95": 11.23,
+          "max": 17.41,
+          "n_negative": 0
+        },
+        "specCond_tau": {
+          "n_valid": 41008,
+          "frac_valid": 0.904,
+          "min": 239.6,
+          "p05": 274.035,
+          "median": 314.0,
+          "p95": 424.7,
+          "max": 446.0,
+          "n_negative": 0
+        },
+        "temp_exo_tau": {
+          "n_valid": 41030,
+          "frac_valid": 0.9045,
+          "min": 18.34,
+          "p05": 19.35,
+          "median": 22.5,
+          "p95": 25.25,
+          "max": 26.37,
+          "n_negative": 0
+        },
+        "fdom_QSU_exo_tau": {
+          "n_valid": 41017,
+          "frac_valid": 0.9042,
+          "min": 23.13,
+          "p05": 27.76,
+          "median": 34.78,
+          "p95": 112.28399999999995,
+          "max": 166.24,
+          "n_negative": 0
+        },
+        "BlueGreen_FP": {
+          "n_valid": 598,
+          "frac_valid": 0.0132,
+          "min": 0.0,
+          "p05": 1.2585,
+          "median": 6.92,
+          "p95": 11.943,
+          "max": 19.54,
+          "n_negative": 0
+        },
+        "NO3_mgL": {
+          "n_valid": 3374,
+          "frac_valid": 0.0744,
+          "min": 0.175,
+          "p05": 0.198,
+          "median": 0.251,
+          "p95": 0.724,
+          "max": 0.931,
+          "n_negative": 0
+        }
+      }
+    }
+  }
+}

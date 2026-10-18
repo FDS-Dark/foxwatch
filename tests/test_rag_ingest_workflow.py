@@ -3,7 +3,7 @@
 import unittest
 from pathlib import Path
 
-from foxwatch.rag.ingest import (
+from api.services.rag_ingest import (
     REQUIRED_CORPUS_KEYS,
     infer_ingest_kwargs,
     match_known_source,

@@ -1,0 +1,3512 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Luke C. Loken</origin>
+        <origin>Matthew A. Pronschinske</origin>
+        <origin>Sophia L. LaFond-Hudson</origin>
+        <origin>Dustin W. Kincaid</origin>
+        <origin>Leon Katona</origin>
+        <origin>Isaac Mevis</origin>
+        <origin>Matt Bach</origin>
+        <origin>Hailey E. Trompeter</origin>
+        <origin>Jacob Piper</origin>
+        <origin>Hayley Olds</origin>
+        <origin>Carrie E. Givens</origin>
+        <pubdate>20261008</pubdate>
+        <title>High spatial resolution sensor-based surface water quality data along the Lake Winnebago-Fox River-Green Bay continuum in 2023-2025</title>
+        <geoform>tabular digital data</geoform>
+        <pubinfo>
+          <pubplace>Online (digital release)</pubplace>
+          <publish>U.S. Geological Survey</publish>
+        </pubinfo>
+        <onlink>https://doi.org/10.5066/P1XHRFKZ</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>In support of multiple Great Lakes Restoration Initiative (GLRI) projects focusing on Green Bay and upland sources, surface water quality metrics related to primary producers, nutrients, and conductivity were measured using a boat-mounted, continuous sampling platform. These data are used to document changes in water quality as water flows from Lake Winnebago through the lower Fox River and ultimately into Green Bay. Surface water quality was measured using a boat-mounted, continuous sampling platform known as the Fast Limnological Automated Measurements (FLAMe; https://doi.org/10.1021/es504773x). Water was continually pumped onboard a moving boat to a series of water quality sensors configured to capture data continuously. Measurements were georeferenced and spatially corrected using established routines and can be used to produce maps of water quality where the boat traveled. Overall, 455,102 point measurements were collected across the inland water continuum (available in file: FLAMe_data.csv). Additionally, sensor-based measurements are associated with 239 discrete field measurements and/or water samples analyzed for additional chemical and biological attributes (available in file: FLAMe_samples.csv).
+
+Up to nine onboard multiparameter instruments recording data from one or more sensors were used to collect up to 82 variables during eight sampling campaigns between August 2023 and July 2025. Onboard water quality sensors varied among campaigns, and included a YSI EXO2 (temperature, specific conductivity, turbidity, pH, dissolved oxygen, dissolved organic matter fluorescence, and total algal fluorescence), a Seabird SUNA V2 optical nitrate sensor (nitrate, absorbance), a bbe fluoroprobe (green algae, blue green algae, diatoms, and cryptophytes), and a Los Gatos Research Ultraportable Greenhouse Gas Analyzer (dissolved carbon dioxide and methane). Additional instruments included two Garmin Global Positioning System (GPS) receivers (latitude, longitude, time), a Garmin depth sounder (water temperature and depth), and a Vaisala CS106 barometer (barometric pressure). All data were recorded continuously on a Campbell Scientific CR6 datalogger. System attributes (e.g., internal temperature, boat speed, wiper position, battery voltage) were also recorded to aid data quality control. Details on data attributes including descriptions, units, and sources are included in the file: FLAMe_data_dictionary.csv. 
+
+This data release contains spatial data from three overlapping GLRI-funded research projects focused in Lake Winnebago, the lower Fox River, and Green Bay using common equipment. Six 3- to 4-day campaigns (August 2023, June 2024, July 2024, August 2024, May 2025, and July 2025) targeted phytoplankton distribution in the Lake Winnebago-Fox River-Green Bay continuum. Spatial transects were established crossing the north-half of Lake Winnebago, along the Fox River, and out into Green Bay. Two additional 2- to 3-day campaigns (April 2025, June 2025) focused on salinity patterns in Green Bay with 14 littoral/pelagic transects circumnavigating Green Bay from Marinette, WI to Brussels, WI. The crew attempted to sample the same features on each campaign; however, the exact sample path varied based on weather and hydrologic conditions. Actual sampling locations loosely followed pre-determined routes, but they were adjusted based on weather, field observations, and communication with local guides. See file: FLAMe_map.png for transect paths organized by campaign.</abstract>
+      <purpose>These data were collected to evaluate spatial patterns in phytoplankton, nutrients, salinity, and other water quality parameters in and around the Lower Green Bay and Fox River Area of Concern (as designated by the Great Lakes Restoration Initiative). The data demonstrate longitudinal and lateral differences along the Lake Winnebago–Fox River–Green Bay continuum.</purpose>
+      <supplinf>Any use of trade, firm, or product names is for descriptive purposes only and does not imply endorsement by the U.S. Government.</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>20230807</begdate>
+          <enddate>20250710</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>See publication date</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>None planned</update>
+    </status>
+    <spdom>
+      <descgeog>World</descgeog>
+      <bounding>
+        <westbc>-88.5638</westbc>
+        <eastbc>-87.5620</eastbc>
+        <northbc>45.1039</northbc>
+        <southbc>43.9658</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>ISO 19115 Topic Category</themekt>
+        <themekey>farming</themekey>
+      </theme>
+      <theme>
+        <themekt>none</themekt>
+        <themekey>specific conductivity</themekey>
+        <themekey>chlorophyll</themekey>
+        <themekey>blue green algae</themekey>
+        <themekey>water depth</themekey>
+      </theme>
+      <theme>
+        <themekt>USGS Thesaurus</themekt>
+        <themekey>water temperature</themekey>
+        <themekey>water pH</themekey>
+        <themekey>turbidity</themekey>
+        <themekey>carbon</themekey>
+        <themekey>nitrogen</themekey>
+        <themekey>algae</themekey>
+        <themekey>oxygen content (water)</themekey>
+        <themekey>surface water quality</themekey>
+        <themekey>river systems</themekey>
+        <themekey>freshwater ecosystems</themekey>
+      </theme>
+      <theme>
+        <themekt>USGS Metadata Identifier</themekt>
+        <themekey>USGS:672e5378d34ea9e450891ffe</themekey>
+      </theme>
+      <place>
+        <placekt>none</placekt>
+        <placekey>Fox River</placekey>
+        <placekey>Green Bay</placekey>
+        <placekey>Lake Winnebago</placekey>
+      </place>
+      <place>
+        <placekt>Common geographic areas</placekt>
+        <placekey>Green Bay</placekey>
+        <placekey>Wisconsin</placekey>
+        <placekey>United States</placekey>
+      </place>
+    </keywords>
+    <accconst>None. Please see 'Distribution Info' for details.</accconst>
+    <useconst>These data are open access usable via creative commons as long as original data providers are acknowledged. Users are advised to read the dataset's metadata thoroughly to understand appropriate use and data limitations.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Center Director</cntper>
+          <cntorg>U.S. Geological Survey</cntorg>
+        </cntperp>
+        <cntpos>Center Director</cntpos>
+        <cntaddr>
+          <addrtype>Mailing and Physical</addrtype>
+          <address>One Gifford Pinchot Drive</address>
+          <city>Madison</city>
+          <state>WI</state>
+          <postal>53726</postal>
+          <country>U.S.A.</country>
+        </cntaddr>
+        <cntvoice>608-828-9901</cntvoice>
+        <cntemail>gs-w-umidwsc_center_director@usgs.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <datacred>U.S. Environmental Protection Agency, Great Lakes Restoration Initiative</datacred>
+    <native>R version 4.6.0 (2026-04-24 ucrt)</native>
+    <crossref>
+      <citeinfo>
+        <origin>John T. Crawford</origin>
+        <origin>Luke C. Loken</origin>
+        <origin>Nora J. Casson</origin>
+        <origin>Colin Smith</origin>
+        <origin>Amanda G. Stone</origin>
+        <origin>Luke A. Winslow</origin>
+        <pubdate>2015</pubdate>
+        <title>High-Speed Limnology: Using Advanced Sensors to Investigate Spatial Variability in Biogeochemistry and Hydrology</title>
+        <geoform>publication</geoform>
+        <onlink>https://doi.org/10.1021/es504773x</onlink>
+      </citeinfo>
+    </crossref>
+    <crossref>
+      <citeinfo>
+        <origin>Luke C. Loken</origin>
+        <origin>John T. Crawford</origin>
+        <origin>Paul J. Schramm</origin>
+        <origin>Philipp Stadler</origin>
+        <origin>Ankur R. Desai</origin>
+        <origin>Emily H. Stanley</origin>
+        <pubdate>20190722</pubdate>
+        <title>Large Spatial and Temporal Variability of Carbon Dioxide and Methane in a Eutrophic Lake</title>
+        <geoform>publication</geoform>
+        <onlink>https://doi.org/10.1029/2019JG005186</onlink>
+      </citeinfo>
+    </crossref>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>Water quality and gas sensors were calibrated according to manufacturer protocols. Post hoc corrections were applied to carbon dioxide and methane values after analysis of gas standards.</attraccr>
+    </attracc>
+    <logic>The data were reviewed for consistency and accuracy following USGS protocols. Values were checked and fall within expected ranges. Locations were checked to ensure they accurately show locations of data collection.</logic>
+    <complete>Data are complete as represented unless noted otherwise.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>A formal accuracy assessment of the horizontal positional information in the dataset was not conducted.</horizpar>
+      </horizpa>
+      <vertacc>
+        <vertaccr>A formal accuracy assessment of the vertical positional information in the dataset was not conducted.</vertaccr>
+      </vertacc>
+    </posacc>
+    <lineage>
+      <procstep>
+        <procdesc>Step 1: Sensors were calibrated according to manufacturer protocols. Water sensors were outfitted with manufacturer provided flow cells. Dissolved gases were equilibrated in a flow-through sprayer chamber following procedures outlined in Loken and others, (2019). Water from 0.2 meter (m) depth was continuously pumped from the aft port side of the boat using a 5 gallon per minute (GPM) Shurflo Blaster II washdown pump. Water was routed through a size 50 mesh stainless steel screen and a series of Hayes automatic balancing valves to achieve a constant flow to the water quality sensors and gas equilibrator. 0.75 GPM of water was delivered to the seabird SUNA V2 optical nitrate sensor, then to the YSI EXO2, and then to a bbe fluoroprobe. The SUNA was kept in an ice bath to prevent overheating. On five of the eight campaigns, 3.0 GPM of water was delivered to a homemade gas sprayer (Loken and others, 2019), allowing dissolved gases to equilibrate in an enclosed headspace. Gases were recirculated to the Los Gatos Research Ultraportable Gas Analyzer (UGGA) using its internal pump at a flow rate of 0.8 standard pressure liters per minute (SPLM). Location was determined using a Garmin GPS 18X and a Garmin Echomap UHD. The Echomap transducer was mounted on the stern of the boat also capturing water temperature and depth to bottom. Barometric pressure was recorded with a Vaisala CS106 barometer. All data were captured continuously on a Campbell Scientific C6 datalogger and transmitted over Wi-Fi to an onboard computer for real-time acquisition and visualization.</procdesc>
+        <procdate>2026</procdate>
+        <proccont>
+          <cntinfo>
+            <cntperp>
+              <cntper>Luke C Loken</cntper>
+              <cntorg>U.S. Geological Survey</cntorg>
+            </cntperp>
+            <cntpos>Research Hydrologist</cntpos>
+            <cntaddr>
+              <addrtype>mailing and physical</addrtype>
+              <address>1 Gifford Pinchot Drive</address>
+              <city>Madison</city>
+              <state>WI</state>
+              <postal>53726</postal>
+              <country>US</country>
+            </cntaddr>
+            <cntvoice>608-821-3839</cntvoice>
+            <cntemail>lloken@usgs.gov</cntemail>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Step 2: Data from the datalogger were processed using several established routines (Loken and others, 2019). First, “flame on” and “flame off” times were recorded to the second. Data outside these time intervals were excluded. Second, we applied post-calibration corrections for the SUNA and the UGGA. Prior to and after each campaign, we analyzed a set of nitrate, carbon dioxide, and methane standards to produce linear correction equations. The measured nitrate standard measurements were always within allowable ranges, and thus data from the SUNA were not adjusted. The UGGA tended to undermeasure the carbon dioxide and methane standards. We adjusted the reported carbon dioxide and methane data using linear regression equations from the check standards measured after each campaign. Third, for each variable (e.g., temperature), we replaced data with NA that were outside variable specific boundaries. For example, water temperature was required to be between 0 and 100 degrees Celsius. Fourth, we used the R package SensorQC to identify spurious values, which were converted to NA based on user-specified and variable-specific tolerances in rolling medians and rolling median absolute deviations.</procdesc>
+        <procdate>2026</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Step 3: For each variable, we established a set of hydraulic and sensor response times to spatially correct the data. Essentially, the hydraulic-corrected data have been moved backwards in time and location to account for the travel time of water and gas through the series of pipes, tubing, pumps, regulators, and flow cells. Second, we applied a differential equation to account for sensor response dynamics, that adjusts the data for the amount of time for each flow cell to turnover and each sensor to stabilize. These methods are described in Crawford and others, 2015 and Loken and others, 2019. For each variable, we determined the specific hydraulic (hyd) and sensor response times (tau) using a series of step changes between known fluids in the laboratory. Columns ending in “_hyd" and “_tau” are the hydraulic- and tau-corrected (sensor response time) versions of each data variable.</procdesc>
+        <procdate>2026</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Step 4: During each sampling campaign, we stopped the boat at ~30 locations to collect additional data. Field measurements and/or discrete samples were collected for lab analyses. During these discrete measurements and water collections, the boat stopped moving. The continuous, underway data were summarized to facilitate integration with field- and lab-based measurements. Associated with each discrete sample time, we calculated the median of 60 seconds of continuous data. For example, if a sample time was recorded as 10:00, the median values between 10:00:00 and 10:00:59 were calculated and associated with the discrete sample. These data are reported in the "FLAMe_Samples.csv" data table and can be joined to the lab- and field-based discrete measurements using the "lab_id" column.</procdesc>
+        <procdate>2026</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <indspref>U.S.A.</indspref>
+    <direct>Point</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>Point</sdtstype>
+        <ptvctcnt>455102</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <geograph>
+        <latres>1e-05</latres>
+        <longres>1e-05</longres>
+        <geogunit>Decimal degrees</geogunit>
+      </geograph>
+      <geodetic>
+        <horizdn>WGS84</horizdn>
+        <ellips>WGS_1984</ellips>
+        <semiaxis>6378137.0</semiaxis>
+        <denflat>298.257</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>FLAMe_data.csv</enttypl>
+        <enttypd>CSV file containing latitude, longitude, time, system diagnostics, and water quality metrics.</enttypd>
+        <enttypds>U.S. Geological Survey</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>id</attrlabl>
+        <attrdef>sample campaign id (i.e., Location_Year_Month)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <udom>sample campaign id (i.e., Location_Year_Month)</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>DateTime_UTC</attrlabl>
+        <attrdef>date time in UTC of measurement (instrument: Garmin 18X)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>2023-08-07 16:20:00</rdommin>
+            <rdommax>2025-07-10 18:37:00</rdommax>
+            <attrunit>YYYY-MM-DD HH:MM:SS</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>latitude</attrlabl>
+        <attrdef>latitude (instrument: Garmin 18X)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>43.97</rdommin>
+            <rdommax>45.1</rdommax>
+            <attrunit>decimal degrees</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>longitude</attrlabl>
+        <attrdef>longitude (instrument: Garmin 18X)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>-88.56</rdommin>
+            <rdommax>-87.56</rdommax>
+            <attrunit>decimal degrees</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>speed</attrlabl>
+        <attrdef>speed over ground (instrument: Garmin 18X)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>47.2</rdommax>
+            <attrunit>knots</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>course</attrlabl>
+        <attrdef>direction of boat travel (instrument: Garmin 18X)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.1</rdommin>
+            <rdommax>359.9</rdommax>
+            <attrunit>decimal degrees</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>extPower</attrlabl>
+        <attrdef>battery voltage (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>9.04</rdommin>
+            <rdommax>14.16</rdommax>
+            <attrunit>volts</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wiperPos</attrlabl>
+        <attrdef>mechanical wiper position (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.6</rdommin>
+            <rdommax>1.69</rdommax>
+            <attrunit>volts</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>barom_mmHg</attrlabl>
+        <attrdef>barometric pressure (instrument: Vaisala CS106)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>728</rdommin>
+            <rdommax>756.6</rdommax>
+            <attrunit>millimeters mercury</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_int</attrlabl>
+        <attrdef>temperature of SUNA internal (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>9.6</rdommin>
+            <rdommax>31</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_spect</attrlabl>
+        <attrdef>temperature of SUNA spectrophotometer (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>9.6</rdommin>
+            <rdommax>30.7</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_lamp</attrlabl>
+        <attrdef>temperature of SUNA lamp (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>13.4</rdommin>
+            <rdommax>37.2</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_logger</attrlabl>
+        <attrdef>temperature of datalogger (instrument: Campbell CR6)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>8.12</rdommin>
+            <rdommax>38.15</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>depth</attrlabl>
+        <attrdef>water depth measured from transom-mounted sonar (instrument: Garmin Echomap)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.27</rdommin>
+            <rdommax>17.64</rdommax>
+            <attrunit>meters</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_echo</attrlabl>
+        <attrdef>water temperature measured from transom-mounted sonar (instrument: Garmin Echomap)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>5.05</rdommin>
+            <rdommax>29.26</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_exo</attrlabl>
+        <attrdef>water temperature (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>3.726</rdommin>
+            <rdommax>29.74</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>specCond</attrlabl>
+        <attrdef>specific conductivity (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.22</rdommin>
+            <rdommax>932</rdommax>
+            <attrunit>microsiems per centimeter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>pH</attrlabl>
+        <attrdef>pH (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>7.37</rdommin>
+            <rdommax>10.62</rdommax>
+            <attrunit>unitless</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>turb_FNU</attrlabl>
+        <attrdef>turbidity (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.94</rdommin>
+            <rdommax>765.2</rdommax>
+            <attrunit>formazin nephelometric unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_percent</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>28.02</rdommin>
+            <rdommax>251.5</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_mgL</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>2.3</rdommin>
+            <rdommax>19.31</rdommax>
+            <attrunit>milligrams per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_RFU_exo</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-0.09</rdommin>
+            <rdommax>26.55</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_ugL_exo</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-0.17</rdommin>
+            <rdommax>106.8</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_RFU_exo</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.03</rdommin>
+            <rdommax>134.8</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_ugL_exo</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.02</rdommin>
+            <rdommax>135.7</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_to_chl_RFU_exo</attrlabl>
+        <attrdef>ratio of phycocyanin to chlorophyll a fluorescence (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.0465</rdommin>
+            <rdommax>49.4</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_RFU_exo</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-0.79</rdommin>
+            <rdommax>73.12</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_QSU_exo</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-1.86</rdommin>
+            <rdommax>221.5</rdommax>
+            <attrunit>micrograms per liter quinine sulfate units</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>pressure</attrlabl>
+        <attrdef>pressure inside EXO2 flow cell (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>0</rdommax>
+            <attrunit>meters</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_ppm</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.91</rdommin>
+            <rdommax>2791</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>H2O_ppm</attrlabl>
+        <attrdef>water vapor (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>657</rdommin>
+            <rdommax>43790</rdommax>
+            <attrunit>parts per million</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_ppm</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>39.2</rdommin>
+            <rdommax>4364</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>NO3_uM</attrlabl>
+        <attrdef>nitrate (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>6.12</rdommin>
+            <rdommax>278.1</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>NO3_mgL</attrlabl>
+        <attrdef>nitrate (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-0.088</rdommin>
+            <rdommax>3.895</rdommax>
+            <attrunit>milligrams nitrogen per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>abs254</attrlabl>
+        <attrdef>absorbance at 254 nanometers (any negative values are associated with low values and/or sensor calibrations) (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.116</rdommin>
+            <rdommax>0.86</rdommax>
+            <attrunit>per meter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>abs350</attrlabl>
+        <attrdef>absorbance at 350 nanometers (any negative values are associated with low values and/or sensor calibrations) (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.035</rdommin>
+            <rdommax>0.6</rdommax>
+            <attrunit>per meter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_exo_hyd</attrlabl>
+        <attrdef>water temperature (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>3.726</rdommin>
+            <rdommax>29.74</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_exo_tau</attrlabl>
+        <attrdef>water temperature (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>3.725</rdommin>
+            <rdommax>29.75</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>specCond_hyd</attrlabl>
+        <attrdef>specific conductivity (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.22</rdommin>
+            <rdommax>932</rdommax>
+            <attrunit>microsiems per centimeter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>specCond_tau</attrlabl>
+        <attrdef>specific conductivity (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.06</rdommin>
+            <rdommax>1491</rdommax>
+            <attrunit>microsiems per centimeter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>pH_hyd</attrlabl>
+        <attrdef>pH (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>7.37</rdommin>
+            <rdommax>10.62</rdommax>
+            <attrunit>unitless</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>pH_tau</attrlabl>
+        <attrdef>pH (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>7.37</rdommin>
+            <rdommax>10.63</rdommax>
+            <attrunit>unitless</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>turb_FNU_hyd</attrlabl>
+        <attrdef>turbidity (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.94</rdommin>
+            <rdommax>765.2</rdommax>
+            <attrunit>formazin nephelometric unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>turb_FNU_tau</attrlabl>
+        <attrdef>turbidity (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-37.89</rdommin>
+            <rdommax>1041</rdommax>
+            <attrunit>formazin nephelometric unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_percent_hyd</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>28.02</rdommin>
+            <rdommax>251.5</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_percent_tau</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>27.98</rdommin>
+            <rdommax>251.8</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_mgL_hyd</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>2.3</rdommin>
+            <rdommax>19.31</rdommax>
+            <attrunit>milligrams per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_mgL_tau</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>2.27</rdommin>
+            <rdommax>19.33</rdommax>
+            <attrunit>milligrams per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_RFU_exo_hyd</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-0.09</rdommin>
+            <rdommax>26.55</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_RFU_exo_tau</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-0.39</rdommin>
+            <rdommax>37.97</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_ugL_exo_hyd</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-0.17</rdommin>
+            <rdommax>106.8</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_ugL_exo_tau</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-1.9</rdommin>
+            <rdommax>151.3</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_RFU_exo_hyd</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.03</rdommin>
+            <rdommax>134.8</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_RFU_exo_tau</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-0.16</rdommin>
+            <rdommax>144.8</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_ugL_exo_hyd</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.02</rdommin>
+            <rdommax>135.7</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_ugL_exo_tau</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-0.17</rdommin>
+            <rdommax>145.8</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_RFU_exo_hyd</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-0.79</rdommin>
+            <rdommax>73.01</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_RFU_exo_tau</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-9.22</rdommin>
+            <rdommax>72.97</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_QSU_exo_hyd</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-1.86</rdommin>
+            <rdommax>221.2</rdommax>
+            <attrunit>micrograms per liter quinine sulfate units</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_QSU_exo_tau</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-27.35</rdommin>
+            <rdommax>221.1</rdommax>
+            <attrunit>micrograms per liter quinine sulfate units</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_ppm_hyd</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.91</rdommin>
+            <rdommax>2791</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_ppm_tau</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.11</rdommin>
+            <rdommax>8440</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_ppm_hyd</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>39.2</rdommin>
+            <rdommax>4364</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_ppm_tau</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.1</rdommin>
+            <rdommax>4451</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_uM</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.0027</rdommin>
+            <rdommax>3.701</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_Sat</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>100</rdommin>
+            <rdommax>146100</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_uM_hyd</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.0027</rdommin>
+            <rdommax>3.702</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_Sat_hyd</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>100</rdommin>
+            <rdommax>146100</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_uM_tau</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.0027</rdommin>
+            <rdommax>3.701</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_Sat_tau</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>2</rdommin>
+            <rdommax>1272000</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_uM</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.25</rdommin>
+            <rdommax>144.6</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_Sat</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>9.8</rdommin>
+            <rdommax>1091</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_uM_hyd</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.25</rdommin>
+            <rdommax>144.7</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_Sat_hyd</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>9.8</rdommin>
+            <rdommax>1091</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_uM_tau</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.25</rdommin>
+            <rdommax>144.6</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_Sat_tau</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.3</rdommin>
+            <rdommax>1113</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Trans_FP</attrlabl>
+        <attrdef>percent transmission (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-16.78</rdommin>
+            <rdommax>117.1</rdommax>
+            <attrunit>percent</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>GreenAlgae_FP</attrlabl>
+        <attrdef>green algae fluorescence (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>76.75</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>BlueGreen_FP</attrlabl>
+        <attrdef>blue green algae fluorescence (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>983.4</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Diatoms_FP</attrlabl>
+        <attrdef>diatom fluorescence (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>70.09</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Cryptophyta_FP</attrlabl>
+        <attrdef>cryptophyte fluorescence (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>98.52</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>YellowSubs_FP</attrlabl>
+        <attrdef>yellow substances fluorescence (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>23.14</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>FLAMe_samples.csv</enttypl>
+        <enttypd>CSV file containing sample collection times, lab identification, latitude, longitude, system diagnostics, and water quality metrics associated with discrete samples.</enttypd>
+        <enttypds>U.S. Geological Survey</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>DateTime_UTC</attrlabl>
+        <attrdef>date time in UTC of measurement (instrument: Garmin 18X)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>2023-08-07 16:50:00</rdommin>
+            <rdommax>2025-07-10 17:35:00</rdommax>
+            <attrunit>YYYY-MM-DD HH:MM:SS</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>DateTime_local</attrlabl>
+        <attrdef>date time in local timezone of measurement</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>2023-08-07 11:50:00</rdommin>
+            <rdommax>2025-07-10 12:35:00</rdommax>
+            <attrunit>YYYY-MM-DD HH:MM:SS</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>local_tz</attrlabl>
+        <attrdef>Timezone for loading in R</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <udom>Timezone for loading in R</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>lab_id</attrlabl>
+        <attrdef>Unique lab identifier</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <udom>Unique lab identifier</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>site_id</attrlabl>
+        <attrdef>Unique site identifier</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <udom>Unique site identifier</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>id</attrlabl>
+        <attrdef>sample campaign id (i.e., Location_Year_Month)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <udom>sample campaign id (i.e., Location_Year_Month)</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>latitude</attrlabl>
+        <attrdef>latitude (instrument: Garmin 18X)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>44</rdommin>
+            <rdommax>45.1</rdommax>
+            <attrunit>decimal degrees</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>longitude</attrlabl>
+        <attrdef>longitude (instrument: Garmin 18X)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>-88.53</rdommin>
+            <rdommax>-87.56</rdommax>
+            <attrunit>decimal degrees</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>speed</attrlabl>
+        <attrdef>speed over ground (instrument: Garmin 18X)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>11.4</rdommax>
+            <attrunit>knots</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>course</attrlabl>
+        <attrdef>direction of boat travel (instrument: Garmin 18X)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>3.7</rdommin>
+            <rdommax>358.7</rdommax>
+            <attrunit>decimal degrees</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>extPower</attrlabl>
+        <attrdef>battery voltage (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>9.25</rdommin>
+            <rdommax>14.1</rdommax>
+            <attrunit>volts</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wiperPos</attrlabl>
+        <attrdef>mechanical wiper position (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.17</rdommin>
+            <rdommax>1.19</rdommax>
+            <attrunit>volts</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>barom_mmHg</attrlabl>
+        <attrdef>barometric pressure (instrument: Vaisala CS106)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>730.5</rdommin>
+            <rdommax>756.5</rdommax>
+            <attrunit>millimeters mercury</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_int</attrlabl>
+        <attrdef>temperature of SUNA internal (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>10.8</rdommin>
+            <rdommax>30.9</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_spect</attrlabl>
+        <attrdef>temperature of SUNA spectrophotometer (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>10.4</rdommin>
+            <rdommax>30.6</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_lamp</attrlabl>
+        <attrdef>temperature of SUNA lamp (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>15.3</rdommin>
+            <rdommax>35.4</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_logger</attrlabl>
+        <attrdef>temperature of datalogger (instrument: Campbell CR6)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>10.4</rdommin>
+            <rdommax>38.14</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>depth</attrlabl>
+        <attrdef>water depth measured from transom-mounted sonar (instrument: Garmin Echomap)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.93</rdommin>
+            <rdommax>15.39</rdommax>
+            <attrunit>meters</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_echo</attrlabl>
+        <attrdef>water temperature measured from transom-mounted sonar (instrument: Garmin Echomap)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>5.05</rdommin>
+            <rdommax>27.73</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_exo</attrlabl>
+        <attrdef>water temperature (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>5.502</rdommin>
+            <rdommax>28.12</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>specCond</attrlabl>
+        <attrdef>specific conductivity (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>219.2</rdommin>
+            <rdommax>895</rdommax>
+            <attrunit>microsiems per centimeter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>pH</attrlabl>
+        <attrdef>pH (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>7.5</rdommin>
+            <rdommax>10.41</rdommax>
+            <attrunit>unitless</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>turb_FNU</attrlabl>
+        <attrdef>turbidity (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.06</rdommin>
+            <rdommax>110.8</rdommax>
+            <attrunit>formazin nephelometric unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_percent</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>33.95</rdommin>
+            <rdommax>234.4</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_mgL</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>2.79</rdommin>
+            <rdommax>18.83</rdommax>
+            <attrunit>milligrams per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_RFU_exo</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>14.02</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_ugL_exo</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.17</rdommin>
+            <rdommax>55.98</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_RFU_exo</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.11</rdommin>
+            <rdommax>13.74</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_ugL_exo</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.11</rdommin>
+            <rdommax>13.88</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_to_chl_RFU_exo</attrlabl>
+        <attrdef>ratio of phycocyanin to chlorophyll a fluorescence (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.109</rdommin>
+            <rdommax>16.5</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_RFU_exo</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>8.7</rdommin>
+            <rdommax>64.78</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_QSU_exo</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>26.62</rdommin>
+            <rdommax>196.3</rdommax>
+            <attrunit>micrograms per liter quinine sulfate units</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>pressure</attrlabl>
+        <attrdef>pressure inside EXO2 flow cell (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>0</rdommax>
+            <attrunit>meters</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_ppm</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.96</rdommin>
+            <rdommax>2476</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>H2O_ppm</attrlabl>
+        <attrdef>water vapor (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>13200</rdommin>
+            <rdommax>40320</rdommax>
+            <attrunit>parts per million</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_ppm</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>41.8</rdommin>
+            <rdommax>4071</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>NO3_uM</attrlabl>
+        <attrdef>nitrate (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>6.63</rdommin>
+            <rdommax>153.9</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>NO3_mgL</attrlabl>
+        <attrdef>nitrate (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.093</rdommin>
+            <rdommax>2.156</rdommax>
+            <attrunit>milligrams nitrogen per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>abs254</attrlabl>
+        <attrdef>absorbance at 254 nanometers (any negative values are associated with low values and/or sensor calibrations) (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.124</rdommin>
+            <rdommax>0.841</rdommax>
+            <attrunit>per meter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>abs350</attrlabl>
+        <attrdef>absorbance at 350 nanometers (any negative values are associated with low values and/or sensor calibrations) (instrument: Seabird SUNA V2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.041</rdommin>
+            <rdommax>0.479</rdommax>
+            <attrunit>per meter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_exo_hyd</attrlabl>
+        <attrdef>water temperature (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>5.502</rdommin>
+            <rdommax>28.14</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temp_exo_tau</attrlabl>
+        <attrdef>water temperature (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>5.502</rdommin>
+            <rdommax>28.15</rdommax>
+            <attrunit>degrees Celsius</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>specCond_hyd</attrlabl>
+        <attrdef>specific conductivity (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>219.6</rdommin>
+            <rdommax>896</rdommax>
+            <attrunit>microsiems per centimeter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>specCond_tau</attrlabl>
+        <attrdef>specific conductivity (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>219.7</rdommin>
+            <rdommax>896</rdommax>
+            <attrunit>microsiems per centimeter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>pH_hyd</attrlabl>
+        <attrdef>pH (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>7.51</rdommin>
+            <rdommax>10.41</rdommax>
+            <attrunit>unitless</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>pH_tau</attrlabl>
+        <attrdef>pH (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>7.51</rdommin>
+            <rdommax>10.41</rdommax>
+            <attrunit>unitless</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>turb_FNU_hyd</attrlabl>
+        <attrdef>turbidity (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.07</rdommin>
+            <rdommax>110.6</rdommax>
+            <attrunit>formazin nephelometric unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>turb_FNU_tau</attrlabl>
+        <attrdef>turbidity (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.07</rdommin>
+            <rdommax>110.6</rdommax>
+            <attrunit>formazin nephelometric unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_percent_hyd</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>34.14</rdommin>
+            <rdommax>235.4</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_percent_tau</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>34.3</rdommin>
+            <rdommax>236.3</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_mgL_hyd</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>2.8</rdommin>
+            <rdommax>18.9</rdommax>
+            <attrunit>milligrams per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>ODO_mgL_tau</attrlabl>
+        <attrdef>dissolved oxygen (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>2.82</rdommin>
+            <rdommax>18.96</rdommax>
+            <attrunit>milligrams per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_RFU_exo_hyd</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>14.02</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_RFU_exo_tau</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>-0.01</rdommin>
+            <rdommax>14.03</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_ugL_exo_hyd</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.17</rdommin>
+            <rdommax>56</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>chl_ugL_exo_tau</attrlabl>
+        <attrdef>chlorophyll a fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.18</rdommin>
+            <rdommax>55.99</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_RFU_exo_hyd</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.11</rdommin>
+            <rdommax>13.52</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_RFU_exo_tau</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.11</rdommin>
+            <rdommax>13.33</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_ugL_exo_hyd</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.11</rdommin>
+            <rdommax>13.66</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>bga_ugL_exo_tau</attrlabl>
+        <attrdef>phycocyanin fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.11</rdommin>
+            <rdommax>13.47</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_RFU_exo_hyd</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>8.68</rdommin>
+            <rdommax>64.78</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_RFU_exo_tau</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>8.68</rdommin>
+            <rdommax>64.78</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_QSU_exo_hyd</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>26.47</rdommin>
+            <rdommax>196.3</rdommax>
+            <attrunit>micrograms per liter quinine sulfate units</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>fdom_QSU_exo_tau</attrlabl>
+        <attrdef>fluorescent dissolved organic matter fluorescence (any negative values are associated with low values and/or sensor calibrations) (instrument: YSI EXO2)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>26.41</rdommin>
+            <rdommax>196.3</rdommax>
+            <attrunit>micrograms per liter quinine sulfate units</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_ppm_hyd</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.96</rdommin>
+            <rdommax>2480</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_ppm_tau</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.85</rdommin>
+            <rdommax>2493</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_ppm_hyd</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>41.5</rdommin>
+            <rdommax>4065</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_ppm_tau</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>41.1</rdommin>
+            <rdommax>4063</rdommax>
+            <attrunit>parts per million dry gas</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_uM</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.0028</rdommin>
+            <rdommax>3.282</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_Sat</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>103</rdommin>
+            <rdommax>129600</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_uM_hyd</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.0027</rdommin>
+            <rdommax>3.286</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_Sat_hyd</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>103</rdommin>
+            <rdommax>129800</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_uM_tau</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.0028</rdommin>
+            <rdommax>3.282</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CH4_Sat_tau</attrlabl>
+        <attrdef>methane (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>97</rdommin>
+            <rdommax>130500</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_uM</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.34</rdommin>
+            <rdommax>135</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_Sat</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>10.4</rdommin>
+            <rdommax>1018</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_uM_hyd</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.33</rdommin>
+            <rdommax>134.8</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_Sat_hyd</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>10.4</rdommin>
+            <rdommax>1016</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_uM_tau</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>1.34</rdommin>
+            <rdommax>135</rdommax>
+            <attrunit>micromoles per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>CO2_Sat_tau</attrlabl>
+        <attrdef>carbon dioxide (instrument: LGR UGGA)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>10.3</rdommin>
+            <rdommax>1016</rdommax>
+            <attrunit>percent saturation</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Trans_FP</attrlabl>
+        <attrdef>percent transmission (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>19.09</rdommin>
+            <rdommax>116</rdommax>
+            <attrunit>percent</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>GreenAlgae_FP</attrlabl>
+        <attrdef>green algae fluorescence (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>68.83</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>BlueGreen_FP</attrlabl>
+        <attrdef>blue green algae fluorescence (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>129.1</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Diatoms_FP</attrlabl>
+        <attrdef>diatom fluorescence (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>42.04</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Cryptophyta_FP</attrlabl>
+        <attrdef>cryptophyte fluorescence (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>25.38</rdommax>
+            <attrunit>micrograms per liter</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>YellowSubs_FP</attrlabl>
+        <attrdef>yellow substances fluorescence (instrument: bbe Fluoroprobe)</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>No Data</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <rdom>
+            <rdommin>0.25</rdommin>
+            <rdommax>7.85</rdommax>
+            <attrunit>relative fluorescence unit</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>FLAMe_data_dictionary.csv</enttypl>
+        <enttypd>CSV file containing data dictionary information used to generate entry and attribute information for data tables.</enttypd>
+        <enttypds>Producer Defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>Table</attrlabl>
+        <attrdef>Data table that includes attribute</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <udom>Table names</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Field</attrlabl>
+        <attrdef>Column name in data table</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <udom>Column names</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Description</attrlabl>
+        <attrdef>Column definition</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <udom>Column definitions</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Units</attrlabl>
+        <attrdef>Data unit</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>NA</edomv>
+            <edomvd>Not applicable</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <udom>Units for applicable fields</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Source</attrlabl>
+        <attrdef>Definition source</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>Producer Defined</edomv>
+            <edomvd>Definition source for metadata generation</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Instrument</attrlabl>
+        <attrdef>Specific instrument used to generate value</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>&lt;&lt; empty cell &gt;&gt;</edomv>
+            <edomvd>Not applicable</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <udom>Manufacturer and model</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Processing</attrlabl>
+        <attrdef>Processing of data steps</attrdef>
+        <attrdefs>Producer Defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>raw</edomv>
+            <edomvd>Exact value supplied by instrument</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>meta</edomv>
+            <edomvd>Value supplied by user in metadata file</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>calculated</edomv>
+            <edomvd>Calculated from other values within processing script.</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>hydraulic lag time corrected</edomv>
+            <edomvd>Corrected for hydraulic lag times (see processing step 3)</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+        <attrdomv>
+          <edom>
+            <edomv>sensor response time (tau) corrected</edomv>
+            <edomvd>Corrected for sensor response times (see processing step 3)</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <overview>
+      <eaover>Data publication contains four files. 1. FLAMe_data.csv contains all continuous point measurements collected across the study. 2. Flame_sample.csv contains summarized sensor-based measurements associated with discrete water samples. 3. FLAMe_data_dictionary.csv contains details on data attributes including descriptions, units, sources and calculations. 4. FLAMe_map.png is an image of transect paths organized by campaign.</eaover>
+      <eadetcit>Files available on ScienceBase</eadetcit>
+    </overview>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>U.S. Geological Survey</cntorg>
+          <cntper>GS ScienceBase</cntper>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing address</addrtype>
+          <address>Denver Federal Center, Building 810, Mail Stop 302</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80255</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>1-888-275-8747</cntvoice>
+        <cntemail>sciencebase@usgs.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>Unless otherwise stated, all data, metadata and related materials are considered to satisfy the quality standards relative to the purpose for which the data were collected. Although these data and associated metadata have been reviewed for accuracy and completeness and approved for release by the U.S. Geological Survey (USGS), no warranty expressed or implied is made regarding the display or utility of the data on any other system or for general or scientific purposes, nor shall the act of distribution constitute any such warranty. Any use of trade, firm, or product names is for descriptive purposes only and does not imply endorsement by the U.S. Government.</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>tabular digital data</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>https://doi.org/10.5066/P1XHRFKZ</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <fees>None</fees>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20261008</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>Luke C Loken</cntper>
+          <cntorg>U.S. Geological Survey</cntorg>
+        </cntperp>
+        <cntpos>Research Hydrologist</cntpos>
+        <cntaddr>
+          <addrtype>Mailing and Physical</addrtype>
+          <address>One Gifford Pinchot Drive</address>
+          <city>Madison</city>
+          <state>WI</state>
+          <postal>53726</postal>
+          <country>U.S.A.</country>
+        </cntaddr>
+        <cntvoice>608-821-3839</cntvoice>
+        <cntemail>lloken@usgs.gov</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Biological Data Profile of the Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001.1-1999</metstdv>
+  </metainfo>
+</metadata>
