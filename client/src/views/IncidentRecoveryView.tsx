@@ -188,9 +188,6 @@ export function IncidentRecoveryView() {
                   </div>
                 ))}
             </dl>
-            {geminiOn === false ? (
-              <p className="muted recovery-bfi-note">Gemini not configured. Showing retrieval-only suggestions.</p>
-            ) : null}
           </div>
         </section>
       ) : loading ? (
