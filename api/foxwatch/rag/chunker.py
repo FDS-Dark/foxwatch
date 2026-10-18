@@ -12,7 +12,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Iterable, Optional
 
-from foxwatch.rag.document_processor import ProcessedDocument, iter_paragraphs
+from .document_processor import ProcessedDocument, iter_paragraphs
 
 TARGET_MIN_WORDS = 300
 TARGET_MAX_WORDS = 600

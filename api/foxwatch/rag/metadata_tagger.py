@@ -11,7 +11,7 @@ import re
 from dataclasses import dataclass
 from typing import Iterable, Literal, Optional
 
-from foxwatch.rag.chunker import ChunkRecord
+from .chunker import ChunkRecord
 
 RetrievalPriority = Literal["high", "medium", "low"]
 

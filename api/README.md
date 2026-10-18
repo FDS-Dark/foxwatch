@@ -1,7 +1,10 @@
 # FoxWatch API
 
-Collects USGS continuous measurements for Fox River at Green Bay, station
-`USGS-040851385`, into a Tiger Data (TimescaleDB/PostgreSQL) hypertable.
+One FastAPI application serves USGS observations and evidence-backed bloom
+favorability insights. It collects continuous measurements for Fox River at Green
+Bay, station `USGS-040851385`, into a Tiger Data (TimescaleDB/PostgreSQL)
+hypertable. `main.py` owns the application and collector lifecycle;
+`foxwatch/routes.py` supplies the bloom-insights routes.
 
 ## Run
 
@@ -10,15 +13,24 @@ From the repository root:
 ```powershell
 cd api
 uv sync
-Copy-Item .env.example .env
-# Edit .env: set TIGER_DATABASE_URL to your Tiger Cloud service connection URL.
+# Create api/.env with TIGER_DATABASE_URL set to your Tiger Cloud connection URL.
 uv run python main.py
 ```
 
-This single process serves **Current conditions** (`GET /api/observations/latest`) and
-**BFI insights** (`POST /api/v1/bfi/insights`). Equivalent from `api/`:
-`uv run uvicorn foxwatch.main:app --reload --host 127.0.0.1 --port 8000`.
-Repo-root `.env` holds `GEMINI_API_KEY`; `api/.env` holds the Tiger/Timescale URL.
+One process serves **Current conditions** (`GET /api/observations/latest`) and
+**BFI insights** (`POST /api/v1/bfi/insights`). For reload mode, run
+`uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000` from `api/`.
+`uvicorn foxwatch.main:app --reload --app-dir api` from the repo root is equivalent.
+
+Put `GEMINI_API_KEY` and optional `GEMINI_MODEL` in the repo-root `.env` (see
+`../.env.example`). Put the Tiger/Timescale URL in `api/.env` as
+`TIGER_DATABASE_URL`, `TIMESCALE_SERVICE_URL`, or `INGEST_DATABASE_URL`.
+Environment variables already set in the shell take precedence, then `api/.env`,
+then repo-root `.env`. `uv sync` installs the observation API and core BFI
+dependencies. To enable sentence-transformer embeddings, PDF ingestion, and
+Gemini generation, also run `uv pip install -r requirements.txt` from `api/`.
+Without those optional packages, the BFI endpoint retains its hash-embedding and
+evidence-synthesis fallbacks; it still requires an existing RAG index.
 
 Copy the PostgreSQL connection URL from your Tiger Cloud service's connection
 details, including its port, database, password and `sslmode=require`. Keep it in
@@ -28,6 +40,9 @@ must have permission to create tables and hypertables. The collector creates
 
 Open http://localhost:8000/docs to try:
 
+- `GET /`: service links.
+- `GET /api/health`: RAG index presence and Gemini configuration.
+- `POST /api/v1/bfi/insights`: bloom favorability scores and supporting evidence.
 - `GET /usgs/latest`: live USGS preview; works without a database and lists missing parameters.
 - `GET /api/observations/latest`: frontend data endpoint, reading exclusively from Tiger Data.
 - `GET /ingestion/status`: configuration, active poll, last success/error type, processed row count and catch-up progress.
