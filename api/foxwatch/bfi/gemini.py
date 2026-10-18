@@ -10,7 +10,7 @@ from typing import Any, Mapping, Optional
 
 from dotenv import load_dotenv
 
-from foxwatch.config import (
+from ..config import (
     GEMINI_API_KEY,
     GEMINI_MODEL,
     GEMINI_MODEL_FALLBACKS,

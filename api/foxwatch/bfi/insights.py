@@ -11,18 +11,18 @@ import json
 from dataclasses import dataclass
 from typing import Any, Mapping, Optional, Sequence
 
-from foxwatch.bfi.retrieval import (
+from .retrieval import (
     DRIVER_DISPLAY,
     EvidencePackage,
     build_evidence_package,
     extract_dominant_drivers,
 )
-from foxwatch.bfi.gemini import (
+from .gemini import (
     gemini_configured,
     generate_structured_insights,
     merge_gemini_insights,
 )
-from foxwatch.rag.embeddings import EmbeddedChunk, Embedder
+from ..rag.embeddings import EmbeddedChunk, Embedder
 
 
 @dataclass

@@ -4,12 +4,18 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from psycopg.errors import UndefinedTable
+
+# Load collector settings before the insights modules load repo-root defaults.
+load_dotenv(Path(__file__).with_name(".env"))
 
 if __package__:
     from .ingestion import Collector, Settings
+    from .foxwatch.routes import router as insights_router
 else:
     from ingestion import Collector, Settings
+    from foxwatch.routes import router as insights_router
 
 
 async def collect_forever(collector, stop):
@@ -41,7 +47,15 @@ async def lifespan(app):
             await task  # Finish the active transaction before shutting down.
 
 
-app = FastAPI(title="FoxWatch API", lifespan=lifespan)
+app = FastAPI(title="FoxWatch API", version="0.1.0", lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+app.include_router(insights_router)
 
 
 @app.get("/ingestion/status")

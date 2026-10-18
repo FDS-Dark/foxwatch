@@ -98,7 +98,7 @@ export function BfiInsightsView() {
         {error ? (
           <p className="bfi-insights__error" role="alert">
             {error}. Start the API:{' '}
-            <code>uvicorn foxwatch.main:app --reload --app-dir api</code>
+            <code>uvicorn main:app --reload --app-dir api</code>
           </p>
         ) : null}
       </section>
