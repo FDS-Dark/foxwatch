@@ -4,7 +4,7 @@ FoxWatch production RAG corpus ingestion workflow.
 Usage:
     cd api && uv run python -m services.rag_ingest
 
-Outputs under ``data/rag/reports/`` and ``data/rag/index/embedded_chunks.jsonl``.
+Outputs under ``data/rag/reports/`` and ``data/rag/index/`` (``chunks.jsonl``; vectors in Tiger or ``vectors.faiss``).
 """
 
 from __future__ import annotations
@@ -130,6 +130,23 @@ KNOWN_SOURCE_RULES: tuple[KnownSourceRule, ...] = (
         document_title="Understanding and predicting harmful algal blooms in a changing climate",
         authors="Litchman et al.",
         year=2023,
+    ),
+    KnownSourceRule(
+        key="murray_green_bay_2024",
+        filename_patterns=(
+            r"noaa_68330",
+            r"murray.*green\s+bay",
+            r"green\s+bay.*cyanobacterial",
+            r"respiratory.*hospital.*green\s+bay",
+            r"cyanobacterial\s+blooms.*green\s+bay",
+        ),
+        source_type="peer_reviewed_paper",
+        document_title=(
+            "Assessing the relationship between cyanobacterial blooms and "
+            "respiratory-related hospital visits: Green Bay, Wisconsin 2017–2019"
+        ),
+        authors="Murray et al.",
+        year=2024,
     ),
 )
 

@@ -11,4 +11,5 @@ class BfiInsightRequest(BaseModel):
     seasonal_median_streamflow_cfs: Optional[float] = None
     rainfall_7day_in: Optional[float] = None
     solar_radiation_level: Optional[str] = None
+    use_live_data: bool = True
     use_gemini: bool = True

@@ -58,6 +58,9 @@ Only one API process is needed on port 8000.
 Put `GEMINI_API_KEY` and optional `GEMINI_MODEL` in the repo-root `.env` (see
 `../.env.example`). Put the Tiger/Timescale URL in `api/.env` as
 `TIGER_DATABASE_URL`, `TIMESCALE_SERVICE_URL`, or `INGEST_DATABASE_URL`.
+When that URL is present, RAG **embeddings** are stored in PostgreSQL
+(`rag_chunk_vectors`, pgvector); chunk text stays in `data/rag/index/chunks.jsonl`.
+Set `RAG_VECTOR_BACKEND=faiss` to keep vectors on disk only (e.g. offline dev).
 Environment variables already set in the shell take precedence, then `api/.env`,
 then repo-root `.env`. `uv sync` installs the core API. Optional RAG/Gemini
 packages install with `uv sync --group rag`. Without them, the BFI endpoint
@@ -73,7 +76,7 @@ must have permission to create tables and hypertables. The collector creates
 Open http://localhost:8000/docs to try:
 
 - `GET /`: service links.
-- `GET /api/health`: RAG index presence and Gemini configuration.
+- `GET /api/health`: RAG index presence, vector backend (Tiger vs FAISS), and Gemini configuration.
 - `POST /api/v1/bfi/insights`: bloom favorability scores and supporting evidence.
 - `GET /usgs/latest`: live USGS preview; works without a database and lists missing parameters.
 - `GET /api/observations/latest`: frontend data endpoint, reading exclusively from Tiger Data.

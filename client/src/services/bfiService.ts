@@ -9,6 +9,7 @@ export type BfiInsightRequest = {
   seasonal_median_streamflow_cfs?: number
   rainfall_7day_in?: number
   solar_radiation_level?: string
+  use_live_data?: boolean
   use_gemini?: boolean
 }
 

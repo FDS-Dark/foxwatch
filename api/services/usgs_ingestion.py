@@ -8,6 +8,7 @@ from datetime import timedelta
 
 import httpx
 import psycopg
+from psycopg.rows import dict_row
 
 from models.usgs import REQUESTED_PARAMETER_CODES
 from services.usgs_client import fetch_features, observation_row, utcnow
@@ -64,6 +65,76 @@ class UsgsCollector:
     def client(self) -> httpx.Client:
         headers = {"X-Api-Key": self.settings.api_key} if self.settings.api_key else {}
         return httpx.Client(headers=headers, timeout=30)
+
+    _BFI_PARAMETER_CODES = ("00010", "00671", "00631", "00608", "00060")
+
+    _PREDICTION_READINGS_SQL = """
+        WITH latest AS (
+            SELECT DISTINCT ON (parameter_code) *
+            FROM usgs_observations
+            WHERE station_id = %s AND parameter_code = ANY(%s)
+            ORDER BY parameter_code, observed_at DESC, time_series_id ASC
+        )
+        SELECT latest.parameter_code, latest.observed_at AS latest_observed_at,
+            COALESCE(latest.value, previous.value) AS value,
+            CASE WHEN latest.value IS NULL THEN previous.observed_at ELSE latest.observed_at END AS observed_at,
+            CASE WHEN latest.value IS NULL THEN previous.unit ELSE latest.unit END AS unit,
+            CASE WHEN latest.value IS NULL THEN previous.approval_status ELSE latest.approval_status END AS approval_status,
+            CASE WHEN latest.value IS NULL THEN previous.time_series_id ELSE latest.time_series_id END AS time_series_id,
+            CASE WHEN latest.value IS NULL THEN previous.source->>'qualifier' ELSE latest.source->>'qualifier' END AS qualifier,
+            (latest.value IS NULL AND previous.value IS NOT NULL) AS used_fallback
+        FROM latest
+        LEFT JOIN LATERAL (
+            SELECT * FROM usgs_observations AS history
+            WHERE latest.value IS NULL AND history.station_id = latest.station_id
+                AND history.parameter_code = latest.parameter_code
+                AND history.observed_at <= latest.observed_at AND history.value IS NOT NULL
+            ORDER BY history.observed_at DESC, history.time_series_id ASC LIMIT 1
+        ) AS previous ON TRUE
+        ORDER BY latest.parameter_code
+    """
+
+    def bfi_readings_sync(self) -> list[dict]:
+        if not self.settings.database_url:
+            return []
+        with psycopg.connect(
+            self.settings.database_url,
+            connect_timeout=10,
+            options="-c statement_timeout=10000 -c default_transaction_read_only=on",
+            row_factory=dict_row,
+        ) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    self._PREDICTION_READINGS_SQL,
+                    (self.settings.station, list(self._BFI_PARAMETER_CODES)),
+                )
+                return cursor.fetchall()
+
+    def seasonal_median_discharge_cfs(self) -> float | None:
+        if not self.settings.database_url:
+            return None
+        with psycopg.connect(
+            self.settings.database_url,
+            connect_timeout=10,
+            options="-c statement_timeout=15000 -c default_transaction_read_only=on",
+        ) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    """
+                    SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY value)
+                    FROM usgs_observations
+                    WHERE station_id = %s
+                      AND parameter_code = '00060'
+                      AND value IS NOT NULL
+                      AND EXTRACT(MONTH FROM observed_at AT TIME ZONE 'UTC')
+                          = EXTRACT(MONTH FROM NOW() AT TIME ZONE 'UTC')
+                    """,
+                    (self.settings.station,),
+                )
+                row = cursor.fetchone()
+                if not row or row[0] is None:
+                    return None
+                return float(row[0])
 
     def latest_usgs_preview(self) -> dict:
         with self.client() as client:

@@ -1,7 +1,22 @@
 {
-  "generated_at_utc": "2026-10-18T00:27:45+00:00",
+  "generated_at_utc": "2026-10-18T03:57:57+00:00",
   "embedding_model": "BAAI/bge-small-en-v1.5",
   "source_manifest": [
+    {
+      "path": "data\\rag\\sources\\Murray Green Bay cyanobacterial blooms 2017-2019.pdf",
+      "filename": "Murray Green Bay cyanobacterial blooms 2017-2019.pdf",
+      "suffix": ".pdf",
+      "size_bytes": 1534520,
+      "page_count": 25,
+      "detected_title": "Assessing the relationship between cyanobacterial blooms and respiratory-related hospital visits: Green Bay, Wisconsin 2017–2019",
+      "source_type": "peer_reviewed_paper",
+      "chapter": "",
+      "authors": "Murray et al.",
+      "year": 2024,
+      "known_source_key": "murray_green_bay_2024",
+      "verification_status": "ok",
+      "verification_notes": "25 pages with extractable text"
+    },
     {
       "path": "data\\rag\\sources\\sample_phosphorus_hydrology.txt",
       "filename": "sample_phosphorus_hydrology.txt",
@@ -94,9 +109,10 @@
     }
   ],
   "missing_required_sources": [],
-  "total_chunks": 847,
+  "total_chunks": 867,
   "chunks_per_source": {
-    "Sample Phosphorus Hydrology": 6,
+    "murray_green_bay_2024": 21,
+    "Sample Phosphorus Hydrology": 5,
     "litchman_2023": 104,
     "epa_hab_guidance": 3,
     "who_chapter_4": 250,
@@ -104,149 +120,89 @@
     "who_chapter_8": 201
   },
   "chunks_per_tag": {
-    "bloom_prediction": 10,
-    "cyanobacteria": 471,
-    "discharge": 78,
-    "eutrophication": 46,
-    "harmful_algal_bloom": 100,
+    "bloom_prediction": 9,
+    "cyanobacteria": 482,
+    "discharge": 79,
+    "eutrophication": 45,
+    "harmful_algal_bloom": 102,
     "hydrology": 47,
     "mixing": 112,
     "nitrate": 124,
-    "nutrients": 389,
+    "nutrients": 388,
     "orthophosphate": 4,
-    "phosphorus": 249,
-    "precipitation": 118,
+    "phosphorus": 248,
+    "precipitation": 117,
     "residence_time": 23,
     "runoff": 24,
     "solar_radiation": 29,
-    "stratification": 87,
-    "streamflow": 10,
+    "stratification": 86,
+    "streamflow": 9,
     "sunlight": 56,
-    "temperature": 145,
-    "water_quality": 59
+    "temperature": 150,
+    "water_quality": 58
   },
   "retrieval_priority_counts": {
-    "high": 560,
-    "medium": 252,
-    "low": 35
+    "low": 42,
+    "high": 569,
+    "medium": 256
   },
   "example_chunks": [
     {
-      "chunk_id": "sample-phosphorus-hydrology__phosphorus-controls-on-bloom-f__0001__36972a4530",
-      "document_title": "Sample Phosphorus Hydrology",
-      "chapter": "Phosphorus Controls on Bloom Formation",
-      "section": "Phosphorus Controls on Bloom Formation",
-      "source_type": "research_paper",
+      "chunk_id": "assessing-the-relationship-between-cyano__amanda-koch-mph-b-lorraine-bac__0001__694300e3f1",
+      "document_title": "Assessing the relationship between cyanobacterial blooms and respiratory-related hospital visits: Green Bay, Wisconsin 2017–2019",
+      "chapter": "Amanda Koch, MPH b; Lorraine Backer, PhD c 7",
+      "section": "Amanda Koch, MPH b; Lorraine Backer, PhD c 7",
+      "source_type": "peer_reviewed_paper",
+      "tags": [],
+      "retrieval_priority": "low",
+      "text_preview": "a. University of Wisconsin-Madison School of Medicine and Public Health, 610 Walnut St, Madison, WI 9 53726 10 b. Wisconsin Department of Health Services, 1 West Wilson St, Madison, WI 53703 11 *jordan.murray@dhs.wisconsin.gov 12 c. Divisio..."
+    },
+    {
+      "chunk_id": "assessing-the-relationship-between-cyano__manuscript-a013eea12e9f9ce9c5b__0002__b0873e16de",
+      "document_title": "Assessing the relationship between cyanobacterial blooms and respiratory-related hospital visits: Green Bay, Wisconsin 2017–2019",
+      "chapter": "Manuscript_a013eea12e9f9ce9c5bd284142472b37",
+      "section": "Manuscript_a013eea12e9f9ce9c5bd284142472b37",
+      "source_type": "peer_reviewed_paper",
+      "tags": [],
+      "retrieval_priority": "low",
+      "text_preview": "Ocean Ecology Laboratory, NASA Goddard Space Flight Center, Greenbelt, MD, USA 18 g. Oak Ridge Institute for Science and Education, 1299 Bethel Valley Rd, Oak Ridge, TN 37830 19 h. North Carolina Institute for Climate Studies, North Carolin..."
+    },
+    {
+      "chunk_id": "assessing-the-relationship-between-cyano__disclaimer-27__0003__cbceda40de",
+      "document_title": "Assessing the relationship between cyanobacterial blooms and respiratory-related hospital visits: Green Bay, Wisconsin 2017–2019",
+      "chapter": "Disclaimer 27",
+      "section": "Disclaimer 27",
+      "source_type": "peer_reviewed_paper",
+      "tags": [],
+      "retrieval_priority": "low",
+      "text_preview": "Oak Ridge Institute for Science and Education, 1299 Bethel Valley Rd, Oak Ridge, TN 37830 19 h. North Carolina Institute for Climate Studies, North Carolina State University, The Cooperative Institute 20 for Satellite Earth Systems Studies,..."
+    },
+    {
+      "chunk_id": "assessing-the-relationship-between-cyano__abstract-32__0004__f28476eeb6",
+      "document_title": "Assessing the relationship between cyanobacterial blooms and respiratory-related hospital visits: Green Bay, Wisconsin 2017–2019",
+      "chapter": "Abstract 32",
+      "section": "Abstract 32",
+      "source_type": "peer_reviewed_paper",
       "tags": [
         "cyanobacteria",
-        "eutrophication",
+        "temperature"
+      ],
+      "retrieval_priority": "high",
+      "text_preview": "U. S. Geological Survey, 1217 Biltmore Drive, Lawrence, KS, 66049 23 j. U.S. Geological Survey, 425 Jordan Road, Troy, NY 12180 24 © 2023 published by Elsevier. This manuscript is made available under the Elsevier user license https://www.e..."
+    },
+    {
+      "chunk_id": "assessing-the-relationship-between-cyano__introduction-56__0005__0e4d08cff6",
+      "document_title": "Assessing the relationship between cyanobacterial blooms and respiratory-related hospital visits: Green Bay, Wisconsin 2017–2019",
+      "chapter": "Introduction 56",
+      "section": "Introduction 56",
+      "source_type": "peer_reviewed_paper",
+      "tags": [
+        "cyanobacteria",
         "harmful_algal_bloom",
-        "hydrology",
-        "nitrate",
-        "nutrients",
-        "orthophosphate",
-        "phosphorus",
-        "precipitation",
-        "runoff"
-      ],
-      "retrieval_priority": "high",
-      "text_preview": "Elevated phosphorus concentrations promote cyanobacterial growth by increasing nutrient availability in the euphotic zone. Excess phosphorus entering lakes through watershed runoff often accelerates bloom formation, particularly when extern..."
-    },
-    {
-      "chunk_id": "sample-phosphorus-hydrology__hydrology-streamflow-and-resid__0002__2c301d30dc",
-      "document_title": "Sample Phosphorus Hydrology",
-      "chapter": "Hydrology, Streamflow, and Residence Time",
-      "section": "Hydrology, Streamflow, and Residence Time",
-      "source_type": "research_paper",
-      "tags": [
-        "cyanobacteria",
-        "discharge",
-        "eutrophication",
-        "harmful_algal_bloom",
-        "hydrology",
-        "mixing",
-        "nitrate",
-        "nutrients",
-        "orthophosphate",
-        "phosphorus",
-        "precipitation",
-        "residence_time",
-        "runoff",
-        "stratification",
-        "streamflow",
         "temperature"
       ],
       "retrieval_priority": "high",
-      "text_preview": "Elevated phosphorus concentrations promote cyanobacterial growth by increasing nutrient availability in the euphotic zone. Excess phosphorus entering lakes through watershed runoff often accelerates bloom formation, particularly when extern..."
-    },
-    {
-      "chunk_id": "sample-phosphorus-hydrology__rainfall-runoff-and-precipitat__0003__2586591387",
-      "document_title": "Sample Phosphorus Hydrology",
-      "chapter": "Rainfall, Runoff, and Precipitation Effects",
-      "section": "Rainfall, Runoff, and Precipitation Effects",
-      "source_type": "research_paper",
-      "tags": [
-        "cyanobacteria",
-        "discharge",
-        "hydrology",
-        "mixing",
-        "nutrients",
-        "phosphorus",
-        "precipitation",
-        "residence_time",
-        "runoff",
-        "stratification",
-        "streamflow",
-        "temperature"
-      ],
-      "retrieval_priority": "high",
-      "text_preview": "Low streamflow and reduced discharge into receiving waters decrease flushing rates and lengthen residence time. When rivers and embayments retain water longer, phytoplankton have more time to grow under favorable light and temperature condi..."
-    },
-    {
-      "chunk_id": "sample-phosphorus-hydrology__temperature-sunlight-and-cyano__0004__c54a309103",
-      "document_title": "Sample Phosphorus Hydrology",
-      "chapter": "Temperature, Sunlight, and Cyanobacteria Growth",
-      "section": "Temperature, Sunlight, and Cyanobacteria Growth",
-      "source_type": "research_paper",
-      "tags": [
-        "cyanobacteria",
-        "mixing",
-        "nutrients",
-        "phosphorus",
-        "precipitation",
-        "runoff",
-        "solar_radiation",
-        "stratification",
-        "streamflow",
-        "sunlight",
-        "temperature"
-      ],
-      "retrieval_priority": "high",
-      "text_preview": "Wind-driven mixing and fall turnover redistribute nutrients, sometimes fueling late-season cyanobacteria peaks if phosphorus remains available in the water column or is released from sediments under anoxic conditions. Recent rainfall increa..."
-    },
-    {
-      "chunk_id": "sample-phosphorus-hydrology__harmful-algal-bloom-ecology-an__0005__c887bdf3fb",
-      "document_title": "Sample Phosphorus Hydrology",
-      "chapter": "Harmful Algal Bloom Ecology and Water Quality",
-      "section": "Harmful Algal Bloom Ecology and Water Quality",
-      "source_type": "research_paper",
-      "tags": [
-        "bloom_prediction",
-        "cyanobacteria",
-        "eutrophication",
-        "nutrients",
-        "phosphorus",
-        "precipitation",
-        "runoff",
-        "solar_radiation",
-        "stratification",
-        "streamflow",
-        "sunlight",
-        "temperature",
-        "water_quality"
-      ],
-      "retrieval_priority": "high",
-      "text_preview": "Runoff-driven loading is often episodic, so bloom risk may rise even when long-term average phosphorus concentrations appear moderate. Monitoring programs that sample only during baseflow conditions can underestimate bloom favorability foll..."
+      "text_preview": "In Poisson regression models adjusted for temperature, dewpoint, season, and year, there 46 was no association between Chl BS and hospital visits (rate ratio [RR] [95% Confidence Interval (CI)] = 0.98 47 [0.77, 1.24]) . There was also no co..."
     }
   ],
   "validation_results": [
@@ -256,30 +212,6 @@
         "phosphorus"
       ],
       "top_k": [
-        {
-          "chunk_id": "sample-phosphorus-hydrology__references__0006__ca9c0ff4f7",
-          "similarity_score": 0.8041,
-          "document_title": "Sample Phosphorus Hydrology",
-          "chapter": "References",
-          "section": "References",
-          "source_type": "research_paper",
-          "tags": [
-            "bloom_prediction",
-            "eutrophication",
-            "nutrients",
-            "phosphorus",
-            "precipitation",
-            "stratification",
-            "streamflow",
-            "temperature",
-            "water_quality"
-          ],
-          "tags_matched": [
-            "phosphorus"
-          ],
-          "retrieval_summary": "This section explains phosphorus and watershed nutrient loading. Sediment phosphorus release often increases under low dissolved oxygen at the sediment–water interface, linking hydrology, stratification, and nutrient supply during hot, stable summers.",
-          "text_preview": "Sediment phosphorus release often increases under low dissolved oxygen at the sediment–water interface, linking hydrology, stratification, and nutrient supply during hot, stable summers. Harmful algal blooms in freshwate..."
-        },
         {
           "chunk_id": "sample-phosphorus-hydrology__harmful-algal-bloom-ecology-an__0005__c887bdf3fb",
           "similarity_score": 0.7815,
@@ -378,6 +310,23 @@
           "tags_matched": [],
           "retrieval_summary": "This section explains environmental bloom drivers. It could therefore be argued that both N and P inputs need to be reduced to effectively revert eutrophication.",
           "text_preview": "It could therefore be argued that both N and P inputs need to be reduced to effectively revert eutrophication. Arguments held against this proposal (see review in Chorus & ticularly light, are available in surplus, addin..."
+        },
+        {
+          "chunk_id": "understanding-and-predicting-harmful-alg__consequently-key-traits-are-th__0019__de54e21a6d",
+          "similarity_score": 0.7574,
+          "document_title": "Understanding and predicting harmful algal blooms in a changing climate",
+          "chapter": "Consequently, key traits are those that describe how abiotic",
+          "section": "Consequently, key traits are those that describe how abiotic",
+          "source_type": "peer_reviewed_paper",
+          "tags": [
+            "harmful_algal_bloom",
+            "nitrate",
+            "nutrients",
+            "temperature"
+          ],
+          "tags_matched": [],
+          "retrieval_summary": "This section explains harmful algal bloom formation. ﬁxation increases under N-limitation) and an effect trait (N- ﬁxation can increase N-availability in an ecosystem).",
+          "text_preview": "ﬁxation increases under N-limitation) and an effect trait (N- ﬁxation can increase N-availability in an ecosystem). otic and biotic drivers and align with the major dimensions of their ecological niche. The main abiotic ..."
         }
       ]
     },
@@ -441,28 +390,6 @@
           "text_preview": "Runoff-driven loading is often episodic, so bloom risk may rise even when long-term average phosphorus concentrations appear moderate. Monitoring programs that sample only during baseflow conditions can underestimate blo..."
         },
         {
-          "chunk_id": "sample-phosphorus-hydrology__references__0006__ca9c0ff4f7",
-          "similarity_score": 0.7435,
-          "document_title": "Sample Phosphorus Hydrology",
-          "chapter": "References",
-          "section": "References",
-          "source_type": "research_paper",
-          "tags": [
-            "bloom_prediction",
-            "eutrophication",
-            "nutrients",
-            "phosphorus",
-            "precipitation",
-            "stratification",
-            "streamflow",
-            "temperature",
-            "water_quality"
-          ],
-          "tags_matched": [],
-          "retrieval_summary": "This section explains phosphorus and watershed nutrient loading. Sediment phosphorus release often increases under low dissolved oxygen at the sediment–water interface, linking hydrology, stratification, and nutrient supply during hot, stable summers.",
-          "text_preview": "Sediment phosphorus release often increases under low dissolved oxygen at the sediment–water interface, linking hydrology, stratification, and nutrient supply during hot, stable summers. Harmful algal blooms in freshwate..."
-        },
-        {
           "chunk_id": "sample-phosphorus-hydrology__temperature-sunlight-and-cyano__0004__c54a309103",
           "similarity_score": 0.7337,
           "document_title": "Sample Phosphorus Hydrology",
@@ -502,6 +429,18 @@
           "tags_matched": [],
           "retrieval_summary": "This section explains harmful algal bloom formation. ﬁxation increases under N-limitation) and an effect trait (N- ﬁxation can increase N-availability in an ecosystem).",
           "text_preview": "ﬁxation increases under N-limitation) and an effect trait (N- ﬁxation can increase N-availability in an ecosystem). otic and biotic drivers and align with the major dimensions of their ecological niche. The main abiotic ..."
+        },
+        {
+          "chunk_id": "who-guidelines-for-cyanobacteria-in-recr__moreover-if-dissolved-nutrient__0125__2817f7bc70",
+          "similarity_score": 0.7307,
+          "document_title": "WHO Guidelines for Cyanobacteria in Recreational Water",
+          "chapter": "Chapter 4",
+          "section": "Moreover, if dissolved nutrients are present in concentrations above 5–10",
+          "source_type": "who_guidance",
+          "tags": [],
+          "tags_matched": [],
+          "retrieval_summary": "This section explains environmental bloom drivers. What causes these contradicting findings?",
+          "text_preview": "What causes these contradicting findings? lute quantities” rather than ratios for driving the outcome of competition between species and emphasises that the N:P ratio becomes meaningless when concentrations of either N o..."
         }
       ]
     },
@@ -823,8 +762,8 @@
       "retrieval_returns_corpus_sources": true,
       "indexed_required_source_types": true
     },
-    "pdf_count": 5,
-    "source_file_count": 6,
+    "pdf_count": 6,
+    "source_file_count": 7,
     "missing_required_sources": [],
     "indexed_source_types": [
       "epa_guidance",
