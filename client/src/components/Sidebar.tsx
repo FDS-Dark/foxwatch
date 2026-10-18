@@ -1,4 +1,4 @@
-export type ViewId = 'replay' | 'investigate' | 'review'
+export type ViewId = 'replay' | 'investigate' | 'bfi' | 'review'
 
 const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
   {
@@ -12,6 +12,12 @@ const NAV: { id: ViewId; label: string; hint: string; icon: string }[] = [
     label: 'Investigate',
     hint: 'Ask with cited evidence',
     icon: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm9 16-4.3-4.3',
+  },
+  {
+    id: 'bfi',
+    label: 'BFI insights',
+    hint: 'Drivers + RAG + Gemini',
+    icon: 'M4 6h16v4H4V6Zm0 6h10v4H4v-4Z',
   },
   {
     id: 'review',

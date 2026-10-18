@@ -6,9 +6,10 @@ import { StatusPill } from './components/StatusPill'
 import { InvestigateView } from './views/InvestigateView'
 import { ReplayView } from './views/ReplayView'
 import { ReviewView } from './views/ReviewView'
+import { BfiInsightsView } from './views/BfiInsightsView'
 import './App.css'
 
-const VIEWS: ViewId[] = ['replay', 'investigate', 'review']
+const VIEWS: ViewId[] = ['replay', 'investigate', 'bfi', 'review']
 
 function viewFromHash(): ViewId {
   const id = window.location.hash.replace('#/', '') as ViewId
@@ -18,6 +19,7 @@ function viewFromHash(): ViewId {
 const TITLES: Record<ViewId, string> = {
   replay: 'Historical replay',
   investigate: 'Investigate evidence',
+  bfi: 'Bloom favorability insights',
   review: 'Review & retrain',
 }
 
@@ -55,6 +57,7 @@ function App() {
           <main id="main" tabIndex={-1} className="shell__main">
             {view === 'replay' && <ReplayView />}
             {view === 'investigate' && <InvestigateView />}
+            {view === 'bfi' && <BfiInsightsView />}
             {view === 'review' && <ReviewView />}
           </main>
           <footer className="shell__footer">

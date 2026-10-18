@@ -12,8 +12,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping, Optional
 
-REPO_ROOT = Path(__file__).resolve().parent
-DEFAULT_MANIFEST_PATH = REPO_ROOT / "data" / "attributes" / "usgs_parameter_manifest.csv"
+from foxwatch.config import USGS_MANIFEST_PATH
+
+DEFAULT_MANIFEST_PATH = USGS_MANIFEST_PATH
 
 # USGS operational limits from time-series metadata (Fox River mouth, USGS-040851385).
 # Used for cross-check context only; BFI rules use separate published driver thresholds.

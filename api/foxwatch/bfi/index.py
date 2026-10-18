@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Callable, Mapping, Optional, Protocol, Sequence
 
-from parameter_labels import (
+from foxwatch.bfi.labels import (
     BFI_FACTOR_SPECS,
     factor_metadata,
     resolve_nitrogen_mg_l,

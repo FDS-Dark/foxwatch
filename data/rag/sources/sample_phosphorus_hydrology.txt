@@ -1,0 +1,36 @@
+Nutrient Loading and Cyanobacterial Bloom Dynamics in Temperate Lakes
+
+Phosphorus Controls on Bloom Formation
+
+Elevated phosphorus concentrations promote cyanobacterial growth by increasing nutrient availability in the euphotic zone. Excess phosphorus entering lakes through watershed runoff often accelerates bloom formation, particularly when external loading exceeds internal recycling from sediments. Orthophosphate represents the fraction most readily assimilated by phytoplankton, and even modest increases in bioavailable phosphorus can shift community composition toward nitrogen-fixing cyanobacteria when nitrogen becomes limiting.
+
+Watershed sources include agricultural fertilizer, manure application, urban stormwater, and erosion of phosphorus-rich soils. Spring snowmelt and intense rainfall events can deliver pulsed nutrient loads that accumulate near inflows before the lake fully mixes. Management frameworks therefore emphasize reducing external phosphorus loading as the primary lever for long-term eutrophication control in many freshwater systems.
+
+Hydrology, Streamflow, and Residence Time
+
+Low streamflow and reduced discharge into receiving waters decrease flushing rates and lengthen residence time. When rivers and embayments retain water longer, phytoplankton have more time to grow under favorable light and temperature conditions. Conversely, high discharge events can dilute nearshore concentrations but may also transport land-derived nutrients downstream into slow-moving reaches where blooms develop.
+
+Hydrologic variability interacts with stratification. Stable thermal stratification limits vertical mixing and can trap nutrients and biomass in surface layers. Wind-driven mixing and fall turnover redistribute nutrients, sometimes fueling late-season cyanobacteria peaks if phosphorus remains available in the water column or is released from sediments under anoxic conditions.
+
+Rainfall, Runoff, and Precipitation Effects
+
+Recent rainfall increases overland runoff and can elevate nutrient loading within days to weeks. Precipitation intensity matters as much as total depth because compacted soils and frozen ground produce larger event mean concentrations of phosphorus and suspended solids. Tile drainage and storm sewer networks short-circuit flow paths, delivering anthropogenic nutrients directly to streams during storm events.
+
+Runoff-driven loading is often episodic, so bloom risk may rise even when long-term average phosphorus concentrations appear moderate. Monitoring programs that sample only during baseflow conditions can underestimate bloom favorability following storm sequences.
+
+Temperature, Sunlight, and Cyanobacteria Growth
+
+Warmer water temperatures increase cyanobacterial growth rates relative to many diatoms and green algae, especially when combined with high solar radiation and calm weather. Sunlight supports photosynthesis and can deepen the heated surface layer, reinforcing stratification. Extended periods of light availability allow buoyant cyanobacteria to maintain positive growth near the surface.
+
+Temperature also influences internal phosphorus cycling. Sediment phosphorus release often increases under low dissolved oxygen at the sediment–water interface, linking hydrology, stratification, and nutrient supply during hot, stable summers.
+
+Harmful Algal Bloom Ecology and Water Quality
+
+Harmful algal blooms in freshwater systems are typically driven by the interaction of nutrient enrichment, favorable hydrology, and weather. Water quality indicators such as chlorophyll and phycocyanin fluorescence reflect biomass but do not alone define ecological mechanisms. Bloom prediction efforts combine nutrient loading estimates, thermal structure, antecedent hydrologic conditions, and historical bloom timing.
+
+Understanding why phosphorus, streamflow, precipitation, and temperature jointly control bloom favorability supports explainable environmental assessment tools. These mechanisms differ from toxin monitoring protocols, laboratory extraction methods, and administrative reporting requirements, which address public health response rather than bloom initiation.
+
+References
+
+Smith, J. et al. (2018). A bibliography entry that should be removed.
+Jones, A. (2020). Another citation line.
