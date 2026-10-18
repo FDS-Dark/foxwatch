@@ -43,6 +43,7 @@ Local setup is in [`api/README.md`](api/README.md); wiring the full sponsor stac
 - Sentinel-2 L2A reflectance — X-Ray maps and live worker (see research docs and export scripts)
 - Curated PDFs under `data/rag/sources/` — BFI literature retrieval (WHO, regional studies, etc.)
 - FLAMe / field survey artifacts — X-Ray holdout and replay experiments (`research/xray_bay/`)
+- Wisconsin DNR public harmful algal bloom / beach advisory context — used when building offline training labels (cross-checked against daily USGS features; see below)
 
 Attribution and retrieval details for map boundaries and evidence bundles are stored alongside exports (for example `data/xray/green_bay_boundary.geojson` and `/api/xray/evidence`).
 
@@ -64,10 +65,18 @@ Team members used **AI-assisted development tools** (including **Cursor** and co
 
 When Gemini is disabled, misconfigured, or fails validation, the API returns **evidence-bound fallback text** rather than unconstrained model output.
 
+### Offline ML labeling (OpenAI Decisions API)
+
+The logistic-regression bloom **probability** model is trained on `data/labeled_openai.csv`. Those labels are produced **offline** (not at user request time) by [`scripts/label_bloom_with_openai.py`](scripts/label_bloom_with_openai.py), which calls the **OpenAI Decisions API** with a structured yes/no bloom question for each daily USGS feature row.
+
+Each decision prompt includes daily sensor aggregates for `USGS-040851385` plus context assembled in [`scripts/dnr_context.py`](scripts/dnr_context.py). Labelers are instructed to **cross-reference Wisconsin DNR (WDNR) public harmful algal bloom reporting, beach advisories, and Green Bay / Fox River cyanobacteria updates**, and to treat nearby ESP microcystin deployment samples as supporting field context—not as automatic toxin confirmation. Labels favor WDNR-confirmed bloom periods over pigment spikes alone; the team reviewed the resulting table before training `logistic_regression_v2`.
+
+Regenerating labels requires `OPENAI_API_KEY` locally; production API traffic does **not** call OpenAI for predictions.
+
 ### Not powered by generative AI at request time
 
 - USGS polling and storage, logistic-regression bloom **probability** endpoint (trained offline on `data/labeled_openai.csv`), X-Ray **random forest** grids, satellite download/masking, and map PNG generation use conventional code and statistical/ML models.
-- The filename `labeled_openai.csv` refers to the training table used for the v2 classifier; it is not an OpenAI API dependency at runtime.
+- Runtime inference uses the saved v2 artifact only; OpenAI is used for **offline labeling** and optional Gemini narratives, not for live bloom probability scores.
 
 ### How to use results responsibly
 
