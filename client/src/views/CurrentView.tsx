@@ -1,0 +1,154 @@
+import { useEffect, useState } from 'react'
+import './CurrentView.css'
+
+const PARAMETERS: Record<string, string> = {
+  '32319': 'Phycocyanin fluorescence',
+  '32316': 'Chlorophyll fluorescence',
+  '00300': 'Dissolved oxygen',
+  '00400': 'pH',
+  '00010': 'Water temperature',
+  '00671': 'Dissolved orthophosphate',
+  '00631': 'Nitrate + nitrite',
+  '00608': 'Dissolved ammonia',
+  '00060': 'Discharge',
+  '63680': 'Turbidity',
+  '00095': 'Specific conductance',
+}
+
+interface Reading {
+  parameter_code: string
+  time_series_id: string
+  observed_at: string
+  value: number | null
+  unit: string | null
+  approval_status: string | null
+  qualifier: string | null
+  ingested_at: string
+}
+
+interface LatestObservations {
+  source: 'tiger_data'
+  station_id: string
+  requested_parameters: string[]
+  readings: Reading[]
+  missing_parameters: string[]
+  fetched_at: string
+  stale_after_seconds: number
+}
+
+function timestamp(iso: string) {
+  return new Date(iso).toLocaleString(undefined, {
+    month: 'short', day: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
+  })
+}
+
+export function CurrentView() {
+  const [data, setData] = useState<LatestObservations | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [now, setNow] = useState(Date.now)
+
+  useEffect(() => {
+    let stopped = false
+    let nextPoll: number | undefined
+    let controller: AbortController | undefined
+    let inFlight = false
+
+    async function load() {
+      if (stopped || inFlight) return
+      window.clearTimeout(nextPoll)
+      inFlight = true
+      const request = new AbortController()
+      controller = request
+      const timeout = window.setTimeout(() => request.abort(), 20_000)
+      try {
+        const response = await fetch('/api/observations/latest', {
+          signal: request.signal, cache: 'no-store',
+        })
+        if (!response.ok) throw new Error(`Request failed (${response.status})`)
+        const result: LatestObservations = await response.json()
+        if (result.source !== 'tiger_data' || !Array.isArray(result.readings)) {
+          throw new Error('Unexpected observation response')
+        }
+        if (!stopped) {
+          setData(result)
+          setError(null)
+        }
+      } catch {
+        if (!stopped) setError('Unable to refresh stored observations. Check that the API and Tiger Data are available.')
+      } finally {
+        window.clearTimeout(timeout)
+        inFlight = false
+        if (!stopped) {
+          setNow(Date.now())
+          nextPoll = window.setTimeout(() => void load(), 15_000)
+        }
+      }
+    }
+
+    function resume() {
+      if (document.visibilityState === 'visible') void load()
+    }
+
+    document.addEventListener('visibilitychange', resume)
+    window.addEventListener('online', resume)
+    void load()
+    return () => {
+      stopped = true
+      controller?.abort()
+      window.clearTimeout(nextPoll)
+      document.removeEventListener('visibilitychange', resume)
+      window.removeEventListener('online', resume)
+    }
+  }, [])
+
+  const readings = new Map(data?.readings.map((reading) => [reading.parameter_code, reading]))
+
+  return (
+    <div className="current">
+      <section className="card current__intro" aria-labelledby="current-title">
+        <div>
+          <p className="eyebrow">USGS observations · Stored in Tiger Data</p>
+          <h2 id="current-title">Latest station conditions</h2>
+          <p>{data?.station_id ?? 'Loading station'} · Latest reading for each parameter</p>
+          <p className="current__note">Updates automatically every 15 seconds. Readings over 30 minutes old are marked delayed.</p>
+        </div>
+        <div className="current__refresh">
+          <p className={`chip ${error ? 'chip--warn' : data ? 'chip--ok' : ''}`} role="status">
+            {error ? 'Reconnecting automatically' : data ? 'Automatic updates on' : 'Connecting…'}
+          </p>
+          {data && <p className="current__note">Last fetched <time dateTime={data.fetched_at}>{timestamp(data.fetched_at)}</time></p>}
+        </div>
+      </section>
+
+      {error && <p className="current__notice" role="alert">{error}{data ? ' Showing previously fetched readings.' : ''}</p>}
+      {!data && !error && <p role="status">Loading observations from Tiger Data…</p>}
+      {data?.readings.length === 0 && <p className="current__notice" role="status">No observations have been stored for this station yet. Waiting for ingestion.</p>}
+
+      {data && <section className="current__grid" aria-label="Latest measurements">
+        {data.requested_parameters.map((code) => {
+          const reading = readings.get(code)
+          const stale = reading && now - Date.parse(reading.observed_at) > data.stale_after_seconds * 1000
+          return (
+            <article className="card current__reading" key={code}>
+              <div className="current__reading-heading">
+                <h3>{PARAMETERS[code] ?? code}</h3>
+                {stale && <span className="chip chip--warn">Delayed</span>}
+              </div>
+              <p className="current__value">{reading?.value != null
+                ? reading.value.toLocaleString(undefined, { maximumFractionDigits: 3 })
+                : 'No data'}</p>
+              <p className="current__unit">{reading?.unit ?? 'No stored measurement'}</p>
+              {reading ? <>
+                <p className="current__note">Observed <time dateTime={reading.observed_at}>{timestamp(reading.observed_at)}</time></p>
+                <p className="current__note">{reading.approval_status ?? 'Approval status unavailable'}{reading.qualifier ? ` · ${reading.qualifier}` : ''}</p>
+              </> : <p className="current__note">This parameter has not been received for this station.</p>}
+              <p className="current__code">USGS {code}</p>
+            </article>
+          )
+        })}
+      </section>}
+      <p className="current__note">USGS provisional measurements may be revised. Pigment fluorescence is an indicator, not confirmation of a harmful algal bloom.</p>
+    </div>
+  )
+}
