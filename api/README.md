@@ -88,9 +88,13 @@ It polls every five minutes; no open browser or long-running HTTP request is nee
 Set `USGS_INGESTION_ENABLED=false` and restart to disable automatic collection.
 Stopping the API stops collection. For continuous deployment, run this process on
 an always-on host with automatic restart; serverless functions that sleep between
-requests are unsuitable. Use one worker for consistent in-memory status. These
-local development endpoints have no authentication; add access control before
-exposing the manual poll endpoint publicly.
+requests are unsuitable. Use one worker for consistent in-memory status.
+
+Production deploys use **DigitalOcean Container Registry + App Platform**; see
+[`docs/DEPLOYMENT.md`](../docs/DEPLOYMENT.md). Set `INGESTION_ADMIN_TOKEN` in
+production so `POST /ingestion/poll` requires header `X-Ingestion-Token`.
+Set `APP__public_url`, `APP__cors_origins`, and `APP__environment__name=production`.
+Seed Tiger RAG vectors once: `uv run python -m services.rag_seed`.
 
 ## Data behavior
 

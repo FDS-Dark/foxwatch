@@ -160,6 +160,28 @@ GEMINI_MODEL_FALLBACKS: tuple[str, ...] = (
     "gemini-2.5-pro",
 )
 
+INGESTION_ADMIN_TOKEN = os.getenv("INGESTION_ADMIN_TOKEN", "").strip()
+
+
+def cors_allowed_origins() -> list[str]:
+    raw = os.getenv("APP__cors_origins", "").strip()
+    if raw:
+        return [origin.strip() for origin in raw.split(",") if origin.strip()]
+    public = os.getenv("APP__public_url", "").strip()
+    if public:
+        origins = [public.rstrip("/")]
+        if public.startswith("https://"):
+            www = public.replace("https://", "https://www.", 1)
+            if www not in origins:
+                origins.append(www.rstrip("/"))
+        return origins
+    return [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:6173",
+        "http://127.0.0.1:6173",
+    ]
+
 
 def rag_use_tiger_vectors() -> bool:
     backend = RAG_VECTOR_BACKEND

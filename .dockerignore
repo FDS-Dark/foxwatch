@@ -1,0 +1,15 @@
+.git
+.github
+**/.env
+**/.venv
+**/node_modules
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+research
+api/model/artifacts/*.png
+api/model/artifacts/*.svg
+data/rag/index/vectors.faiss
+data/rag/index/embedded_chunks.jsonl
+*.md
+!api/README.md

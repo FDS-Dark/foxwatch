@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from dependencies import get_ingestion_service
+from dependencies_ingestion import require_ingestion_admin
 from services.usgs_ingestion import UsgsIngestionService
 
 router = APIRouter(tags=["ingestion"])
@@ -12,7 +13,10 @@ def ingestion_status(ingestion: UsgsIngestionService = Depends(get_ingestion_ser
 
 
 @router.post("/ingestion/poll")
-def poll_now(ingestion: UsgsIngestionService = Depends(get_ingestion_service)):
+def poll_now(
+    _: None = Depends(require_ingestion_admin),
+    ingestion: UsgsIngestionService = Depends(get_ingestion_service),
+):
     collector = ingestion.collector
     if not collector.settings.database_url:
         raise HTTPException(

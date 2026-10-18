@@ -1,0 +1,88 @@
+# DigitalOcean App Platform spec — images from DOCR (not Git build).
+# Replace REGISTRY_NAME with your container registry name before apply.
+# Set secret env values in the DO control panel (see deploy/env.example).
+
+name: foxwatch
+region: nyc
+
+services:
+  - name: api
+    image:
+      registry_type: DOCR
+      registry: foxwatch
+      repository: foxwatch-api
+      tag: latest
+    http_port: 8000
+    instance_count: 1
+    instance_size_slug: basic-s
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 30
+      period_seconds: 30
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 3
+    envs:
+      - key: APP__environment__name
+        value: production
+        scope: RUN_TIME
+      - key: RAG_VECTOR_BACKEND
+        value: tiger
+        scope: RUN_TIME
+      - key: HOST
+        value: 0.0.0.0
+        scope: RUN_TIME
+      - key: TIGER_DATABASE_URL
+        scope: RUN_TIME
+        type: SECRET
+      - key: GEMINI_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: USGS_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: INGESTION_ADMIN_TOKEN
+        scope: RUN_TIME
+        type: SECRET
+      - key: APP__jwt__secret
+        scope: RUN_TIME
+        type: SECRET
+      - key: APP__public_url
+        scope: RUN_TIME
+        type: SECRET
+      - key: APP__cors_origins
+        scope: RUN_TIME
+        type: SECRET
+
+  - name: web
+    image:
+      registry_type: DOCR
+      registry: foxwatch
+      repository: foxwatch-web
+      tag: latest
+    http_port: 80
+    instance_count: 1
+    instance_size_slug: basic-xxs
+
+ingress:
+  rules:
+    - match:
+        path:
+          prefix: /api
+      component:
+        name: api
+    - match:
+        path:
+          prefix: /ingestion
+      component:
+        name: api
+    - match:
+        path:
+          prefix: /usgs
+      component:
+        name: api
+    - match:
+        path:
+          prefix: /
+      component:
+        name: web
