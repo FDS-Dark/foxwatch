@@ -1,5 +1,7 @@
-# DigitalOcean App Platform spec — images from DOCR (not Git build).
-# Replace REGISTRY_NAME with your container registry name before apply.
+# DigitalOcean App Platform — images from Docker Hub (not Git build).
+# Replace YOUR_DOCKERHUB_USERNAME with your Docker Hub namespace.
+# Public images need no registry credentials on App Platform; use private repos
+# only with Docker Hub credentials configured in the DO app settings.
 # Set secret env values in the DO control panel (see deploy/env.example).
 
 name: foxwatch
@@ -8,8 +10,8 @@ region: nyc
 services:
   - name: api
     image:
-      registry_type: DOCR
-      registry: foxwatch
+      registry_type: DOCKER_HUB
+      registry: silverdisk
       repository: foxwatch-api
       tag: latest
     http_port: 8000
@@ -56,8 +58,8 @@ services:
 
   - name: web
     image:
-      registry_type: DOCR
-      registry: foxwatch
+      registry_type: DOCKER_HUB
+      registry: silverdisk
       repository: foxwatch-web
       tag: latest
     http_port: 80

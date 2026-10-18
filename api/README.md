@@ -90,7 +90,7 @@ Stopping the API stops collection. For continuous deployment, run this process o
 an always-on host with automatic restart; serverless functions that sleep between
 requests are unsuitable. Use one worker for consistent in-memory status.
 
-Production deploys use **DigitalOcean Container Registry + App Platform**; see
+Production deploys use **Docker Hub + DigitalOcean App Platform**; see
 [`docs/DEPLOYMENT.md`](../docs/DEPLOYMENT.md). Set `INGESTION_ADMIN_TOKEN` in
 production so `POST /ingestion/poll` requires header `X-Ingestion-Token`.
 Set `APP__public_url`, `APP__cors_origins`, and `APP__environment__name=production`.

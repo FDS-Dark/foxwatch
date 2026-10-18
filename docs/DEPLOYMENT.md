@@ -1,6 +1,6 @@
 # FoxWatch production deployment
 
-Production uses **DigitalOcean Container Registry (DOCR)** and **App Platform**. Pushes to `main` build Docker images in GitHub Actions and trigger a new App Platform deployment.
+Production uses **Docker Hub** for container images and **DigitalOcean App Platform** to run them. Pushes to `main` build and push images in GitHub Actions, then trigger a new App Platform deployment.
 
 ## Architecture
 
@@ -11,25 +11,34 @@ Production uses **DigitalOcean Container Registry (DOCR)** and **App Platform**.
 
 Chunk text ships in the API image (`data/rag/index/chunks.jsonl`). **Vectors** must exist in Tiger (`rag_chunk_vectors`).
 
-## One-time: DigitalOcean
+## One-time: Docker Hub
 
-1. Create a **Container Registry** (note the registry name, e.g. `foxwatch`).
-2. Create an **App** from [`.do/app.yaml`](../.do/app.yaml):
-   - Replace `REGISTRY_NAME` with your registry name.
-   - Import the spec or create matching services manually (**Deploy from container image**, not Git).
-3. Connect the app to DOCR so it can pull `foxwatch-api` and `foxwatch-web`.
-4. Set **encrypted environment variables** on the **api** service from [`deploy/env.example`](../deploy/env.example).
-5. Copy the App ID for GitHub (`DO_APP_ID`).
+1. Create a [Docker Hub](https://hub.docker.com/) account if needed.
+2. Create **public** repositories `foxwatch-api` and `foxwatch-web` (or rely on first push to create them).
+3. Create an **Access Token** (Account Settings → Security) for CI — use this as `DOCKERHUB_TOKEN`, not your account password.
+
+Public images are pullable by App Platform without registry credentials. Do not bake secrets into images; use App Platform env vars only.
+
+## One-time: DigitalOcean App Platform
+
+1. Create an **App** from [`.do/app.yaml`](../.do/app.yaml):
+   - Replace `YOUR_DOCKERHUB_USERNAME` with your Hub namespace (twice).
+   - Import the spec or create matching services (**Deploy from container image**, not Git).
+2. Set **encrypted environment variables** on the **api** service from [`deploy/env.example`](../deploy/env.example).
+3. Copy the App ID for GitHub (`DO_APP_ID`).
+
+If you use **private** Docker Hub repos, add Docker Hub credentials under the app’s registry settings in the DO control panel.
 
 ## One-time: GitHub Actions secrets
 
 | Secret | Purpose |
 |--------|---------|
-| `DIGITALOCEAN_ACCESS_TOKEN` | DO API token (read/write registry + apps) |
-| `DOCR_REGISTRY_NAME` | Registry name (not full URL) |
+| `DOCKERHUB_USERNAME` | Docker Hub namespace (user or org) |
+| `DOCKERHUB_TOKEN` | Hub access token for `docker push` |
+| `DIGITALOCEAN_ACCESS_TOKEN` | DO API token (App Platform deploy only) |
 | `DO_APP_ID` | App Platform application UUID |
 
-Push to `main` runs [`.github/workflows/publish-docr.yml`](../.github/workflows/publish-docr.yml).
+Push to `main` runs [`.github/workflows/publish-dockerhub.yml`](../.github/workflows/publish-dockerhub.yml).
 
 ## One-time: GoDaddy DNS
 
@@ -80,9 +89,10 @@ Run API with env file mounted; point browser at web container only when using a 
 ## Manual deploy
 
 ```bash
-doctl registry login
-docker build -f api/Dockerfile -t registry.digitalocean.com/REGISTRY/foxwatch-api:latest .
-docker push registry.digitalocean.com/REGISTRY/foxwatch-api:latest
-# repeat for client/Dockerfile → foxwatch-web
+docker login
+docker build -f api/Dockerfile -t YOUR_DOCKERHUB_USERNAME/foxwatch-api:latest .
+docker push YOUR_DOCKERHUB_USERNAME/foxwatch-api:latest
+docker build -f client/Dockerfile -t YOUR_DOCKERHUB_USERNAME/foxwatch-web:latest .
+docker push YOUR_DOCKERHUB_USERNAME/foxwatch-web:latest
 doctl apps create-deployment YOUR_APP_ID
 ```

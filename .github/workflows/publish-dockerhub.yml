@@ -1,0 +1,51 @@
+name: Publish to Docker Hub and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  IMAGE_PREFIX: ${{ secrets.DOCKERHUB_USERNAME }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push API image
+        run: |
+          docker build -f api/Dockerfile \
+            -t "${IMAGE_PREFIX}/foxwatch-api:${GITHUB_SHA}" \
+            -t "${IMAGE_PREFIX}/foxwatch-api:latest" \
+            .
+          docker push "${IMAGE_PREFIX}/foxwatch-api:${GITHUB_SHA}"
+          docker push "${IMAGE_PREFIX}/foxwatch-api:latest"
+
+      - name: Build and push web image
+        run: |
+          docker build -f client/Dockerfile \
+            -t "${IMAGE_PREFIX}/foxwatch-web:${GITHUB_SHA}" \
+            -t "${IMAGE_PREFIX}/foxwatch-web:latest" \
+            .
+          docker push "${IMAGE_PREFIX}/foxwatch-web:${GITHUB_SHA}"
+          docker push "${IMAGE_PREFIX}/foxwatch-web:latest"
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Trigger App Platform deployment
+        env:
+          DO_APP_ID: ${{ secrets.DO_APP_ID }}
+        if: env.DO_APP_ID != ''
+        run: doctl apps create-deployment "$DO_APP_ID"
