@@ -223,3 +223,6 @@ __marimo__/
 
 # Locally trained model binaries and reports (regenerate from the training CSV).
 api/services/ml/artifacts/
+
+# FLAMe full export exceeds GitHub's 100MB blob limit; keep locally or use LFS.
+data/FLAMe/FLAMe_data.csv
