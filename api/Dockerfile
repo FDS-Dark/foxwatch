@@ -10,6 +10,7 @@ COPY api ./api
 COPY data/labeled_openai.csv data/labeled_openai.csv
 COPY data/rag/index/chunks.jsonl data/rag/index/chunks.jsonl
 COPY data/rag/index/index_meta.json data/rag/index/index_meta.json
+COPY data/xray data/xray
 
 WORKDIR /app/api
 

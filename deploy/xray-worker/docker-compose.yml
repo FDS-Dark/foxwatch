@@ -1,0 +1,23 @@
+# Vultr Cloud Compute — hourly Sentinel-2 refresh and public artifact publish.
+# Copy deploy/env.vultr.example to .env on the VPS before starting.
+services:
+  xray-worker:
+    image: ${XRAY_WORKER_IMAGE:-silverdisk/foxwatch-xray-worker:latest}
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - xray-live-cache:/var/cache/xray-live
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import json,pathlib; from datetime import datetime,timezone; p=pathlib.Path('/var/lib/xray-live/status.json'); s=json.loads(p.read_text()) if p.is_file() else {}; t=s.get('checked_at'); exit(0 if t and (datetime.now(timezone.utc)-datetime.fromisoformat(t.replace('Z','+00:00'))).total_seconds()<7200 else 1)\"",
+        ]
+      interval: 5m
+      timeout: 30s
+      retries: 3
+      start_period: 30m
+
+volumes:
+  xray-live-cache:

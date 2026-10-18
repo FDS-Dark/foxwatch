@@ -8,6 +8,7 @@ from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime, timedelta, timezone
 import json
 import gzip
+import os
 from pathlib import Path
 import time
 import uuid
@@ -24,10 +25,11 @@ import export_xray_bay_map as overview
 import export_xray_holdout_maps as hold
 from xray_satellite_layer import render_prediction, render_signal
 from xray_bay_boundary import clip_export, grid_mask
+from xray_live_publish import LiveArtifactPublisher, PublishConfig
 
 AOI = (-88.15, 44.45, -86.65, 45.95)
-CACHE = hold.ROOT / ".cache/xray-live"
-OUTPUT = hold.ROOT / "data/xray/live"
+CACHE = Path(os.getenv("XRAY_LIVE_CACHE_DIR", str(hold.ROOT / ".cache/xray-live")))
+OUTPUT = Path(os.getenv("XRAY_LIVE_OUTPUT_DIR", str(hold.ROOT / "data/xray/live")))
 CATALOG = "https://earth-search.aws.element84.com/v1"
 TILES = ("16TDQ", "16TDR", "16TER")
 
@@ -43,10 +45,12 @@ def atomic_json(path, value):
     temporary.replace(path)
 
 
-def status(phase, message, **extra):
+def status(publisher, phase, message, **extra):
     print(message, flush=True)
-    atomic_json(OUTPUT / "status.json", {"phase": phase, "message": message,
-                "checked_at": utcnow().isoformat(), **extra})
+    payload = {"phase": phase, "message": message, "checked_at": utcnow().isoformat(), **extra}
+    atomic_json(OUTPUT / "status.json", payload)
+    if publisher is not None:
+        publisher.publish_status(payload)
 
 
 def discover(now, days):
@@ -98,26 +102,32 @@ def download(item):
     return item["id"]
 
 
-def refresh(days=14):
+def refresh(days=14, publisher=None):
     now = utcnow()
-    status("searching", "Checking recent Sentinel-2 acquisitions")
+    status(publisher, "searching", "Checking recent Sentinel-2 acquisitions")
     items = discover(now, days)
     ids = [item["id"] for item in items]
     previous_path = OUTPUT / "manifest.json"
-    previous = json.loads(previous_path.read_text()) if previous_path.exists() else None
-    if (previous and previous.get("candidate_scene_ids") == ids
-            and (OUTPUT / previous["run_id"] / "samples.json.gz").is_file()):
-        status("ready", "Catalog checked; published map uses the latest selected acquisitions",
+    if publisher is not None:
+        previous = publisher.load_previous_manifest(previous_path)
+    else:
+        previous = json.loads(previous_path.read_text()) if previous_path.exists() else None
+    samples_ok = previous and (
+        (OUTPUT / previous["run_id"] / "samples.json.gz").is_file()
+        or publisher is not None
+    )
+    if previous and previous.get("candidate_scene_ids") == ids and samples_ok:
+        status(publisher, "ready", "Catalog checked; published map uses the latest selected acquisitions",
                run_id=previous["run_id"], catalog_checked_at=now.isoformat())
         return
     for item in items:
         atomic_json(CACHE / "stac_items" / f"{item['id']}.json", item)
     atomic_json(CACHE / "manifest.json", {"aoi": AOI, "items": ids})
-    status("downloading", f"Downloading {len(items)} recent scene windows", scene_count=len(items))
+    status(publisher, "downloading", f"Downloading {len(items)} recent scene windows", scene_count=len(items))
     with ProcessPoolExecutor(max_workers=2) as pool:
         for iid in pool.map(download, items):
             print("Ready:", iid, flush=True)
-    status("predicting", "Masking clouds and applying the research model to recent reflectance")
+    status(publisher, "predicting", "Masking clouds and applying the research model to recent reflectance")
     X, grid, features, transform, cell, scenes, rgb, scene_index = overview.mosaic_features(CACHE, newest_first=True)
     inside = grid_mask(grid)
     features[~inside] = np.nan
@@ -175,7 +185,12 @@ def refresh(days=14):
     dates = sorted(s["acquired_at"] for s in contributing)
     base = {"bounds": bounds, "scope": "recent_satellite_inference", "units": "RFU",
             **prediction_display, "acquired_at": dates[-1], "scene_id": "Recent Sentinel-2 mosaic"}
-    layers = [{**base, "id": key, "title": title, "url": f"/api/xray/live/{run_id}/{key}",
+    def layer_url(key):
+        if publisher is not None:
+            return publisher.public_layer_url(run_id, key)
+        return f"/api/xray/live/{run_id}/{key}"
+
+    layers = [{**base, "id": key, "title": title, "url": layer_url(key),
                **(satellite_signal if key == "satellite" else {}),
                **({"units": "days", "display_min": 0, "display_max": days} if key == "age" else {})}
               for key, title in [("prediction", "Predicted chlorophyll fluorescence"), ("satellite", "Satellite imagery"),
@@ -215,7 +230,10 @@ def refresh(days=14):
     clip_export(dest, manifest)
     atomic_json(dest / "manifest.json", manifest)
     atomic_json(OUTPUT / "manifest.json", manifest)
-    status("ready", f"Published {int(valid.sum()):,} predicted water cells", run_id=run_id, catalog_checked_at=now.isoformat())
+    if publisher is not None:
+        publisher.publish_snapshot(run_id, dest, manifest)
+    status(publisher, "ready", f"Published {int(valid.sum()):,} predicted water cells",
+           run_id=run_id, catalog_checked_at=now.isoformat())
 
 
 def main():
@@ -236,11 +254,13 @@ def main():
     else:
         import fcntl
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    publish_config = PublishConfig.from_env()
+    publisher = LiveArtifactPublisher(publish_config) if publish_config else None
     while True:
         try:
-            refresh(args.days)
+            refresh(args.days, publisher=publisher)
         except Exception as exc:
-            status("error", f"Refresh failed ({type(exc).__name__}); retaining the last completed map")
+            status(publisher, "error", f"Refresh failed ({type(exc).__name__}); retaining the last completed map")
             if not args.watch:
                 raise
             import traceback

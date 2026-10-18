@@ -10,7 +10,7 @@ from threading import BoundedSemaphore
 
 from services.gemini_client import generate_grounded_json
 from services.xray import XRAY_DIR
-from services.xray_live import LIVE_DIR, sample_point
+from services.xray_live import load_run_manifest, sample_point
 from settings import RAG_CHUNKS_PATH
 
 _generation_slots = BoundedSemaphore(2)
@@ -88,7 +88,7 @@ def retrieve_science(question: str):
 
 
 def explain_point(run_id: str, lat: float, lon: float, question: str, use_gemini: bool = True):
-    manifest = json.loads((LIVE_DIR / run_id / "manifest.json").read_text(encoding="utf-8"))
+    manifest = load_run_manifest(run_id)
     sample = sample_point(run_id, lat, lon)
     if sample["status"] != "available":
         return {"status": sample["status"], "run_id": run_id, "sample": sample,

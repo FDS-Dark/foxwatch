@@ -55,6 +55,9 @@ services:
       - key: APP__cors_origins
         scope: RUN_TIME
         type: SECRET
+      - key: XRAY_LIVE_PUBLIC_BASE_URL
+        scope: RUN_TIME
+        type: SECRET
 
   - name: web
     image:

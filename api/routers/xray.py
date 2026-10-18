@@ -5,7 +5,8 @@ from fastapi.responses import FileResponse
 
 from models.xray import XrayQuestion, LiveXrayQuestion
 from services.xray import EVIDENCE_FILES, XRAY_DIR, XrayService
-from services.xray_live import LIVE_DIR, live_metadata, sample_point
+import settings
+from services.xray_live import LIVE_DIR, live_metadata, load_run_manifest, sample_point
 from services.xray_explanations import explain_point
 
 router = APIRouter(prefix="/api/xray", tags=["xray"])
@@ -21,6 +22,12 @@ def validate_snapshot(run_id: str):
     import re
     if not re.fullmatch(r"\d{8}T\d{6}Z-[a-f0-9]{8}", run_id):
         raise HTTPException(404, "Unknown map snapshot")
+    if settings.XRAY_LIVE_PUBLIC_BASE_URL:
+        try:
+            load_run_manifest(run_id)
+        except Exception:
+            raise HTTPException(404, "Map snapshot is unavailable") from None
+        return
     if not (LIVE_DIR / run_id / "manifest.json").is_file():
         raise HTTPException(404, "Map snapshot is unavailable")
 
